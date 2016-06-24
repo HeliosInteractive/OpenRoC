@@ -65,6 +65,7 @@
             this.CollectCpuMetricsEnabled = new System.Windows.Forms.CheckBox();
             this.CollectGpuMetricsEnabled = new System.Windows.Forms.CheckBox();
             this.OpenScreenshotDirectoryButton = new System.Windows.Forms.Button();
+            this.EnvironmentVariableFormatLabel = new System.Windows.Forms.Label();
             this.MonitorThisProcessGroup.SuspendLayout();
             this.ProcessCrashAssumptionsGroup.SuspendLayout();
             this.ProcessPreStartGroup.SuspendLayout();
@@ -315,6 +316,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.EnvironmentVariableFormatLabel);
             this.groupBox1.Controls.Add(this.OpenScreenshotDirectoryButton);
             this.groupBox1.Controls.Add(this.CollectGpuMetricsEnabled);
             this.groupBox1.Controls.Add(this.CollectCpuMetricsEnabled);
@@ -375,17 +377,17 @@
             this.MergeVariablesCheckBox.AutoSize = true;
             this.MergeVariablesCheckBox.Location = new System.Drawing.Point(10, 92);
             this.MergeVariablesCheckBox.Name = "MergeVariablesCheckBox";
-            this.MergeVariablesCheckBox.Size = new System.Drawing.Size(119, 56);
+            this.MergeVariablesCheckBox.Size = new System.Drawing.Size(291, 17);
             this.MergeVariablesCheckBox.TabIndex = 5;
-            this.MergeVariablesCheckBox.Text = "Merge following\r\nvariables with\r\nsystem environment\r\nvariables :";
+            this.MergeVariablesCheckBox.Text = "Merge listed variables with system environment variables";
             this.MergeVariablesCheckBox.UseVisualStyleBackColor = true;
             // 
             // MergeVariablesTextBox
             // 
-            this.MergeVariablesTextBox.Location = new System.Drawing.Point(133, 90);
+            this.MergeVariablesTextBox.Location = new System.Drawing.Point(10, 116);
             this.MergeVariablesTextBox.Multiline = true;
             this.MergeVariablesTextBox.Name = "MergeVariablesTextBox";
-            this.MergeVariablesTextBox.Size = new System.Drawing.Size(317, 60);
+            this.MergeVariablesTextBox.Size = new System.Drawing.Size(440, 34);
             this.MergeVariablesTextBox.TabIndex = 6;
             // 
             // CollectRamMetricsEnabled
@@ -426,6 +428,16 @@
             this.OpenScreenshotDirectoryButton.TabIndex = 1;
             this.OpenScreenshotDirectoryButton.Text = "Open Screenshot Directory";
             this.OpenScreenshotDirectoryButton.UseVisualStyleBackColor = true;
+            // 
+            // EnvironmentVariableFormatLabel
+            // 
+            this.EnvironmentVariableFormatLabel.AutoSize = true;
+            this.EnvironmentVariableFormatLabel.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.EnvironmentVariableFormatLabel.Location = new System.Drawing.Point(302, 94);
+            this.EnvironmentVariableFormatLabel.Name = "EnvironmentVariableFormatLabel";
+            this.EnvironmentVariableFormatLabel.Size = new System.Drawing.Size(145, 13);
+            this.EnvironmentVariableFormatLabel.TabIndex = 10;
+            this.EnvironmentVariableFormatLabel.Text = "var1=value1;var2=value2";
             // 
             // AddProcessDialog
             // 
@@ -494,5 +506,6 @@
         private System.Windows.Forms.CheckBox CollectCpuMetricsEnabled;
         private System.Windows.Forms.CheckBox CollectGpuMetricsEnabled;
         private System.Windows.Forms.Button OpenScreenshotDirectoryButton;
+        private System.Windows.Forms.Label EnvironmentVariableFormatLabel;
     }
 }
