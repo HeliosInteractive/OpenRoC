@@ -33,12 +33,12 @@
             this.StatusStrip = new System.Windows.Forms.StatusStrip();
             this.StatusText = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.ProcessListView = new System.Windows.Forms.ListView();
             this.AddButton = new System.Windows.Forms.ToolStripButton();
             this.DeleteButton = new System.Windows.Forms.ToolStripButton();
             this.SettingsButton = new System.Windows.Forms.ToolStripButton();
             this.LogButton = new System.Windows.Forms.ToolStripButton();
             this.AboutButton = new System.Windows.Forms.ToolStripButton();
+            this.ProcessListView = new System.Windows.Forms.ListView();
             this.Process = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Status = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.StatusStrip.SuspendLayout();
@@ -74,21 +74,6 @@
             this.toolStrip1.Size = new System.Drawing.Size(499, 22);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
-            // 
-            // ProcessListView
-            // 
-            this.ProcessListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.Process,
-            this.Status});
-            this.ProcessListView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ProcessListView.GridLines = true;
-            this.ProcessListView.Location = new System.Drawing.Point(0, 22);
-            this.ProcessListView.Name = "ProcessListView";
-            this.ProcessListView.Size = new System.Drawing.Size(499, 355);
-            this.ProcessListView.TabIndex = 2;
-            this.ProcessListView.UseCompatibleStateImageBehavior = false;
-            this.ProcessListView.View = System.Windows.Forms.View.Details;
-            this.ProcessListView.SizeChanged += new System.EventHandler(this.OnProcessListViewResize);
             // 
             // AddButton
             // 
@@ -135,6 +120,25 @@
             this.AboutButton.Name = "AboutButton";
             this.AboutButton.Size = new System.Drawing.Size(44, 19);
             this.AboutButton.Text = "About";
+            // 
+            // ProcessListView
+            // 
+            this.ProcessListView.CheckBoxes = true;
+            this.ProcessListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.Process,
+            this.Status});
+            this.ProcessListView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ProcessListView.FullRowSelect = true;
+            this.ProcessListView.GridLines = true;
+            this.ProcessListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.ProcessListView.Location = new System.Drawing.Point(0, 22);
+            this.ProcessListView.Name = "ProcessListView";
+            this.ProcessListView.ShowGroups = false;
+            this.ProcessListView.Size = new System.Drawing.Size(499, 355);
+            this.ProcessListView.TabIndex = 2;
+            this.ProcessListView.UseCompatibleStateImageBehavior = false;
+            this.ProcessListView.View = System.Windows.Forms.View.Details;
+            this.ProcessListView.SizeChanged += new System.EventHandler(this.OnProcessListViewResize);
             // 
             // Process
             // 
