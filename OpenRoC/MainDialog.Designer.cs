@@ -112,6 +112,7 @@
             this.LogButton.Name = "LogButton";
             this.LogButton.Size = new System.Drawing.Size(36, 19);
             this.LogButton.Text = "Logs";
+            this.LogButton.Click += new System.EventHandler(this.OnLogButtonClick);
             // 
             // AboutButton
             // 

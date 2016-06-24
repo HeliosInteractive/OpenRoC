@@ -4,8 +4,9 @@
 
     public partial class MainDialog : Form
     {
-        private Form AddProcessForm;
-        private Form SettingsForm;
+        private AddProcessDialog AddProcessForm;
+        private SettingsDialog SettingsForm;
+        private LogsDialog LogsForm;
 
         public MainDialog()
         {
@@ -29,7 +30,7 @@
                     ColumnHeaderAutoResizeStyle.HeaderSize);
         }
 
-        private static void HandleDialogRequest<T>(ref Form host)
+        private static void HandleDialogRequest<T>(ref T host)
             where T : Form, new()
         {
             if (host == null || host.IsDisposed)
@@ -43,12 +44,17 @@
 
         private void OnSettingsButtonClick(object sender, System.EventArgs e)
         {
-            HandleDialogRequest<SettingsDialog>(ref SettingsForm);
+            HandleDialogRequest(ref SettingsForm);
         }
 
         private void OnAddButtonClick(object sender, System.EventArgs e)
         {
-            HandleDialogRequest<AddProcessDialog>(ref AddProcessForm);
+            HandleDialogRequest(ref AddProcessForm);
+        }
+
+        private void OnLogButtonClick(object sender, System.EventArgs e)
+        {
+            HandleDialogRequest(ref LogsForm);
         }
     }
 }
