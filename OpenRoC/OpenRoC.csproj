@@ -57,6 +57,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddProcessDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddProcessDialog.Designer.cs">
+      <DependentUpon>AddProcessDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -65,6 +71,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="AddProcessDialog.resx">
+      <DependentUpon>AddProcessDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainDialog.resx">
       <DependentUpon>MainDialog.cs</DependentUpon>
     </EmbeddedResource>

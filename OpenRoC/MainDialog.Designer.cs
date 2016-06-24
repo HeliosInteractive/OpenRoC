@@ -16,6 +16,7 @@
             if (disposing && (components != null))
             {
                 components.Dispose();
+                DisposeAddedComponents();
             }
             base.Dispose(disposing);
         }
@@ -97,6 +98,7 @@
             this.AddButton.Name = "AddButton";
             this.AddButton.Size = new System.Drawing.Size(33, 19);
             this.AddButton.Text = "Add";
+            this.AddButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.OnAddButtonMouseDown);
             // 
             // DeleteButton
             // 
