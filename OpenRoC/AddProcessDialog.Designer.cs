@@ -54,10 +54,22 @@
             this.ProcessPostCrashCleanupEnabledCheckBox = new System.Windows.Forms.CheckBox();
             this.PostCrashCheckEnabledLabel = new System.Windows.Forms.Label();
             this.PostCrashWaitEnabledLabel = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.ScreenshotEnabledOnCrashCheckBox = new System.Windows.Forms.CheckBox();
+            this.KeepAlwaysOnTopCheckBox = new System.Windows.Forms.CheckBox();
+            this.PassCommandLineCheckBox = new System.Windows.Forms.CheckBox();
+            this.PassCommandLineTextBox = new System.Windows.Forms.TextBox();
+            this.MergeVariablesCheckBox = new System.Windows.Forms.CheckBox();
+            this.MergeVariablesTextBox = new System.Windows.Forms.TextBox();
+            this.CollectRamMetricsEnabled = new System.Windows.Forms.CheckBox();
+            this.CollectCpuMetricsEnabled = new System.Windows.Forms.CheckBox();
+            this.CollectGpuMetricsEnabled = new System.Windows.Forms.CheckBox();
+            this.OpenScreenshotDirectoryButton = new System.Windows.Forms.Button();
             this.MonitorThisProcessGroup.SuspendLayout();
             this.ProcessCrashAssumptionsGroup.SuspendLayout();
             this.ProcessPreStartGroup.SuspendLayout();
             this.PostCrashGroup.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // MonitorThisProcessGroup
@@ -301,11 +313,126 @@
             this.PostCrashWaitEnabledLabel.TabIndex = 7;
             this.PostCrashWaitEnabledLabel.Text = "seconds after a crash before attempting a relaunch";
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.OpenScreenshotDirectoryButton);
+            this.groupBox1.Controls.Add(this.CollectGpuMetricsEnabled);
+            this.groupBox1.Controls.Add(this.CollectCpuMetricsEnabled);
+            this.groupBox1.Controls.Add(this.CollectRamMetricsEnabled);
+            this.groupBox1.Controls.Add(this.MergeVariablesTextBox);
+            this.groupBox1.Controls.Add(this.MergeVariablesCheckBox);
+            this.groupBox1.Controls.Add(this.PassCommandLineTextBox);
+            this.groupBox1.Controls.Add(this.PassCommandLineCheckBox);
+            this.groupBox1.Controls.Add(this.KeepAlwaysOnTopCheckBox);
+            this.groupBox1.Controls.Add(this.ScreenshotEnabledOnCrashCheckBox);
+            this.groupBox1.Location = new System.Drawing.Point(12, 457);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(460, 183);
+            this.groupBox1.TabIndex = 4;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Miscellaneous options";
+            // 
+            // ScreenshotEnabledOnCrashCheckBox
+            // 
+            this.ScreenshotEnabledOnCrashCheckBox.AutoSize = true;
+            this.ScreenshotEnabledOnCrashCheckBox.Location = new System.Drawing.Point(10, 23);
+            this.ScreenshotEnabledOnCrashCheckBox.Name = "ScreenshotEnabledOnCrashCheckBox";
+            this.ScreenshotEnabledOnCrashCheckBox.Size = new System.Drawing.Size(249, 17);
+            this.ScreenshotEnabledOnCrashCheckBox.TabIndex = 0;
+            this.ScreenshotEnabledOnCrashCheckBox.Text = "Take a screenshot of the main display on crash";
+            this.ScreenshotEnabledOnCrashCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // KeepAlwaysOnTopCheckBox
+            // 
+            this.KeepAlwaysOnTopCheckBox.AutoSize = true;
+            this.KeepAlwaysOnTopCheckBox.Location = new System.Drawing.Point(10, 46);
+            this.KeepAlwaysOnTopCheckBox.Name = "KeepAlwaysOnTopCheckBox";
+            this.KeepAlwaysOnTopCheckBox.Size = new System.Drawing.Size(410, 17);
+            this.KeepAlwaysOnTopCheckBox.TabIndex = 2;
+            this.KeepAlwaysOnTopCheckBox.Text = "Keep process always on top (this can conflict with other always-on-top processes)" +
+    "";
+            this.KeepAlwaysOnTopCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // PassCommandLineCheckBox
+            // 
+            this.PassCommandLineCheckBox.AutoSize = true;
+            this.PassCommandLineCheckBox.Location = new System.Drawing.Point(10, 69);
+            this.PassCommandLineCheckBox.Name = "PassCommandLineCheckBox";
+            this.PassCommandLineCheckBox.Size = new System.Drawing.Size(123, 17);
+            this.PassCommandLineCheckBox.TabIndex = 3;
+            this.PassCommandLineCheckBox.Text = "Pass command line :";
+            this.PassCommandLineCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // PassCommandLineTextBox
+            // 
+            this.PassCommandLineTextBox.Location = new System.Drawing.Point(133, 67);
+            this.PassCommandLineTextBox.Name = "PassCommandLineTextBox";
+            this.PassCommandLineTextBox.Size = new System.Drawing.Size(317, 20);
+            this.PassCommandLineTextBox.TabIndex = 4;
+            // 
+            // MergeVariablesCheckBox
+            // 
+            this.MergeVariablesCheckBox.AutoSize = true;
+            this.MergeVariablesCheckBox.Location = new System.Drawing.Point(10, 92);
+            this.MergeVariablesCheckBox.Name = "MergeVariablesCheckBox";
+            this.MergeVariablesCheckBox.Size = new System.Drawing.Size(119, 56);
+            this.MergeVariablesCheckBox.TabIndex = 5;
+            this.MergeVariablesCheckBox.Text = "Merge following\r\nvariables with\r\nsystem environment\r\nvariables :";
+            this.MergeVariablesCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // MergeVariablesTextBox
+            // 
+            this.MergeVariablesTextBox.Location = new System.Drawing.Point(133, 90);
+            this.MergeVariablesTextBox.Multiline = true;
+            this.MergeVariablesTextBox.Name = "MergeVariablesTextBox";
+            this.MergeVariablesTextBox.Size = new System.Drawing.Size(317, 60);
+            this.MergeVariablesTextBox.TabIndex = 6;
+            // 
+            // CollectRamMetricsEnabled
+            // 
+            this.CollectRamMetricsEnabled.AutoSize = true;
+            this.CollectRamMetricsEnabled.Location = new System.Drawing.Point(10, 156);
+            this.CollectRamMetricsEnabled.Name = "CollectRamMetricsEnabled";
+            this.CollectRamMetricsEnabled.Size = new System.Drawing.Size(121, 17);
+            this.CollectRamMetricsEnabled.TabIndex = 7;
+            this.CollectRamMetricsEnabled.Text = "Collect RAM metrics";
+            this.CollectRamMetricsEnabled.UseVisualStyleBackColor = true;
+            // 
+            // CollectCpuMetricsEnabled
+            // 
+            this.CollectCpuMetricsEnabled.AutoSize = true;
+            this.CollectCpuMetricsEnabled.Location = new System.Drawing.Point(133, 156);
+            this.CollectCpuMetricsEnabled.Name = "CollectCpuMetricsEnabled";
+            this.CollectCpuMetricsEnabled.Size = new System.Drawing.Size(119, 17);
+            this.CollectCpuMetricsEnabled.TabIndex = 8;
+            this.CollectCpuMetricsEnabled.Text = "Collect CPU metrics";
+            this.CollectCpuMetricsEnabled.UseVisualStyleBackColor = true;
+            // 
+            // CollectGpuMetricsEnabled
+            // 
+            this.CollectGpuMetricsEnabled.AutoSize = true;
+            this.CollectGpuMetricsEnabled.Location = new System.Drawing.Point(256, 156);
+            this.CollectGpuMetricsEnabled.Name = "CollectGpuMetricsEnabled";
+            this.CollectGpuMetricsEnabled.Size = new System.Drawing.Size(120, 17);
+            this.CollectGpuMetricsEnabled.TabIndex = 9;
+            this.CollectGpuMetricsEnabled.Text = "Collect GPU metrics";
+            this.CollectGpuMetricsEnabled.UseVisualStyleBackColor = true;
+            // 
+            // OpenScreenshotDirectoryButton
+            // 
+            this.OpenScreenshotDirectoryButton.Location = new System.Drawing.Point(291, 17);
+            this.OpenScreenshotDirectoryButton.Name = "OpenScreenshotDirectoryButton";
+            this.OpenScreenshotDirectoryButton.Size = new System.Drawing.Size(159, 23);
+            this.OpenScreenshotDirectoryButton.TabIndex = 1;
+            this.OpenScreenshotDirectoryButton.Text = "Open Screenshot Directory";
+            this.OpenScreenshotDirectoryButton.UseVisualStyleBackColor = true;
+            // 
             // AddProcessDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(484, 461);
+            this.ClientSize = new System.Drawing.Size(484, 650);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.PostCrashGroup);
             this.Controls.Add(this.ProcessPreStartGroup);
             this.Controls.Add(this.ProcessCrashAssumptionsGroup);
@@ -323,6 +450,8 @@
             this.ProcessPreStartGroup.PerformLayout();
             this.PostCrashGroup.ResumeLayout(false);
             this.PostCrashGroup.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -354,5 +483,16 @@
         private System.Windows.Forms.CheckBox ProcessPostCrashCleanupEnabledCheckBox;
         private System.Windows.Forms.Label PostCrashCheckEnabledLabel;
         private System.Windows.Forms.Label PostCrashWaitEnabledLabel;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.CheckBox ScreenshotEnabledOnCrashCheckBox;
+        private System.Windows.Forms.CheckBox KeepAlwaysOnTopCheckBox;
+        private System.Windows.Forms.CheckBox PassCommandLineCheckBox;
+        private System.Windows.Forms.TextBox PassCommandLineTextBox;
+        private System.Windows.Forms.CheckBox MergeVariablesCheckBox;
+        private System.Windows.Forms.TextBox MergeVariablesTextBox;
+        private System.Windows.Forms.CheckBox CollectRamMetricsEnabled;
+        private System.Windows.Forms.CheckBox CollectCpuMetricsEnabled;
+        private System.Windows.Forms.CheckBox CollectGpuMetricsEnabled;
+        private System.Windows.Forms.Button OpenScreenshotDirectoryButton;
     }
 }
