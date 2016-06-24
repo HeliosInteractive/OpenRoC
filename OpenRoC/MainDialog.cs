@@ -5,6 +5,7 @@
     public partial class MainDialog : Form
     {
         private Form AddProcessForm;
+        private Form SettingsForm;
 
         public MainDialog()
         {
@@ -15,6 +16,9 @@
         {
             if (AddProcessForm != null)
                 AddProcessForm.Dispose();
+
+            if (SettingsForm != null)
+                SettingsForm.Dispose();
         }
 
         private void OnProcessListViewResize(object sender, System.EventArgs e)
@@ -25,15 +29,26 @@
                     ColumnHeaderAutoResizeStyle.HeaderSize);
         }
 
-        private void OnAddButtonMouseDown(object sender, MouseEventArgs e)
+        private static void HandleDialogRequest<T>(ref Form host)
+            where T : Form, new()
         {
-            if (AddProcessForm == null || AddProcessForm.IsDisposed)
-                AddProcessForm = new AddProcessDialog();
+            if (host == null || host.IsDisposed)
+                host = new T();
 
-            if (!AddProcessForm.Visible)
-                AddProcessForm.Show();
+            if (!host.Visible)
+                host.Show();
             else
-                AddProcessForm.Focus();
+                host.Focus();
+        }
+
+        private void OnSettingsButtonClick(object sender, System.EventArgs e)
+        {
+            HandleDialogRequest<SettingsDialog>(ref SettingsForm);
+        }
+
+        private void OnAddButtonClick(object sender, System.EventArgs e)
+        {
+            HandleDialogRequest<AddProcessDialog>(ref AddProcessForm);
         }
     }
 }

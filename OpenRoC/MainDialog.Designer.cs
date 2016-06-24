@@ -83,7 +83,7 @@
             this.AddButton.Name = "AddButton";
             this.AddButton.Size = new System.Drawing.Size(33, 19);
             this.AddButton.Text = "Add";
-            this.AddButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.OnAddButtonMouseDown);
+            this.AddButton.Click += new System.EventHandler(this.OnAddButtonClick);
             // 
             // DeleteButton
             // 
@@ -102,6 +102,7 @@
             this.SettingsButton.Name = "SettingsButton";
             this.SettingsButton.Size = new System.Drawing.Size(53, 19);
             this.SettingsButton.Text = "Settings";
+            this.SettingsButton.Click += new System.EventHandler(this.OnSettingsButtonClick);
             // 
             // LogButton
             // 
