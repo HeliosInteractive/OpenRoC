@@ -20,6 +20,9 @@
 
             if (SettingsForm != null)
                 SettingsForm.Dispose();
+
+            if (LogsForm != null)
+                LogsForm.Dispose();
         }
 
         private void OnProcessListViewResize(object sender, System.EventArgs e)
