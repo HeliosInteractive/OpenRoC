@@ -122,6 +122,7 @@
             this.AboutButton.Name = "AboutButton";
             this.AboutButton.Size = new System.Drawing.Size(44, 19);
             this.AboutButton.Text = "About";
+            this.AboutButton.Click += new System.EventHandler(this.OnAboutButtonClick);
             // 
             // ProcessListView
             // 

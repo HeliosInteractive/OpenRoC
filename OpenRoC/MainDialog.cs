@@ -6,6 +6,7 @@
     {
         private AddProcessDialog AddProcessForm;
         private SettingsDialog SettingsForm;
+        private AboutDialog AboutForm;
         private LogsDialog LogsForm;
 
         public MainDialog()
@@ -20,6 +21,9 @@
 
             if (SettingsForm != null)
                 SettingsForm.Dispose();
+
+            if (AboutForm != null)
+                AboutForm.Dispose();
 
             if (LogsForm != null)
                 LogsForm.Dispose();
@@ -53,6 +57,11 @@
         private void OnAddButtonClick(object sender, System.EventArgs e)
         {
             HandleDialogRequest(ref AddProcessForm);
+        }
+
+        private void OnAboutButtonClick(object sender, System.EventArgs e)
+        {
+            HandleDialogRequest(ref AboutForm);
         }
 
         private void OnLogButtonClick(object sender, System.EventArgs e)
