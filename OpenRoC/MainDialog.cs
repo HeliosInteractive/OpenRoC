@@ -72,5 +72,10 @@
         {
             HandleDialogRequest(ref LogsForm);
         }
+
+        private void OnContextMenuEditButtonClick(object sender, System.EventArgs e)
+        {
+            HandleDialogRequest(ref EditProcessForm);
+        }
     }
 }

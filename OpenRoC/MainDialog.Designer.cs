@@ -29,10 +29,11 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainDialog));
             this.StatusStrip = new System.Windows.Forms.StatusStrip();
             this.StatusText = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.MenuStrip = new System.Windows.Forms.ToolStrip();
             this.AddButton = new System.Windows.Forms.ToolStripButton();
             this.DeleteButton = new System.Windows.Forms.ToolStripButton();
             this.SettingsButton = new System.Windows.Forms.ToolStripButton();
@@ -41,8 +42,15 @@
             this.ProcessListView = new System.Windows.Forms.ListView();
             this.Process = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Status = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.RightClickContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.ContextMenuAddButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.ContextMenuDeleteButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.ContextMenuSeparator = new System.Windows.Forms.ToolStripSeparator();
+            this.ContextMenuEditButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.ContextMenuDisableButton = new System.Windows.Forms.ToolStripMenuItem();
             this.StatusStrip.SuspendLayout();
-            this.toolStrip1.SuspendLayout();
+            this.MenuStrip.SuspendLayout();
+            this.RightClickContextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // StatusStrip
@@ -60,20 +68,20 @@
             this.StatusText.Size = new System.Drawing.Size(36, 17);
             this.StatusText.Text = "ready";
             // 
-            // toolStrip1
+            // MenuStrip
             // 
-            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.AddButton,
             this.DeleteButton,
             this.SettingsButton,
             this.LogButton,
             this.AboutButton});
-            this.toolStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
-            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(499, 22);
-            this.toolStrip1.TabIndex = 1;
-            this.toolStrip1.Text = "toolStrip1";
+            this.MenuStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
+            this.MenuStrip.Location = new System.Drawing.Point(0, 0);
+            this.MenuStrip.Name = "MenuStrip";
+            this.MenuStrip.Size = new System.Drawing.Size(499, 22);
+            this.MenuStrip.TabIndex = 1;
+            this.MenuStrip.Text = "toolStrip1";
             // 
             // AddButton
             // 
@@ -130,6 +138,7 @@
             this.ProcessListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.Process,
             this.Status});
+            this.ProcessListView.ContextMenuStrip = this.RightClickContextMenuStrip;
             this.ProcessListView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ProcessListView.FullRowSelect = true;
             this.ProcessListView.GridLines = true;
@@ -153,21 +162,65 @@
             this.Status.Text = "Status";
             this.Status.Width = 175;
             // 
+            // RightClickContextMenuStrip
+            // 
+            this.RightClickContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ContextMenuAddButton,
+            this.ContextMenuDeleteButton,
+            this.ContextMenuSeparator,
+            this.ContextMenuEditButton,
+            this.ContextMenuDisableButton});
+            this.RightClickContextMenuStrip.Name = "ContextMenuStrip";
+            this.RightClickContextMenuStrip.ShowImageMargin = false;
+            this.RightClickContextMenuStrip.Size = new System.Drawing.Size(128, 120);
+            // 
+            // ContextMenuAddButton
+            // 
+            this.ContextMenuAddButton.Name = "ContextMenuAddButton";
+            this.ContextMenuAddButton.Size = new System.Drawing.Size(127, 22);
+            this.ContextMenuAddButton.Text = "Add";
+            this.ContextMenuAddButton.Click += new System.EventHandler(this.OnAddButtonClick);
+            // 
+            // ContextMenuDeleteButton
+            // 
+            this.ContextMenuDeleteButton.Name = "ContextMenuDeleteButton";
+            this.ContextMenuDeleteButton.Size = new System.Drawing.Size(127, 22);
+            this.ContextMenuDeleteButton.Text = "Delete";
+            // 
+            // ContextMenuSeparator
+            // 
+            this.ContextMenuSeparator.Name = "ContextMenuSeparator";
+            this.ContextMenuSeparator.Size = new System.Drawing.Size(124, 6);
+            // 
+            // ContextMenuEditButton
+            // 
+            this.ContextMenuEditButton.Name = "ContextMenuEditButton";
+            this.ContextMenuEditButton.Size = new System.Drawing.Size(127, 22);
+            this.ContextMenuEditButton.Text = "Edit";
+            this.ContextMenuEditButton.Click += new System.EventHandler(this.OnContextMenuEditButtonClick);
+            // 
+            // ContextMenuDisableButton
+            // 
+            this.ContextMenuDisableButton.Name = "ContextMenuDisableButton";
+            this.ContextMenuDisableButton.Size = new System.Drawing.Size(127, 22);
+            this.ContextMenuDisableButton.Text = "Disable";
+            // 
             // MainDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(499, 399);
             this.Controls.Add(this.ProcessListView);
-            this.Controls.Add(this.toolStrip1);
+            this.Controls.Add(this.MenuStrip);
             this.Controls.Add(this.StatusStrip);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainDialog";
             this.Text = "OpenRoC";
             this.StatusStrip.ResumeLayout(false);
             this.StatusStrip.PerformLayout();
-            this.toolStrip1.ResumeLayout(false);
-            this.toolStrip1.PerformLayout();
+            this.MenuStrip.ResumeLayout(false);
+            this.MenuStrip.PerformLayout();
+            this.RightClickContextMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -177,7 +230,7 @@
 
         private System.Windows.Forms.StatusStrip StatusStrip;
         private System.Windows.Forms.ToolStripStatusLabel StatusText;
-        private System.Windows.Forms.ToolStrip toolStrip1;
+        private System.Windows.Forms.ToolStrip MenuStrip;
         private System.Windows.Forms.ListView ProcessListView;
         private System.Windows.Forms.ToolStripButton AddButton;
         private System.Windows.Forms.ToolStripButton DeleteButton;
@@ -186,6 +239,12 @@
         private System.Windows.Forms.ToolStripButton AboutButton;
         private System.Windows.Forms.ColumnHeader Process;
         private System.Windows.Forms.ColumnHeader Status;
+        private System.Windows.Forms.ContextMenuStrip RightClickContextMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem ContextMenuAddButton;
+        private System.Windows.Forms.ToolStripMenuItem ContextMenuDeleteButton;
+        private System.Windows.Forms.ToolStripSeparator ContextMenuSeparator;
+        private System.Windows.Forms.ToolStripMenuItem ContextMenuEditButton;
+        private System.Windows.Forms.ToolStripMenuItem ContextMenuDisableButton;
     }
 }
 

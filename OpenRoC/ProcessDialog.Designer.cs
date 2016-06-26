@@ -63,6 +63,8 @@
             this.ProcessOptionCommandLineEnabledControl = new System.Windows.Forms.CheckBox();
             this.ProcessOptionAlwaysOnTopEnabledControl = new System.Windows.Forms.CheckBox();
             this.ProcessOptionScreenshotEnabledControl = new System.Windows.Forms.CheckBox();
+            this.ProcessOptionsSaveButton = new System.Windows.Forms.Button();
+            this.ProcessOptionsCancelButton = new System.Windows.Forms.Button();
             this.MonitorThisProcessGroup.SuspendLayout();
             this.ProcessCrashAssumptionsGroup.SuspendLayout();
             this.ProcessPreStartGroup.SuspendLayout();
@@ -313,6 +315,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.ProcessOptionsCancelButton);
+            this.groupBox1.Controls.Add(this.ProcessOptionsSaveButton);
             this.groupBox1.Controls.Add(this.EnvironmentVariableFormatLabel);
             this.groupBox1.Controls.Add(this.OpenScreenshotDirectoryButton);
             this.groupBox1.Controls.Add(this.ProcessOptionEnvironmentVariablesControl);
@@ -323,7 +327,7 @@
             this.groupBox1.Controls.Add(this.ProcessOptionScreenshotEnabledControl);
             this.groupBox1.Location = new System.Drawing.Point(12, 457);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(460, 183);
+            this.groupBox1.Size = new System.Drawing.Size(460, 212);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Miscellaneous options";
@@ -403,11 +407,31 @@
             this.ProcessOptionScreenshotEnabledControl.Text = "Take a screenshot of the main display on crash";
             this.ProcessOptionScreenshotEnabledControl.UseVisualStyleBackColor = true;
             // 
+            // ProcessOptionsSaveButton
+            // 
+            this.ProcessOptionsSaveButton.Location = new System.Drawing.Point(375, 180);
+            this.ProcessOptionsSaveButton.Name = "ProcessOptionsSaveButton";
+            this.ProcessOptionsSaveButton.Size = new System.Drawing.Size(75, 23);
+            this.ProcessOptionsSaveButton.TabIndex = 11;
+            this.ProcessOptionsSaveButton.Text = "Save";
+            this.ProcessOptionsSaveButton.UseVisualStyleBackColor = true;
+            this.ProcessOptionsSaveButton.Click += new System.EventHandler(this.OnProcessOptionsSaveButtonClick);
+            // 
+            // ProcessOptionsCancelButton
+            // 
+            this.ProcessOptionsCancelButton.Location = new System.Drawing.Point(294, 180);
+            this.ProcessOptionsCancelButton.Name = "ProcessOptionsCancelButton";
+            this.ProcessOptionsCancelButton.Size = new System.Drawing.Size(75, 23);
+            this.ProcessOptionsCancelButton.TabIndex = 12;
+            this.ProcessOptionsCancelButton.Text = "Cancel";
+            this.ProcessOptionsCancelButton.UseVisualStyleBackColor = true;
+            this.ProcessOptionsCancelButton.Click += new System.EventHandler(this.OnProcessOptionsCancelButtonClick);
+            // 
             // ProcessDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(484, 650);
+            this.ClientSize = new System.Drawing.Size(484, 681);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.PostCrashGroup);
             this.Controls.Add(this.ProcessPreStartGroup);
@@ -468,5 +492,7 @@
         private System.Windows.Forms.TextBox ProcessOptionEnvironmentVariablesControl;
         private System.Windows.Forms.Button OpenScreenshotDirectoryButton;
         private System.Windows.Forms.Label EnvironmentVariableFormatLabel;
+        private System.Windows.Forms.Button ProcessOptionsSaveButton;
+        private System.Windows.Forms.Button ProcessOptionsCancelButton;
     }
 }

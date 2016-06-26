@@ -46,5 +46,15 @@
             ProcessOptionEnvironmentVariablesEnabledControl.DataBindings.Add(new Binding("Checked", Options, "EnvironmentVariablesEnabled"));
             ProcessOptionEnvironmentVariablesControl.DataBindings.Add(new Binding("Text", Options, "EnvironmentVariables"));
         }
+
+        private void OnProcessOptionsSaveButtonClick(object sender, System.EventArgs e)
+        {
+            Close();
+        }
+
+        private void OnProcessOptionsCancelButtonClick(object sender, System.EventArgs e)
+        {
+            Close();
+        }
     }
 }
