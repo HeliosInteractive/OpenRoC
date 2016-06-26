@@ -13,7 +13,7 @@
 
         public static bool IsFile(this string self)
         {
-            try { return File.GetAttributes(self).HasFlag(FileAttributes.Normal); }
+            try { return !File.GetAttributes(self).HasFlag(FileAttributes.Directory); }
             catch (Exception) { return false; }
         }
 

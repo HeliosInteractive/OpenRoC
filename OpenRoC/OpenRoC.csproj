@@ -65,6 +65,7 @@
     </Compile>
     <Compile Include="Extensions.cs" />
     <Compile Include="INotifyPropertyChangedAuto.cs" />
+    <Compile Include="MonitorableProcess.cs" />
     <Compile Include="ProcessDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -83,6 +84,7 @@
     <Compile Include="MainDialog.Designer.cs">
       <DependentUpon>MainDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="ProcessManager.cs" />
     <Compile Include="ProcessOptions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -49,6 +49,15 @@
 
         private void OnProcessOptionsSaveButtonClick(object sender, System.EventArgs e)
         {
+            MainDialog main = Owner as MainDialog;
+
+            if (main != null)
+            {
+                // TODO handle Edit windows correctly
+                main.ProcessManager.Add(Options);
+                main.UpdateProcessList();
+            }
+
             Close();
         }
 

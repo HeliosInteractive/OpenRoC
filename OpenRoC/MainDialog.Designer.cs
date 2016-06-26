@@ -101,6 +101,7 @@
             this.DeleteButton.Name = "DeleteButton";
             this.DeleteButton.Size = new System.Drawing.Size(44, 19);
             this.DeleteButton.Text = "Delete";
+            this.DeleteButton.Click += new System.EventHandler(this.OnDeleteButtonClick);
             // 
             // SettingsButton
             // 
@@ -186,6 +187,7 @@
             this.ContextMenuDeleteButton.Name = "ContextMenuDeleteButton";
             this.ContextMenuDeleteButton.Size = new System.Drawing.Size(127, 22);
             this.ContextMenuDeleteButton.Text = "Delete";
+            this.ContextMenuDeleteButton.Click += new System.EventHandler(this.OnContextMenuDeleteButtonClick);
             // 
             // ContextMenuSeparator
             // 
@@ -204,6 +206,7 @@
             this.ContextMenuDisableButton.Name = "ContextMenuDisableButton";
             this.ContextMenuDisableButton.Size = new System.Drawing.Size(127, 22);
             this.ContextMenuDisableButton.Text = "Disable";
+            this.ContextMenuDisableButton.Click += new System.EventHandler(this.OnContextMenuDisableButtonClick);
             // 
             // MainDialog
             // 
