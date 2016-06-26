@@ -4,6 +4,7 @@
 
     public partial class MainDialog : Form
     {
+        private ProcessDialog EditProcessForm;
         private ProcessDialog AddProcessForm;
         private SettingsDialog SettingsForm;
         private AboutDialog AboutForm;
@@ -16,6 +17,9 @@
 
         private void DisposeAddedComponents()
         {
+            if (EditProcessForm != null)
+                EditProcessForm.Dispose();
+
             if (AddProcessForm != null)
                 AddProcessForm.Dispose();
 
