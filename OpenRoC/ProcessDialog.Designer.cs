@@ -1,6 +1,6 @@
 ﻿namespace oroc
 {
-    partial class AddProcessDialog
+    partial class ProcessDialog
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddProcessDialog));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProcessDialog));
             this.MonitorThisProcessGroup = new System.Windows.Forms.GroupBox();
             this.SelectWorkingDirectory = new System.Windows.Forms.Button();
             this.SelectExecutablePath = new System.Windows.Forms.Button();
@@ -403,7 +403,7 @@
             this.ScreenshotEnabledOnCrashCheckBox.Text = "Take a screenshot of the main display on crash";
             this.ScreenshotEnabledOnCrashCheckBox.UseVisualStyleBackColor = true;
             // 
-            // AddProcessDialog
+            // ProcessDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -416,8 +416,8 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.Name = "AddProcessDialog";
-            this.Text = "Add New Process";
+            this.Name = "ProcessDialog";
+            this.Text = "Process Options";
             this.MonitorThisProcessGroup.ResumeLayout(false);
             this.MonitorThisProcessGroup.PerformLayout();
             this.ProcessCrashAssumptionsGroup.ResumeLayout(false);

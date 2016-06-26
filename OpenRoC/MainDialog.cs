@@ -4,7 +4,7 @@
 
     public partial class MainDialog : Form
     {
-        private AddProcessDialog AddProcessForm;
+        private ProcessDialog AddProcessForm;
         private SettingsDialog SettingsForm;
         private AboutDialog AboutForm;
         private LogsDialog LogsForm;

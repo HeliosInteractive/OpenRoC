@@ -63,11 +63,11 @@
     <Compile Include="AboutDialog.Designer.cs">
       <DependentUpon>AboutDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="AddProcessDialog.cs">
+    <Compile Include="ProcessDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AddProcessDialog.Designer.cs">
-      <DependentUpon>AddProcessDialog.cs</DependentUpon>
+    <Compile Include="ProcessDialog.Designer.cs">
+      <DependentUpon>ProcessDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="LogsDialog.cs">
       <SubType>Form</SubType>
@@ -92,8 +92,8 @@
     <EmbeddedResource Include="AboutDialog.resx">
       <DependentUpon>AboutDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AddProcessDialog.resx">
-      <DependentUpon>AddProcessDialog.cs</DependentUpon>
+    <EmbeddedResource Include="ProcessDialog.resx">
+      <DependentUpon>ProcessDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LogsDialog.resx">
       <DependentUpon>LogsDialog.cs</DependentUpon>
