@@ -39,8 +39,8 @@
             this.ProcessCrashAssumptionsGroup = new System.Windows.Forms.GroupBox();
             this.PostCrashWaitEnabledLabel = new System.Windows.Forms.Label();
             this.PostCrashCheckEnabledLabel = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.PostCrashWaitEnabledTextBox = new System.Windows.Forms.TextBox();
+            this.PostCrashCheckEnabledTextBox = new System.Windows.Forms.TextBox();
             this.PostCrashWaitEnabledCheckBox = new System.Windows.Forms.CheckBox();
             this.PostCrashCheckEnabledCheckBox = new System.Windows.Forms.CheckBox();
             this.AssumeCrashIfUnresponsiveCheckBox = new System.Windows.Forms.CheckBox();
@@ -139,8 +139,8 @@
             // 
             this.ProcessCrashAssumptionsGroup.Controls.Add(this.PostCrashWaitEnabledLabel);
             this.ProcessCrashAssumptionsGroup.Controls.Add(this.PostCrashCheckEnabledLabel);
-            this.ProcessCrashAssumptionsGroup.Controls.Add(this.textBox2);
-            this.ProcessCrashAssumptionsGroup.Controls.Add(this.textBox1);
+            this.ProcessCrashAssumptionsGroup.Controls.Add(this.PostCrashWaitEnabledTextBox);
+            this.ProcessCrashAssumptionsGroup.Controls.Add(this.PostCrashCheckEnabledTextBox);
             this.ProcessCrashAssumptionsGroup.Controls.Add(this.PostCrashWaitEnabledCheckBox);
             this.ProcessCrashAssumptionsGroup.Controls.Add(this.PostCrashCheckEnabledCheckBox);
             this.ProcessCrashAssumptionsGroup.Controls.Add(this.AssumeCrashIfUnresponsiveCheckBox);
@@ -170,19 +170,19 @@
             this.PostCrashCheckEnabledLabel.TabIndex = 6;
             this.PostCrashCheckEnabledLabel.Text = "seconds and double check if crashed or hung";
             // 
-            // textBox2
+            // PostCrashWaitEnabledTextBox
             // 
-            this.textBox2.Location = new System.Drawing.Point(57, 91);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(75, 20);
-            this.textBox2.TabIndex = 5;
+            this.PostCrashWaitEnabledTextBox.Location = new System.Drawing.Point(57, 91);
+            this.PostCrashWaitEnabledTextBox.Name = "PostCrashWaitEnabledTextBox";
+            this.PostCrashWaitEnabledTextBox.Size = new System.Drawing.Size(75, 20);
+            this.PostCrashWaitEnabledTextBox.TabIndex = 5;
             // 
-            // textBox1
+            // PostCrashCheckEnabledTextBox
             // 
-            this.textBox1.Location = new System.Drawing.Point(57, 67);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(75, 20);
-            this.textBox1.TabIndex = 3;
+            this.PostCrashCheckEnabledTextBox.Location = new System.Drawing.Point(57, 67);
+            this.PostCrashCheckEnabledTextBox.Name = "PostCrashCheckEnabledTextBox";
+            this.PostCrashCheckEnabledTextBox.Size = new System.Drawing.Size(75, 20);
+            this.PostCrashCheckEnabledTextBox.TabIndex = 3;
             // 
             // PostCrashWaitEnabledCheckBox
             // 
@@ -446,8 +446,8 @@
         private System.Windows.Forms.CheckBox AssumeCrashIfUnresponsiveCheckBox;
         private System.Windows.Forms.CheckBox PostCrashCheckEnabledCheckBox;
         private System.Windows.Forms.CheckBox PostCrashWaitEnabledCheckBox;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox PostCrashCheckEnabledTextBox;
+        private System.Windows.Forms.TextBox PostCrashWaitEnabledTextBox;
         private System.Windows.Forms.GroupBox ProcessPreStartGroup;
         private System.Windows.Forms.CheckBox ProcessPreStartCommandEnabledCheckBox;
         private System.Windows.Forms.Button ProcessPreStartCommandButton;
