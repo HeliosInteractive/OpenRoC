@@ -29,30 +29,28 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AboutDialog));
-            this.AboutBrowser = new System.Windows.Forms.WebBrowser();
+            this.AboutRichTextBox = new System.Windows.Forms.RichTextBox();
             this.SuspendLayout();
             // 
-            // AboutBrowser
+            // AboutRichTextBox
             // 
-            this.AboutBrowser.AllowWebBrowserDrop = false;
-            this.AboutBrowser.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.AboutBrowser.IsWebBrowserContextMenuEnabled = false;
-            this.AboutBrowser.Location = new System.Drawing.Point(0, 0);
-            this.AboutBrowser.MinimumSize = new System.Drawing.Size(20, 20);
-            this.AboutBrowser.Name = "AboutBrowser";
-            this.AboutBrowser.ScriptErrorsSuppressed = true;
-            this.AboutBrowser.ScrollBarsEnabled = false;
-            this.AboutBrowser.Size = new System.Drawing.Size(370, 241);
-            this.AboutBrowser.TabIndex = 2;
-            this.AboutBrowser.WebBrowserShortcutsEnabled = false;
-            this.AboutBrowser.Navigating += new System.Windows.Forms.WebBrowserNavigatingEventHandler(this.OnAboutBrowserNavigating);
+            this.AboutRichTextBox.BackColor = System.Drawing.SystemColors.Control;
+            this.AboutRichTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.AboutRichTextBox.Location = new System.Drawing.Point(12, 12);
+            this.AboutRichTextBox.Name = "AboutRichTextBox";
+            this.AboutRichTextBox.ReadOnly = true;
+            this.AboutRichTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
+            this.AboutRichTextBox.Size = new System.Drawing.Size(264, 172);
+            this.AboutRichTextBox.TabIndex = 0;
+            this.AboutRichTextBox.Text = resources.GetString("AboutRichTextBox.Text");
+            this.AboutRichTextBox.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.OnAboutRichTextBoxLinkClicked);
             // 
             // AboutDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(370, 241);
-            this.Controls.Add(this.AboutBrowser);
+            this.ClientSize = new System.Drawing.Size(288, 196);
+            this.Controls.Add(this.AboutRichTextBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
@@ -64,6 +62,6 @@
 
         #endregion
 
-        private System.Windows.Forms.WebBrowser AboutBrowser;
+        private System.Windows.Forms.RichTextBox AboutRichTextBox;
     }
 }

@@ -59,23 +59,5 @@ namespace oroc.Properties {
                 resourceCulture = value;
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;pre style=&quot;word-wrap: break-word; font-size:12px&quot;&gt;
-        ///Copyright 2015 - Helios Interactive
-        ///301 8th St. Suite 250, San Francisco, CA 94103
-        ///&lt;a href=&quot;https://github.com/HeliosInteractive/Phoenix&quot;&gt;https://github.com/HeliosInteractive/Phoenix&lt;/a&gt;
-        ///
-        ///Phoenix is licensed under the MIT license (MIT). Phoenix uses a number of third-party dependencies:
-        ///
-        ///&lt;a href=&quot;http://openhardwaremonitor.org/&quot;&gt;OHM&lt;/a&gt; is licensed under MPL v2.0
-        ///&lt;a href=&quot;https://github.com/ppatierno/m2mqtt&quot;&gt;m2mqtt&lt;/a&gt; is licensed under EPL v1.0
-        ///&lt; [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string about {
-            get {
-                return ResourceManager.GetString("about", resourceCulture);
-            }
-        }
     }
 }

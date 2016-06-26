@@ -129,7 +129,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="phoenix.ico" />
-    <None Include="Resources\about.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
