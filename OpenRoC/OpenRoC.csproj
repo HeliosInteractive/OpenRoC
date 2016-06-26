@@ -63,6 +63,7 @@
     <Compile Include="AboutDialog.Designer.cs">
       <DependentUpon>AboutDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Extensions.cs" />
     <Compile Include="INotifyPropertyChangedAuto.cs" />
     <Compile Include="ProcessDialog.cs">
       <SubType>Form</SubType>

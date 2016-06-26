@@ -1,5 +1,8 @@
 ﻿namespace oroc
 {
+    using System.Linq;
+    using System.Collections.Generic;
+
     public class ProcessOptions : INotifyPropertyChangedAuto
     {
         #region private data holders
@@ -22,9 +25,14 @@
         private bool commandLineEnabled;
         private string commandLine;
         private bool environmentVariablesEnabled;
-        private string environmentVariables;
+        private readonly Dictionary<string, string> environmentVariables;
 
         #endregion
+
+        public ProcessOptions()
+        {
+            environmentVariables = new Dictionary<string, string>();
+        }
 
         #region DataBind accessible properties 
 
@@ -33,7 +41,7 @@
             get { return path; }
             set
             {
-                if (path == value)
+                if (path == value || !value.IsExecutable())
                     return;
 
                 path = value;
@@ -46,7 +54,7 @@
             get { return workingDirectory; }
             set
             {
-                if (workingDirectory == value)
+                if (workingDirectory == value || !value.IsDirectory())
                     return;
 
                 workingDirectory = value;
@@ -150,7 +158,7 @@
             get { return preLaunchScriptPath; }
             set
             {
-                if (preLaunchScriptPath == value)
+                if (preLaunchScriptPath == value || !value.IsFile())
                     return;
 
                 preLaunchScriptPath = value;
@@ -189,7 +197,7 @@
             get { return postCrashScriptPath; }
             set
             {
-                if (postCrashScriptPath == value)
+                if (postCrashScriptPath == value || !value.IsFile())
                     return;
 
                 postCrashScriptPath = value;
@@ -264,15 +272,38 @@
 
         public string EnvironmentVariables
         {
-            get { return environmentVariables; }
+            get
+            {
+                if (environmentVariables.Count == 0)
+                    return string.Empty;
+
+                return string.Join(";", environmentVariables
+                    .Select(x => string.Format("{0}={1}", x.Key, x.Value))
+                    .ToArray());
+            }
+
             set
             {
-                if (environmentVariables == value)
+                if (string.IsNullOrWhiteSpace(value))
                     return;
 
-                environmentVariables = value;
+                if (environmentVariables.Count > 0)
+                    environmentVariables.Clear();
+
+                value
+                    .Split(';')
+                    .Where(x => x.Contains('='))
+                    .Select(x => x.Split('='))
+                    .ToList()
+                    .ForEach(pair => environmentVariables.Add(pair.First(), pair.Last()));
+
                 NotifyPropertyChanged();
             }
+        }
+
+        public Dictionary<string, string> EnvironmentVariablesDictionary
+        {
+            get { return environmentVariables; }
         }
 
         #endregion
