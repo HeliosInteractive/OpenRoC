@@ -34,35 +34,35 @@
             this.SelectExecutablePath = new System.Windows.Forms.Button();
             this.ProcessWorkingDirectoryLabel = new System.Windows.Forms.Label();
             this.ProcessExecutablePathLabel = new System.Windows.Forms.Label();
-            this.ProcessWorkingDirectoryTextBox = new System.Windows.Forms.TextBox();
-            this.ProcessExecutablePathTextBox = new System.Windows.Forms.TextBox();
+            this.ProcessOptionWorkingDirectoryControl = new System.Windows.Forms.TextBox();
+            this.ProcessOptionPathControl = new System.Windows.Forms.TextBox();
             this.ProcessCrashAssumptionsGroup = new System.Windows.Forms.GroupBox();
             this.PostCrashWaitEnabledLabel = new System.Windows.Forms.Label();
             this.PostCrashCheckEnabledLabel = new System.Windows.Forms.Label();
-            this.PostCrashWaitEnabledTextBox = new System.Windows.Forms.TextBox();
-            this.PostCrashCheckEnabledTextBox = new System.Windows.Forms.TextBox();
-            this.PostCrashWaitEnabledCheckBox = new System.Windows.Forms.CheckBox();
-            this.PostCrashCheckEnabledCheckBox = new System.Windows.Forms.CheckBox();
-            this.AssumeCrashIfUnresponsiveCheckBox = new System.Windows.Forms.CheckBox();
-            this.AssumeCrashIfNotRunningCheckBox = new System.Windows.Forms.CheckBox();
+            this.ProcessOptionGracePeriodDurationControl = new System.Windows.Forms.TextBox();
+            this.ProcessOptionDoubleCheckDurationControl = new System.Windows.Forms.TextBox();
+            this.ProcessOptionGracePeriodEnabledControl = new System.Windows.Forms.CheckBox();
+            this.ProcessOptionDoubleCheckEnabledControl = new System.Windows.Forms.CheckBox();
+            this.ProcessOptionCrashedIfUnresponsiveControl = new System.Windows.Forms.CheckBox();
+            this.ProcessOptionCrashedIfNotRunningControl = new System.Windows.Forms.CheckBox();
             this.ProcessPreStartGroup = new System.Windows.Forms.GroupBox();
             this.ProcessPreStartCommandButton = new System.Windows.Forms.Button();
-            this.ProcessPreStartCommandTextBox = new System.Windows.Forms.TextBox();
-            this.ProcessPreStartCommandEnabledCheckBox = new System.Windows.Forms.CheckBox();
+            this.ProcessOptionPreLaunchScriptPathControl = new System.Windows.Forms.TextBox();
+            this.ProcessOptionPreLaunchScriptEnabledControl = new System.Windows.Forms.CheckBox();
             this.PostCrashGroup = new System.Windows.Forms.GroupBox();
-            this.ProcessPostCrashCleanupEnabledCheckBox = new System.Windows.Forms.CheckBox();
+            this.ProcessOptionAggressiveCleanupEnabledControl = new System.Windows.Forms.CheckBox();
             this.ProcessPostCrashCommandButton = new System.Windows.Forms.Button();
-            this.ProcessPostCrashCommandTextBox = new System.Windows.Forms.TextBox();
-            this.ProcessPostCrashCommandEnabledCheckBox = new System.Windows.Forms.CheckBox();
+            this.ProcessOptionPostCrashScriptPathControl = new System.Windows.Forms.TextBox();
+            this.ProcessOptionPostCrashScriptEnabledControl = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.EnvironmentVariableFormatLabel = new System.Windows.Forms.Label();
             this.OpenScreenshotDirectoryButton = new System.Windows.Forms.Button();
-            this.MergeVariablesTextBox = new System.Windows.Forms.TextBox();
-            this.MergeVariablesCheckBox = new System.Windows.Forms.CheckBox();
-            this.PassCommandLineTextBox = new System.Windows.Forms.TextBox();
-            this.PassCommandLineCheckBox = new System.Windows.Forms.CheckBox();
-            this.KeepAlwaysOnTopCheckBox = new System.Windows.Forms.CheckBox();
-            this.ScreenshotEnabledOnCrashCheckBox = new System.Windows.Forms.CheckBox();
+            this.ProcessOptionEnvironmentVariablesControl = new System.Windows.Forms.TextBox();
+            this.ProcessOptionEnvironmentVariablesEnabledControl = new System.Windows.Forms.CheckBox();
+            this.ProcessOptionCommandLineControl = new System.Windows.Forms.TextBox();
+            this.ProcessOptionCommandLineEnabledControl = new System.Windows.Forms.CheckBox();
+            this.ProcessOptionAlwaysOnTopEnabledControl = new System.Windows.Forms.CheckBox();
+            this.ProcessOptionScreenshotEnabledControl = new System.Windows.Forms.CheckBox();
             this.MonitorThisProcessGroup.SuspendLayout();
             this.ProcessCrashAssumptionsGroup.SuspendLayout();
             this.ProcessPreStartGroup.SuspendLayout();
@@ -76,8 +76,8 @@
             this.MonitorThisProcessGroup.Controls.Add(this.SelectExecutablePath);
             this.MonitorThisProcessGroup.Controls.Add(this.ProcessWorkingDirectoryLabel);
             this.MonitorThisProcessGroup.Controls.Add(this.ProcessExecutablePathLabel);
-            this.MonitorThisProcessGroup.Controls.Add(this.ProcessWorkingDirectoryTextBox);
-            this.MonitorThisProcessGroup.Controls.Add(this.ProcessExecutablePathTextBox);
+            this.MonitorThisProcessGroup.Controls.Add(this.ProcessOptionWorkingDirectoryControl);
+            this.MonitorThisProcessGroup.Controls.Add(this.ProcessOptionPathControl);
             this.MonitorThisProcessGroup.Location = new System.Drawing.Point(12, 6);
             this.MonitorThisProcessGroup.Name = "MonitorThisProcessGroup";
             this.MonitorThisProcessGroup.Size = new System.Drawing.Size(460, 116);
@@ -121,30 +121,30 @@
             this.ProcessExecutablePathLabel.TabIndex = 2;
             this.ProcessExecutablePathLabel.Text = "Executable Path";
             // 
-            // ProcessWorkingDirectoryTextBox
+            // ProcessOptionWorkingDirectoryControl
             // 
-            this.ProcessWorkingDirectoryTextBox.Location = new System.Drawing.Point(102, 50);
-            this.ProcessWorkingDirectoryTextBox.Name = "ProcessWorkingDirectoryTextBox";
-            this.ProcessWorkingDirectoryTextBox.Size = new System.Drawing.Size(349, 20);
-            this.ProcessWorkingDirectoryTextBox.TabIndex = 1;
+            this.ProcessOptionWorkingDirectoryControl.Location = new System.Drawing.Point(102, 50);
+            this.ProcessOptionWorkingDirectoryControl.Name = "ProcessOptionWorkingDirectoryControl";
+            this.ProcessOptionWorkingDirectoryControl.Size = new System.Drawing.Size(349, 20);
+            this.ProcessOptionWorkingDirectoryControl.TabIndex = 1;
             // 
-            // ProcessExecutablePathTextBox
+            // ProcessOptionPathControl
             // 
-            this.ProcessExecutablePathTextBox.Location = new System.Drawing.Point(102, 20);
-            this.ProcessExecutablePathTextBox.Name = "ProcessExecutablePathTextBox";
-            this.ProcessExecutablePathTextBox.Size = new System.Drawing.Size(349, 20);
-            this.ProcessExecutablePathTextBox.TabIndex = 0;
+            this.ProcessOptionPathControl.Location = new System.Drawing.Point(102, 20);
+            this.ProcessOptionPathControl.Name = "ProcessOptionPathControl";
+            this.ProcessOptionPathControl.Size = new System.Drawing.Size(349, 20);
+            this.ProcessOptionPathControl.TabIndex = 0;
             // 
             // ProcessCrashAssumptionsGroup
             // 
             this.ProcessCrashAssumptionsGroup.Controls.Add(this.PostCrashWaitEnabledLabel);
             this.ProcessCrashAssumptionsGroup.Controls.Add(this.PostCrashCheckEnabledLabel);
-            this.ProcessCrashAssumptionsGroup.Controls.Add(this.PostCrashWaitEnabledTextBox);
-            this.ProcessCrashAssumptionsGroup.Controls.Add(this.PostCrashCheckEnabledTextBox);
-            this.ProcessCrashAssumptionsGroup.Controls.Add(this.PostCrashWaitEnabledCheckBox);
-            this.ProcessCrashAssumptionsGroup.Controls.Add(this.PostCrashCheckEnabledCheckBox);
-            this.ProcessCrashAssumptionsGroup.Controls.Add(this.AssumeCrashIfUnresponsiveCheckBox);
-            this.ProcessCrashAssumptionsGroup.Controls.Add(this.AssumeCrashIfNotRunningCheckBox);
+            this.ProcessCrashAssumptionsGroup.Controls.Add(this.ProcessOptionGracePeriodDurationControl);
+            this.ProcessCrashAssumptionsGroup.Controls.Add(this.ProcessOptionDoubleCheckDurationControl);
+            this.ProcessCrashAssumptionsGroup.Controls.Add(this.ProcessOptionGracePeriodEnabledControl);
+            this.ProcessCrashAssumptionsGroup.Controls.Add(this.ProcessOptionDoubleCheckEnabledControl);
+            this.ProcessCrashAssumptionsGroup.Controls.Add(this.ProcessOptionCrashedIfUnresponsiveControl);
+            this.ProcessCrashAssumptionsGroup.Controls.Add(this.ProcessOptionCrashedIfNotRunningControl);
             this.ProcessCrashAssumptionsGroup.Location = new System.Drawing.Point(12, 127);
             this.ProcessCrashAssumptionsGroup.Name = "ProcessCrashAssumptionsGroup";
             this.ProcessCrashAssumptionsGroup.Size = new System.Drawing.Size(460, 126);
@@ -170,65 +170,65 @@
             this.PostCrashCheckEnabledLabel.TabIndex = 6;
             this.PostCrashCheckEnabledLabel.Text = "seconds and double check if crashed or hung";
             // 
-            // PostCrashWaitEnabledTextBox
+            // ProcessOptionGracePeriodDurationControl
             // 
-            this.PostCrashWaitEnabledTextBox.Location = new System.Drawing.Point(57, 91);
-            this.PostCrashWaitEnabledTextBox.Name = "PostCrashWaitEnabledTextBox";
-            this.PostCrashWaitEnabledTextBox.Size = new System.Drawing.Size(75, 20);
-            this.PostCrashWaitEnabledTextBox.TabIndex = 5;
+            this.ProcessOptionGracePeriodDurationControl.Location = new System.Drawing.Point(57, 91);
+            this.ProcessOptionGracePeriodDurationControl.Name = "ProcessOptionGracePeriodDurationControl";
+            this.ProcessOptionGracePeriodDurationControl.Size = new System.Drawing.Size(75, 20);
+            this.ProcessOptionGracePeriodDurationControl.TabIndex = 5;
             // 
-            // PostCrashCheckEnabledTextBox
+            // ProcessOptionDoubleCheckDurationControl
             // 
-            this.PostCrashCheckEnabledTextBox.Location = new System.Drawing.Point(57, 67);
-            this.PostCrashCheckEnabledTextBox.Name = "PostCrashCheckEnabledTextBox";
-            this.PostCrashCheckEnabledTextBox.Size = new System.Drawing.Size(75, 20);
-            this.PostCrashCheckEnabledTextBox.TabIndex = 3;
+            this.ProcessOptionDoubleCheckDurationControl.Location = new System.Drawing.Point(57, 67);
+            this.ProcessOptionDoubleCheckDurationControl.Name = "ProcessOptionDoubleCheckDurationControl";
+            this.ProcessOptionDoubleCheckDurationControl.Size = new System.Drawing.Size(75, 20);
+            this.ProcessOptionDoubleCheckDurationControl.TabIndex = 3;
             // 
-            // PostCrashWaitEnabledCheckBox
+            // ProcessOptionGracePeriodEnabledControl
             // 
-            this.PostCrashWaitEnabledCheckBox.AutoSize = true;
-            this.PostCrashWaitEnabledCheckBox.Location = new System.Drawing.Point(10, 92);
-            this.PostCrashWaitEnabledCheckBox.Name = "PostCrashWaitEnabledCheckBox";
-            this.PostCrashWaitEnabledCheckBox.Size = new System.Drawing.Size(48, 17);
-            this.PostCrashWaitEnabledCheckBox.TabIndex = 4;
-            this.PostCrashWaitEnabledCheckBox.Text = "Wait";
-            this.PostCrashWaitEnabledCheckBox.UseVisualStyleBackColor = true;
+            this.ProcessOptionGracePeriodEnabledControl.AutoSize = true;
+            this.ProcessOptionGracePeriodEnabledControl.Location = new System.Drawing.Point(10, 92);
+            this.ProcessOptionGracePeriodEnabledControl.Name = "ProcessOptionGracePeriodEnabledControl";
+            this.ProcessOptionGracePeriodEnabledControl.Size = new System.Drawing.Size(48, 17);
+            this.ProcessOptionGracePeriodEnabledControl.TabIndex = 4;
+            this.ProcessOptionGracePeriodEnabledControl.Text = "Wait";
+            this.ProcessOptionGracePeriodEnabledControl.UseVisualStyleBackColor = true;
             // 
-            // PostCrashCheckEnabledCheckBox
+            // ProcessOptionDoubleCheckEnabledControl
             // 
-            this.PostCrashCheckEnabledCheckBox.AutoSize = true;
-            this.PostCrashCheckEnabledCheckBox.Location = new System.Drawing.Point(10, 69);
-            this.PostCrashCheckEnabledCheckBox.Name = "PostCrashCheckEnabledCheckBox";
-            this.PostCrashCheckEnabledCheckBox.Size = new System.Drawing.Size(48, 17);
-            this.PostCrashCheckEnabledCheckBox.TabIndex = 2;
-            this.PostCrashCheckEnabledCheckBox.Text = "Wait";
-            this.PostCrashCheckEnabledCheckBox.UseVisualStyleBackColor = true;
+            this.ProcessOptionDoubleCheckEnabledControl.AutoSize = true;
+            this.ProcessOptionDoubleCheckEnabledControl.Location = new System.Drawing.Point(10, 69);
+            this.ProcessOptionDoubleCheckEnabledControl.Name = "ProcessOptionDoubleCheckEnabledControl";
+            this.ProcessOptionDoubleCheckEnabledControl.Size = new System.Drawing.Size(48, 17);
+            this.ProcessOptionDoubleCheckEnabledControl.TabIndex = 2;
+            this.ProcessOptionDoubleCheckEnabledControl.Text = "Wait";
+            this.ProcessOptionDoubleCheckEnabledControl.UseVisualStyleBackColor = true;
             // 
-            // AssumeCrashIfUnresponsiveCheckBox
+            // ProcessOptionCrashedIfUnresponsiveControl
             // 
-            this.AssumeCrashIfUnresponsiveCheckBox.AutoSize = true;
-            this.AssumeCrashIfUnresponsiveCheckBox.Location = new System.Drawing.Point(10, 46);
-            this.AssumeCrashIfUnresponsiveCheckBox.Name = "AssumeCrashIfUnresponsiveCheckBox";
-            this.AssumeCrashIfUnresponsiveCheckBox.Size = new System.Drawing.Size(332, 17);
-            this.AssumeCrashIfUnresponsiveCheckBox.TabIndex = 1;
-            this.AssumeCrashIfUnresponsiveCheckBox.Text = "It\'s not responding to Windows messages (unresponsive window)";
-            this.AssumeCrashIfUnresponsiveCheckBox.UseVisualStyleBackColor = true;
+            this.ProcessOptionCrashedIfUnresponsiveControl.AutoSize = true;
+            this.ProcessOptionCrashedIfUnresponsiveControl.Location = new System.Drawing.Point(10, 46);
+            this.ProcessOptionCrashedIfUnresponsiveControl.Name = "ProcessOptionCrashedIfUnresponsiveControl";
+            this.ProcessOptionCrashedIfUnresponsiveControl.Size = new System.Drawing.Size(332, 17);
+            this.ProcessOptionCrashedIfUnresponsiveControl.TabIndex = 1;
+            this.ProcessOptionCrashedIfUnresponsiveControl.Text = "It\'s not responding to Windows messages (unresponsive window)";
+            this.ProcessOptionCrashedIfUnresponsiveControl.UseVisualStyleBackColor = true;
             // 
-            // AssumeCrashIfNotRunningCheckBox
+            // ProcessOptionCrashedIfNotRunningControl
             // 
-            this.AssumeCrashIfNotRunningCheckBox.AutoSize = true;
-            this.AssumeCrashIfNotRunningCheckBox.Location = new System.Drawing.Point(10, 23);
-            this.AssumeCrashIfNotRunningCheckBox.Name = "AssumeCrashIfNotRunningCheckBox";
-            this.AssumeCrashIfNotRunningCheckBox.Size = new System.Drawing.Size(232, 17);
-            this.AssumeCrashIfNotRunningCheckBox.TabIndex = 0;
-            this.AssumeCrashIfNotRunningCheckBox.Text = "It\'s not running (e.g after a Computer restart)";
-            this.AssumeCrashIfNotRunningCheckBox.UseVisualStyleBackColor = true;
+            this.ProcessOptionCrashedIfNotRunningControl.AutoSize = true;
+            this.ProcessOptionCrashedIfNotRunningControl.Location = new System.Drawing.Point(10, 23);
+            this.ProcessOptionCrashedIfNotRunningControl.Name = "ProcessOptionCrashedIfNotRunningControl";
+            this.ProcessOptionCrashedIfNotRunningControl.Size = new System.Drawing.Size(232, 17);
+            this.ProcessOptionCrashedIfNotRunningControl.TabIndex = 0;
+            this.ProcessOptionCrashedIfNotRunningControl.Text = "It\'s not running (e.g after a Computer restart)";
+            this.ProcessOptionCrashedIfNotRunningControl.UseVisualStyleBackColor = true;
             // 
             // ProcessPreStartGroup
             // 
             this.ProcessPreStartGroup.Controls.Add(this.ProcessPreStartCommandButton);
-            this.ProcessPreStartGroup.Controls.Add(this.ProcessPreStartCommandTextBox);
-            this.ProcessPreStartGroup.Controls.Add(this.ProcessPreStartCommandEnabledCheckBox);
+            this.ProcessPreStartGroup.Controls.Add(this.ProcessOptionPreLaunchScriptPathControl);
+            this.ProcessPreStartGroup.Controls.Add(this.ProcessOptionPreLaunchScriptEnabledControl);
             this.ProcessPreStartGroup.Location = new System.Drawing.Point(12, 258);
             this.ProcessPreStartGroup.Name = "ProcessPreStartGroup";
             this.ProcessPreStartGroup.Size = new System.Drawing.Size(460, 82);
@@ -245,29 +245,29 @@
             this.ProcessPreStartCommandButton.Text = "...";
             this.ProcessPreStartCommandButton.UseVisualStyleBackColor = true;
             // 
-            // ProcessPreStartCommandTextBox
+            // ProcessOptionPreLaunchScriptPathControl
             // 
-            this.ProcessPreStartCommandTextBox.Location = new System.Drawing.Point(10, 47);
-            this.ProcessPreStartCommandTextBox.Name = "ProcessPreStartCommandTextBox";
-            this.ProcessPreStartCommandTextBox.Size = new System.Drawing.Size(399, 20);
-            this.ProcessPreStartCommandTextBox.TabIndex = 1;
+            this.ProcessOptionPreLaunchScriptPathControl.Location = new System.Drawing.Point(10, 47);
+            this.ProcessOptionPreLaunchScriptPathControl.Name = "ProcessOptionPreLaunchScriptPathControl";
+            this.ProcessOptionPreLaunchScriptPathControl.Size = new System.Drawing.Size(399, 20);
+            this.ProcessOptionPreLaunchScriptPathControl.TabIndex = 1;
             // 
-            // ProcessPreStartCommandEnabledCheckBox
+            // ProcessOptionPreLaunchScriptEnabledControl
             // 
-            this.ProcessPreStartCommandEnabledCheckBox.AutoSize = true;
-            this.ProcessPreStartCommandEnabledCheckBox.Location = new System.Drawing.Point(10, 23);
-            this.ProcessPreStartCommandEnabledCheckBox.Name = "ProcessPreStartCommandEnabledCheckBox";
-            this.ProcessPreStartCommandEnabledCheckBox.Size = new System.Drawing.Size(200, 17);
-            this.ProcessPreStartCommandEnabledCheckBox.TabIndex = 0;
-            this.ProcessPreStartCommandEnabledCheckBox.Text = "Execute a command (ShellExecute) :";
-            this.ProcessPreStartCommandEnabledCheckBox.UseVisualStyleBackColor = true;
+            this.ProcessOptionPreLaunchScriptEnabledControl.AutoSize = true;
+            this.ProcessOptionPreLaunchScriptEnabledControl.Location = new System.Drawing.Point(10, 23);
+            this.ProcessOptionPreLaunchScriptEnabledControl.Name = "ProcessOptionPreLaunchScriptEnabledControl";
+            this.ProcessOptionPreLaunchScriptEnabledControl.Size = new System.Drawing.Size(200, 17);
+            this.ProcessOptionPreLaunchScriptEnabledControl.TabIndex = 0;
+            this.ProcessOptionPreLaunchScriptEnabledControl.Text = "Execute a command (ShellExecute) :";
+            this.ProcessOptionPreLaunchScriptEnabledControl.UseVisualStyleBackColor = true;
             // 
             // PostCrashGroup
             // 
-            this.PostCrashGroup.Controls.Add(this.ProcessPostCrashCleanupEnabledCheckBox);
+            this.PostCrashGroup.Controls.Add(this.ProcessOptionAggressiveCleanupEnabledControl);
             this.PostCrashGroup.Controls.Add(this.ProcessPostCrashCommandButton);
-            this.PostCrashGroup.Controls.Add(this.ProcessPostCrashCommandTextBox);
-            this.PostCrashGroup.Controls.Add(this.ProcessPostCrashCommandEnabledCheckBox);
+            this.PostCrashGroup.Controls.Add(this.ProcessOptionPostCrashScriptPathControl);
+            this.PostCrashGroup.Controls.Add(this.ProcessOptionPostCrashScriptEnabledControl);
             this.PostCrashGroup.Location = new System.Drawing.Point(12, 346);
             this.PostCrashGroup.Name = "PostCrashGroup";
             this.PostCrashGroup.Size = new System.Drawing.Size(460, 105);
@@ -275,15 +275,15 @@
             this.PostCrashGroup.TabStop = false;
             this.PostCrashGroup.Text = "After process stops (crashes or hangs)";
             // 
-            // ProcessPostCrashCleanupEnabledCheckBox
+            // ProcessOptionAggressiveCleanupEnabledControl
             // 
-            this.ProcessPostCrashCleanupEnabledCheckBox.AutoSize = true;
-            this.ProcessPostCrashCleanupEnabledCheckBox.Location = new System.Drawing.Point(10, 23);
-            this.ProcessPostCrashCleanupEnabledCheckBox.Name = "ProcessPostCrashCleanupEnabledCheckBox";
-            this.ProcessPostCrashCleanupEnabledCheckBox.Size = new System.Drawing.Size(265, 17);
-            this.ProcessPostCrashCleanupEnabledCheckBox.TabIndex = 0;
-            this.ProcessPostCrashCleanupEnabledCheckBox.Text = "Perform a cleanup (aggressively close the process)";
-            this.ProcessPostCrashCleanupEnabledCheckBox.UseVisualStyleBackColor = true;
+            this.ProcessOptionAggressiveCleanupEnabledControl.AutoSize = true;
+            this.ProcessOptionAggressiveCleanupEnabledControl.Location = new System.Drawing.Point(10, 23);
+            this.ProcessOptionAggressiveCleanupEnabledControl.Name = "ProcessOptionAggressiveCleanupEnabledControl";
+            this.ProcessOptionAggressiveCleanupEnabledControl.Size = new System.Drawing.Size(265, 17);
+            this.ProcessOptionAggressiveCleanupEnabledControl.TabIndex = 0;
+            this.ProcessOptionAggressiveCleanupEnabledControl.Text = "Perform a cleanup (aggressively close the process)";
+            this.ProcessOptionAggressiveCleanupEnabledControl.UseVisualStyleBackColor = true;
             // 
             // ProcessPostCrashCommandButton
             // 
@@ -294,33 +294,33 @@
             this.ProcessPostCrashCommandButton.Text = "...";
             this.ProcessPostCrashCommandButton.UseVisualStyleBackColor = true;
             // 
-            // ProcessPostCrashCommandTextBox
+            // ProcessOptionPostCrashScriptPathControl
             // 
-            this.ProcessPostCrashCommandTextBox.Location = new System.Drawing.Point(10, 70);
-            this.ProcessPostCrashCommandTextBox.Name = "ProcessPostCrashCommandTextBox";
-            this.ProcessPostCrashCommandTextBox.Size = new System.Drawing.Size(399, 20);
-            this.ProcessPostCrashCommandTextBox.TabIndex = 2;
+            this.ProcessOptionPostCrashScriptPathControl.Location = new System.Drawing.Point(10, 70);
+            this.ProcessOptionPostCrashScriptPathControl.Name = "ProcessOptionPostCrashScriptPathControl";
+            this.ProcessOptionPostCrashScriptPathControl.Size = new System.Drawing.Size(399, 20);
+            this.ProcessOptionPostCrashScriptPathControl.TabIndex = 2;
             // 
-            // ProcessPostCrashCommandEnabledCheckBox
+            // ProcessOptionPostCrashScriptEnabledControl
             // 
-            this.ProcessPostCrashCommandEnabledCheckBox.AutoSize = true;
-            this.ProcessPostCrashCommandEnabledCheckBox.Location = new System.Drawing.Point(10, 46);
-            this.ProcessPostCrashCommandEnabledCheckBox.Name = "ProcessPostCrashCommandEnabledCheckBox";
-            this.ProcessPostCrashCommandEnabledCheckBox.Size = new System.Drawing.Size(200, 17);
-            this.ProcessPostCrashCommandEnabledCheckBox.TabIndex = 1;
-            this.ProcessPostCrashCommandEnabledCheckBox.Text = "Execute a command (ShellExecute) :";
-            this.ProcessPostCrashCommandEnabledCheckBox.UseVisualStyleBackColor = true;
+            this.ProcessOptionPostCrashScriptEnabledControl.AutoSize = true;
+            this.ProcessOptionPostCrashScriptEnabledControl.Location = new System.Drawing.Point(10, 46);
+            this.ProcessOptionPostCrashScriptEnabledControl.Name = "ProcessOptionPostCrashScriptEnabledControl";
+            this.ProcessOptionPostCrashScriptEnabledControl.Size = new System.Drawing.Size(200, 17);
+            this.ProcessOptionPostCrashScriptEnabledControl.TabIndex = 1;
+            this.ProcessOptionPostCrashScriptEnabledControl.Text = "Execute a command (ShellExecute) :";
+            this.ProcessOptionPostCrashScriptEnabledControl.UseVisualStyleBackColor = true;
             // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.EnvironmentVariableFormatLabel);
             this.groupBox1.Controls.Add(this.OpenScreenshotDirectoryButton);
-            this.groupBox1.Controls.Add(this.MergeVariablesTextBox);
-            this.groupBox1.Controls.Add(this.MergeVariablesCheckBox);
-            this.groupBox1.Controls.Add(this.PassCommandLineTextBox);
-            this.groupBox1.Controls.Add(this.PassCommandLineCheckBox);
-            this.groupBox1.Controls.Add(this.KeepAlwaysOnTopCheckBox);
-            this.groupBox1.Controls.Add(this.ScreenshotEnabledOnCrashCheckBox);
+            this.groupBox1.Controls.Add(this.ProcessOptionEnvironmentVariablesControl);
+            this.groupBox1.Controls.Add(this.ProcessOptionEnvironmentVariablesEnabledControl);
+            this.groupBox1.Controls.Add(this.ProcessOptionCommandLineControl);
+            this.groupBox1.Controls.Add(this.ProcessOptionCommandLineEnabledControl);
+            this.groupBox1.Controls.Add(this.ProcessOptionAlwaysOnTopEnabledControl);
+            this.groupBox1.Controls.Add(this.ProcessOptionScreenshotEnabledControl);
             this.groupBox1.Location = new System.Drawing.Point(12, 457);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(460, 183);
@@ -347,61 +347,61 @@
             this.OpenScreenshotDirectoryButton.Text = "Open Screenshot Directory";
             this.OpenScreenshotDirectoryButton.UseVisualStyleBackColor = true;
             // 
-            // MergeVariablesTextBox
+            // ProcessOptionEnvironmentVariablesControl
             // 
-            this.MergeVariablesTextBox.Location = new System.Drawing.Point(10, 116);
-            this.MergeVariablesTextBox.Multiline = true;
-            this.MergeVariablesTextBox.Name = "MergeVariablesTextBox";
-            this.MergeVariablesTextBox.Size = new System.Drawing.Size(440, 57);
-            this.MergeVariablesTextBox.TabIndex = 6;
+            this.ProcessOptionEnvironmentVariablesControl.Location = new System.Drawing.Point(10, 116);
+            this.ProcessOptionEnvironmentVariablesControl.Multiline = true;
+            this.ProcessOptionEnvironmentVariablesControl.Name = "ProcessOptionEnvironmentVariablesControl";
+            this.ProcessOptionEnvironmentVariablesControl.Size = new System.Drawing.Size(440, 57);
+            this.ProcessOptionEnvironmentVariablesControl.TabIndex = 6;
             // 
-            // MergeVariablesCheckBox
+            // ProcessOptionEnvironmentVariablesEnabledControl
             // 
-            this.MergeVariablesCheckBox.AutoSize = true;
-            this.MergeVariablesCheckBox.Location = new System.Drawing.Point(10, 92);
-            this.MergeVariablesCheckBox.Name = "MergeVariablesCheckBox";
-            this.MergeVariablesCheckBox.Size = new System.Drawing.Size(291, 17);
-            this.MergeVariablesCheckBox.TabIndex = 5;
-            this.MergeVariablesCheckBox.Text = "Merge listed variables with system environment variables";
-            this.MergeVariablesCheckBox.UseVisualStyleBackColor = true;
+            this.ProcessOptionEnvironmentVariablesEnabledControl.AutoSize = true;
+            this.ProcessOptionEnvironmentVariablesEnabledControl.Location = new System.Drawing.Point(10, 92);
+            this.ProcessOptionEnvironmentVariablesEnabledControl.Name = "ProcessOptionEnvironmentVariablesEnabledControl";
+            this.ProcessOptionEnvironmentVariablesEnabledControl.Size = new System.Drawing.Size(291, 17);
+            this.ProcessOptionEnvironmentVariablesEnabledControl.TabIndex = 5;
+            this.ProcessOptionEnvironmentVariablesEnabledControl.Text = "Merge listed variables with system environment variables";
+            this.ProcessOptionEnvironmentVariablesEnabledControl.UseVisualStyleBackColor = true;
             // 
-            // PassCommandLineTextBox
+            // ProcessOptionCommandLineControl
             // 
-            this.PassCommandLineTextBox.Location = new System.Drawing.Point(133, 67);
-            this.PassCommandLineTextBox.Name = "PassCommandLineTextBox";
-            this.PassCommandLineTextBox.Size = new System.Drawing.Size(317, 20);
-            this.PassCommandLineTextBox.TabIndex = 4;
+            this.ProcessOptionCommandLineControl.Location = new System.Drawing.Point(133, 67);
+            this.ProcessOptionCommandLineControl.Name = "ProcessOptionCommandLineControl";
+            this.ProcessOptionCommandLineControl.Size = new System.Drawing.Size(317, 20);
+            this.ProcessOptionCommandLineControl.TabIndex = 4;
             // 
-            // PassCommandLineCheckBox
+            // ProcessOptionCommandLineEnabledControl
             // 
-            this.PassCommandLineCheckBox.AutoSize = true;
-            this.PassCommandLineCheckBox.Location = new System.Drawing.Point(10, 69);
-            this.PassCommandLineCheckBox.Name = "PassCommandLineCheckBox";
-            this.PassCommandLineCheckBox.Size = new System.Drawing.Size(123, 17);
-            this.PassCommandLineCheckBox.TabIndex = 3;
-            this.PassCommandLineCheckBox.Text = "Pass command line :";
-            this.PassCommandLineCheckBox.UseVisualStyleBackColor = true;
+            this.ProcessOptionCommandLineEnabledControl.AutoSize = true;
+            this.ProcessOptionCommandLineEnabledControl.Location = new System.Drawing.Point(10, 69);
+            this.ProcessOptionCommandLineEnabledControl.Name = "ProcessOptionCommandLineEnabledControl";
+            this.ProcessOptionCommandLineEnabledControl.Size = new System.Drawing.Size(123, 17);
+            this.ProcessOptionCommandLineEnabledControl.TabIndex = 3;
+            this.ProcessOptionCommandLineEnabledControl.Text = "Pass command line :";
+            this.ProcessOptionCommandLineEnabledControl.UseVisualStyleBackColor = true;
             // 
-            // KeepAlwaysOnTopCheckBox
+            // ProcessOptionAlwaysOnTopEnabledControl
             // 
-            this.KeepAlwaysOnTopCheckBox.AutoSize = true;
-            this.KeepAlwaysOnTopCheckBox.Location = new System.Drawing.Point(10, 46);
-            this.KeepAlwaysOnTopCheckBox.Name = "KeepAlwaysOnTopCheckBox";
-            this.KeepAlwaysOnTopCheckBox.Size = new System.Drawing.Size(410, 17);
-            this.KeepAlwaysOnTopCheckBox.TabIndex = 2;
-            this.KeepAlwaysOnTopCheckBox.Text = "Keep process always on top (this can conflict with other always-on-top processes)" +
+            this.ProcessOptionAlwaysOnTopEnabledControl.AutoSize = true;
+            this.ProcessOptionAlwaysOnTopEnabledControl.Location = new System.Drawing.Point(10, 46);
+            this.ProcessOptionAlwaysOnTopEnabledControl.Name = "ProcessOptionAlwaysOnTopEnabledControl";
+            this.ProcessOptionAlwaysOnTopEnabledControl.Size = new System.Drawing.Size(410, 17);
+            this.ProcessOptionAlwaysOnTopEnabledControl.TabIndex = 2;
+            this.ProcessOptionAlwaysOnTopEnabledControl.Text = "Keep process always on top (this can conflict with other always-on-top processes)" +
     "";
-            this.KeepAlwaysOnTopCheckBox.UseVisualStyleBackColor = true;
+            this.ProcessOptionAlwaysOnTopEnabledControl.UseVisualStyleBackColor = true;
             // 
-            // ScreenshotEnabledOnCrashCheckBox
+            // ProcessOptionScreenshotEnabledControl
             // 
-            this.ScreenshotEnabledOnCrashCheckBox.AutoSize = true;
-            this.ScreenshotEnabledOnCrashCheckBox.Location = new System.Drawing.Point(10, 23);
-            this.ScreenshotEnabledOnCrashCheckBox.Name = "ScreenshotEnabledOnCrashCheckBox";
-            this.ScreenshotEnabledOnCrashCheckBox.Size = new System.Drawing.Size(249, 17);
-            this.ScreenshotEnabledOnCrashCheckBox.TabIndex = 0;
-            this.ScreenshotEnabledOnCrashCheckBox.Text = "Take a screenshot of the main display on crash";
-            this.ScreenshotEnabledOnCrashCheckBox.UseVisualStyleBackColor = true;
+            this.ProcessOptionScreenshotEnabledControl.AutoSize = true;
+            this.ProcessOptionScreenshotEnabledControl.Location = new System.Drawing.Point(10, 23);
+            this.ProcessOptionScreenshotEnabledControl.Name = "ProcessOptionScreenshotEnabledControl";
+            this.ProcessOptionScreenshotEnabledControl.Size = new System.Drawing.Size(249, 17);
+            this.ProcessOptionScreenshotEnabledControl.TabIndex = 0;
+            this.ProcessOptionScreenshotEnabledControl.Text = "Take a screenshot of the main display on crash";
+            this.ProcessOptionScreenshotEnabledControl.UseVisualStyleBackColor = true;
             // 
             // ProcessDialog
             // 
@@ -435,37 +435,37 @@
         #endregion
 
         private System.Windows.Forms.GroupBox MonitorThisProcessGroup;
-        private System.Windows.Forms.TextBox ProcessExecutablePathTextBox;
-        private System.Windows.Forms.TextBox ProcessWorkingDirectoryTextBox;
+        private System.Windows.Forms.TextBox ProcessOptionPathControl;
+        private System.Windows.Forms.TextBox ProcessOptionWorkingDirectoryControl;
         private System.Windows.Forms.Label ProcessExecutablePathLabel;
         private System.Windows.Forms.Label ProcessWorkingDirectoryLabel;
         private System.Windows.Forms.Button SelectExecutablePath;
         private System.Windows.Forms.Button SelectWorkingDirectory;
         private System.Windows.Forms.GroupBox ProcessCrashAssumptionsGroup;
-        private System.Windows.Forms.CheckBox AssumeCrashIfNotRunningCheckBox;
-        private System.Windows.Forms.CheckBox AssumeCrashIfUnresponsiveCheckBox;
-        private System.Windows.Forms.CheckBox PostCrashCheckEnabledCheckBox;
-        private System.Windows.Forms.CheckBox PostCrashWaitEnabledCheckBox;
-        private System.Windows.Forms.TextBox PostCrashCheckEnabledTextBox;
-        private System.Windows.Forms.TextBox PostCrashWaitEnabledTextBox;
+        private System.Windows.Forms.CheckBox ProcessOptionCrashedIfNotRunningControl;
+        private System.Windows.Forms.CheckBox ProcessOptionCrashedIfUnresponsiveControl;
+        private System.Windows.Forms.CheckBox ProcessOptionDoubleCheckEnabledControl;
+        private System.Windows.Forms.CheckBox ProcessOptionGracePeriodEnabledControl;
+        private System.Windows.Forms.TextBox ProcessOptionDoubleCheckDurationControl;
+        private System.Windows.Forms.TextBox ProcessOptionGracePeriodDurationControl;
         private System.Windows.Forms.GroupBox ProcessPreStartGroup;
-        private System.Windows.Forms.CheckBox ProcessPreStartCommandEnabledCheckBox;
+        private System.Windows.Forms.CheckBox ProcessOptionPreLaunchScriptEnabledControl;
         private System.Windows.Forms.Button ProcessPreStartCommandButton;
-        private System.Windows.Forms.TextBox ProcessPreStartCommandTextBox;
+        private System.Windows.Forms.TextBox ProcessOptionPreLaunchScriptPathControl;
         private System.Windows.Forms.GroupBox PostCrashGroup;
         private System.Windows.Forms.Button ProcessPostCrashCommandButton;
-        private System.Windows.Forms.TextBox ProcessPostCrashCommandTextBox;
-        private System.Windows.Forms.CheckBox ProcessPostCrashCommandEnabledCheckBox;
-        private System.Windows.Forms.CheckBox ProcessPostCrashCleanupEnabledCheckBox;
+        private System.Windows.Forms.TextBox ProcessOptionPostCrashScriptPathControl;
+        private System.Windows.Forms.CheckBox ProcessOptionPostCrashScriptEnabledControl;
+        private System.Windows.Forms.CheckBox ProcessOptionAggressiveCleanupEnabledControl;
         private System.Windows.Forms.Label PostCrashCheckEnabledLabel;
         private System.Windows.Forms.Label PostCrashWaitEnabledLabel;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.CheckBox ScreenshotEnabledOnCrashCheckBox;
-        private System.Windows.Forms.CheckBox KeepAlwaysOnTopCheckBox;
-        private System.Windows.Forms.CheckBox PassCommandLineCheckBox;
-        private System.Windows.Forms.TextBox PassCommandLineTextBox;
-        private System.Windows.Forms.CheckBox MergeVariablesCheckBox;
-        private System.Windows.Forms.TextBox MergeVariablesTextBox;
+        private System.Windows.Forms.CheckBox ProcessOptionScreenshotEnabledControl;
+        private System.Windows.Forms.CheckBox ProcessOptionAlwaysOnTopEnabledControl;
+        private System.Windows.Forms.CheckBox ProcessOptionCommandLineEnabledControl;
+        private System.Windows.Forms.TextBox ProcessOptionCommandLineControl;
+        private System.Windows.Forms.CheckBox ProcessOptionEnvironmentVariablesEnabledControl;
+        private System.Windows.Forms.TextBox ProcessOptionEnvironmentVariablesControl;
         private System.Windows.Forms.Button OpenScreenshotDirectoryButton;
         private System.Windows.Forms.Label EnvironmentVariableFormatLabel;
     }
