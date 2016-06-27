@@ -2,7 +2,7 @@
 {
     using System;
     using System.Diagnostics;
-    using System.IO;
+    
     public class MonitorableProcess : IDisposable
     {
         public enum Status
@@ -12,19 +12,21 @@
             Disabled
         }
 
-        private Process process;
-        private ProcessOptions processOptions;
         public Status State { get; private set; }
-        public string Path { get { return processOptions.Path; } }
+        public Process Process { get; private set; }
+        public ProcessOptions ProcessOptions { get; private set; }
 
         public MonitorableProcess(ProcessOptions opts)
         {
-            processOptions = opts;
+            ProcessOptions = opts;
         }
 
-        public ProcessOptions GetOptions()
+        public void UpdateOptions(ProcessOptions opts)
         {
-            return processOptions;
+            if (ReferenceEquals(ProcessOptions, opts))
+                return;
+
+            // TODO stop and swap here
         }
 
         #region IDisposable Support
@@ -36,12 +38,12 @@
             {
                 if (disposing)
                 {
-                    if (process != null)
-                        process.Dispose();
+                    if (Process != null)
+                        Process.Dispose();
                 }
 
-                processOptions = null;
-                process = null;
+                ProcessOptions = null;
+                Process = null;
 
                 IsDisposed = true;
             }

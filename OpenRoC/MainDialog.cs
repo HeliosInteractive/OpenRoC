@@ -1,5 +1,6 @@
 ﻿namespace oroc
 {
+    using System.IO;
     using System.Linq;
     using System.Windows.Forms;
 
@@ -70,7 +71,7 @@
 
             ProcessManager.ProcessList.ForEach(p =>
             {
-                ListViewItem item = new ListViewItem(p.Path);
+                ListViewItem item = new ListViewItem(p.ProcessOptions.Path);
                 item.SubItems.Add(p.State.ToString());
                 ProcessListView.Items.Add(item);
             });
@@ -98,14 +99,17 @@
 
         private void OnContextMenuEditButtonClick(object sender, System.EventArgs e)
         {
-            MonitorableProcess process = ProcessManager.ProcessList.Single(x => x.Path == ProcessListView.FocusedItem.Text);
-
-            if (process == null)
+            if (ProcessListView.FocusedItem == null)
                 return;
+
+            if (!ProcessManager.Contains(ProcessListView.FocusedItem.Text))
+                return;
+
+            MonitorableProcess process = ProcessManager.Get(ProcessListView.FocusedItem.Text);
 
             if (EditProcessForm == null || EditProcessForm.IsDisposed)
             {
-                EditProcessForm = new ProcessDialog(process.GetOptions());
+                EditProcessForm = new ProcessDialog(process.ProcessOptions.Clone() as ProcessOptions);
                 EditProcessForm.Owner = this;
             }
 
@@ -117,6 +121,9 @@
 
         private void OnContextMenuDeleteButtonClick(object sender, System.EventArgs e)
         {
+            if (ProcessListView.FocusedItem == null)
+                return;
+
             ProcessManager.Delete(ProcessListView.FocusedItem.Text);
             UpdateProcessList();
         }
@@ -131,7 +138,39 @@
 
         private void OnContextMenuDisableButtonClick(object sender, System.EventArgs e)
         {
+            if (ProcessListView.FocusedItem == null)
+                return;
+
             ProcessListView.FocusedItem.Checked = false;
+        }
+
+        private void OnProcessListViewDragDrop(object sender, DragEventArgs e)
+        {
+            string[] dragged_files = e.Data.GetData(DataFormats.FileDrop, false) as string[];
+
+            if (dragged_files == null)
+                return;
+
+            foreach(string dragged_file in dragged_files)
+            {
+                if (dragged_file.IsExecutable() &&
+                    !ProcessManager.Contains(dragged_file))
+                {
+                    ProcessOptions opts = new ProcessOptions();
+
+                    opts.Path = dragged_file;
+                    opts.WorkingDirectory = Path.GetDirectoryName(opts.Path);
+
+                    ProcessManager.Add(opts);
+                }
+            }
+
+            UpdateProcessList();
+        }
+
+        private void OnProcessListViewDragEnter(object sender, DragEventArgs e)
+        {
+            e.Effect = DragDropEffects.Copy;
         }
     }
 }

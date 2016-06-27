@@ -1,9 +1,10 @@
 ﻿namespace oroc
 {
+    using System;
     using System.Linq;
     using System.Collections.Generic;
-
-    public class ProcessOptions : INotifyPropertyChangedAuto
+    
+    public class ProcessOptions : INotifyPropertyChangedAuto, ICloneable
     {
         #region private data holders
 
@@ -32,6 +33,11 @@
         public ProcessOptions()
         {
             environmentVariables = new Dictionary<string, string>();
+        }
+
+        public ProcessOptions(Dictionary<string, string> variables)
+        {
+            environmentVariables = variables;
         }
 
         #region DataBind accessible properties 
@@ -304,6 +310,32 @@
         public Dictionary<string, string> EnvironmentVariablesDictionary
         {
             get { return environmentVariables; }
+        }
+
+        public object Clone()
+        {
+            ProcessOptions clone = new ProcessOptions(environmentVariables);
+
+            clone.path = Path;
+            clone.workingDirectory = WorkingDirectory;
+            clone.crashedIfNotRunning = CrashedIfNotRunning;
+            clone.crashedIfUnresponsive = CrashedIfUnresponsive;
+            clone.doubleCheckEnabled = DoubleCheckEnabled;
+            clone.doubleCheckDuration = DoubleCheckDuration;
+            clone.gracePeriodEnabled = GracePeriodEnabled;
+            clone.gracePeriodDuration = GracePeriodDuration;
+            clone.preLaunchScriptEnabled = PreLaunchScriptEnabled;
+            clone.preLaunchScriptPath = PreLaunchScriptPath;
+            clone.aggressiveCleanupEnabled = AggressiveCleanupEnabled;
+            clone.postCrashScriptEnabled = PostCrashScriptEnabled;
+            clone.postCrashScriptPath = PostCrashScriptPath;
+            clone.screenShotEnabled = ScreenShotEnabled;
+            clone.alwaysOnTopEnabled = AlwaysOnTopEnabled;
+            clone.commandLineEnabled = CommandLineEnabled;
+            clone.commandLine = CommandLine;
+            clone.environmentVariablesEnabled = EnvironmentVariablesEnabled;
+
+            return clone;
         }
 
         #endregion

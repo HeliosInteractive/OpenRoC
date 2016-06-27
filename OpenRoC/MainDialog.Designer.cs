@@ -135,6 +135,7 @@
             // 
             // ProcessListView
             // 
+            this.ProcessListView.AllowDrop = true;
             this.ProcessListView.CheckBoxes = true;
             this.ProcessListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.Process,
@@ -152,6 +153,8 @@
             this.ProcessListView.UseCompatibleStateImageBehavior = false;
             this.ProcessListView.View = System.Windows.Forms.View.Details;
             this.ProcessListView.SizeChanged += new System.EventHandler(this.OnProcessListViewResize);
+            this.ProcessListView.DragDrop += new System.Windows.Forms.DragEventHandler(this.OnProcessListViewDragDrop);
+            this.ProcessListView.DragEnter += new System.Windows.Forms.DragEventHandler(this.OnProcessListViewDragEnter);
             // 
             // Process
             // 
@@ -173,38 +176,38 @@
             this.ContextMenuDisableButton});
             this.RightClickContextMenuStrip.Name = "ContextMenuStrip";
             this.RightClickContextMenuStrip.ShowImageMargin = false;
-            this.RightClickContextMenuStrip.Size = new System.Drawing.Size(128, 120);
+            this.RightClickContextMenuStrip.Size = new System.Drawing.Size(88, 98);
             // 
             // ContextMenuAddButton
             // 
             this.ContextMenuAddButton.Name = "ContextMenuAddButton";
-            this.ContextMenuAddButton.Size = new System.Drawing.Size(127, 22);
+            this.ContextMenuAddButton.Size = new System.Drawing.Size(87, 22);
             this.ContextMenuAddButton.Text = "Add";
             this.ContextMenuAddButton.Click += new System.EventHandler(this.OnAddButtonClick);
             // 
             // ContextMenuDeleteButton
             // 
             this.ContextMenuDeleteButton.Name = "ContextMenuDeleteButton";
-            this.ContextMenuDeleteButton.Size = new System.Drawing.Size(127, 22);
+            this.ContextMenuDeleteButton.Size = new System.Drawing.Size(87, 22);
             this.ContextMenuDeleteButton.Text = "Delete";
             this.ContextMenuDeleteButton.Click += new System.EventHandler(this.OnContextMenuDeleteButtonClick);
             // 
             // ContextMenuSeparator
             // 
             this.ContextMenuSeparator.Name = "ContextMenuSeparator";
-            this.ContextMenuSeparator.Size = new System.Drawing.Size(124, 6);
+            this.ContextMenuSeparator.Size = new System.Drawing.Size(84, 6);
             // 
             // ContextMenuEditButton
             // 
             this.ContextMenuEditButton.Name = "ContextMenuEditButton";
-            this.ContextMenuEditButton.Size = new System.Drawing.Size(127, 22);
+            this.ContextMenuEditButton.Size = new System.Drawing.Size(87, 22);
             this.ContextMenuEditButton.Text = "Edit";
             this.ContextMenuEditButton.Click += new System.EventHandler(this.OnContextMenuEditButtonClick);
             // 
             // ContextMenuDisableButton
             // 
             this.ContextMenuDisableButton.Name = "ContextMenuDisableButton";
-            this.ContextMenuDisableButton.Size = new System.Drawing.Size(127, 22);
+            this.ContextMenuDisableButton.Size = new System.Drawing.Size(87, 22);
             this.ContextMenuDisableButton.Text = "Disable";
             this.ContextMenuDisableButton.Click += new System.EventHandler(this.OnContextMenuDisableButtonClick);
             // 

@@ -53,8 +53,11 @@
 
             if (main != null)
             {
-                // TODO handle Edit windows correctly
-                main.ProcessManager.Add(Options);
+                if (main.ProcessManager.Contains(Options.Path))
+                    main.ProcessManager.Update(Options);
+                else
+                    main.ProcessManager.Add(Options);
+
                 main.UpdateProcessList();
             }
 

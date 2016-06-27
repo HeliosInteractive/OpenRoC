@@ -13,22 +13,39 @@
             Processes = new Dictionary<string, MonitorableProcess>();
         }
 
-        public bool Add(ProcessOptions opts)
+        public void Add(ProcessOptions opts)
         {
-            if (Processes.ContainsKey(opts.Path))
-                return false;
+            if (string.IsNullOrWhiteSpace(opts.Path))
+                return;
 
             Processes.Add(opts.Path, new MonitorableProcess(opts));
-            return true;
         }
 
-        public void Delete(string key)
+        public void Delete(string path)
         {
-            if (Processes.ContainsKey(key))
+            if (Processes.ContainsKey(path))
             {
-                Processes[key].Dispose();
-                Processes.Remove(key);
+                Processes[path].Dispose();
+                Processes.Remove(path);
             }
+        }
+
+        public bool Contains(string path)
+        {
+            if (string.IsNullOrWhiteSpace(path))
+                return false;
+
+            return Processes.ContainsKey(path);
+        }
+
+        public MonitorableProcess Get(string path)
+        {
+            return Processes[path];
+        }
+
+        public void Update(ProcessOptions opts)
+        {
+            Get(opts.Path).UpdateOptions(opts);
         }
 
         public List<MonitorableProcess> ProcessList
