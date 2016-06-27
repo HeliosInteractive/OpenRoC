@@ -1,17 +1,19 @@
 ﻿namespace oroc
 {
     using System;
+    using System.Timers;
     using System.Diagnostics;
-    using System.Threading.Tasks;
 
     public class ProcessRunner : IDisposable
     {
-        bool resetTimer = false;
-        bool isDisabled = false;
-        bool resetStart = false;
-        bool hasMainWin = false;
+        bool is_disabled = false;
+        bool reset_timer = false;
+        bool should_start = false;
+        bool double_check = false;
         Status current_state = Status.Stopped;
         Status pending_state = Status.Disabled;
+        Timer grace_period_timer = new Timer();
+        Timer double_check_timer = new Timer();
 
         public enum Status
         {
@@ -24,7 +26,7 @@
         {
             get
             {
-                if (isDisabled)
+                if (is_disabled)
                     return Status.Disabled;
                 else
                     return current_state;
@@ -34,19 +36,46 @@
             {
                 if (value == Status.Disabled)
                 {
-                    isDisabled = true;
-                    resetTimer = true;
+                    IsDisabled = true;
                 }
                 else if (value != current_state)
                 {
                     current_state = value;
-                    resetTimer = true;
+                    reset_timer = true;
+                }
+            }
+        }
+
+        public bool IsDisabled
+        {
+            get
+            {
+                return is_disabled;
+            }
+
+            set
+            {
+                if (IsDisabled == value)
+                    return;
+
+                if (value)
+                {
+                    is_disabled = true;
+                    reset_timer = true;
+
+                    grace_period_timer.Stop();
+                    double_check_timer.Stop();
+                }
+                else
+                {
+                    is_disabled = false;
                 }
             }
         }
 
         public Process Process { get; private set; }
         public Stopwatch Stopwatch { get; private set; }
+        public bool HasWindow { get; private set; } = false;
         public ProcessOptions ProcessOptions { get; private set; }
 
         public ProcessRunner(ProcessOptions opts)
@@ -54,6 +83,12 @@
             ProcessOptions = opts;
             State = Status.Stopped;
             Stopwatch = new Stopwatch();
+
+            grace_period_timer.AutoReset = false;
+            grace_period_timer.Elapsed += GracePeriodTimeElapsed;
+
+            double_check_timer.AutoReset = false;
+            double_check_timer.Elapsed += DoubleCheckTimeElapsed;
         }
 
         public void UpdateOptions(ProcessOptions opts)
@@ -77,9 +112,8 @@
             if (State == Status.Running)
                 Stop();
 
-            Debug.Assert(Process == null);
-
-            OnProcessPreLaunch();
+            if (ProcessOptions.PreLaunchScriptEnabled)
+                ProcessHelper.ExecuteScript(ProcessOptions.PreLaunchScriptPath);
 
             ProcessStartInfo sinfo = new ProcessStartInfo
             {
@@ -113,13 +147,13 @@
             Process.Start();
             Process.Refresh();
 
-            try { Process.WaitForInputIdle(); hasMainWin = true; }
-            catch (Exception) { hasMainWin = false; }
+            try { Process.WaitForInputIdle(); HasWindow = true; }
+            catch (Exception) { HasWindow = false; }
 
-            if (!hasMainWin || Process.Responding)
+            if (!HasWindow || Process.Responding)
             {
-                OnProcessStarted(this, null);
                 State = Status.Running;
+                IsDisabled = false;
             }
             else Stop();
         }
@@ -128,6 +162,10 @@
         {
             if (Process == null)
                 return;
+
+            HasWindow = false;
+            grace_period_timer.Stop();
+            double_check_timer.Stop();
 
             Process.Refresh();
 
@@ -153,66 +191,20 @@
             Process = null;
 
             State = Status.Stopped;
-            OnProcessPostCrash();
-        }
 
-        public void Disable()
-        {
-            if (State != Status.Disabled)
-                State = Status.Disabled;
-        }
-
-        public void Enable()
-        {
-            isDisabled = false;
-        }
-
-        private void OnProcessStopped(object sender, EventArgs e)
-        {
-            if (State == Status.Stopped)
-                return;
-
-            Stop();
-
-            if (ProcessOptions.GracePeriodEnabled)
-            {
-                Task
-                    .Delay(TimeSpan.FromSeconds(ProcessOptions.GracePeriodDuration))
-                    .ContinueWith(fn => { resetStart = true; });
-            }
-            else
-            {
-                resetStart = true;
-            }
-        }
-
-        private void OnProcessStarted(object sender, EventArgs e)
-        {
-            if (State == Status.Running)
-                return;
-        }
-
-        private void OnProcessPreLaunch()
-        {
-            if (ProcessOptions.PreLaunchScriptEnabled)
-                ProcessHelper.ExecuteScript(ProcessOptions.PreLaunchScriptPath);
-        }
-
-        private void OnProcessPostCrash()
-        {
             if (ProcessOptions.PostCrashScriptEnabled)
                 ProcessHelper.ExecuteScript(ProcessOptions.PostCrashScriptPath);
         }
 
         public void Monitor()
         {
-            if (resetTimer)
+            if (reset_timer)
             {
                 Stopwatch.Restart();
-                resetTimer = false;
+                reset_timer = false;
             }
 
-            if (isDisabled && current_state == Status.Running)
+            if (IsDisabled && current_state == Status.Running)
             {
                 Debug.Assert(current_state != Status.Disabled);
                 Debug.Assert(pending_state == Status.Disabled);
@@ -221,7 +213,7 @@
                 pending_state = current_state;
                 Stop();
             }
-            else if (!isDisabled && pending_state != Status.Disabled)
+            else if (!IsDisabled && pending_state != Status.Disabled)
             {
                 Debug.Assert(current_state == Status.Stopped);
                 Debug.Assert(pending_state != Status.Stopped);
@@ -231,58 +223,115 @@
                 pending_state = Status.Disabled;
             }
             
-            if (!isDisabled)
+            if (!IsDisabled)
             {
-                if (resetStart || (Process == null && ProcessOptions.CrashedIfNotRunning))
+                if (ShouldStart)
                 {
                     Debug.Assert(State == Status.Stopped);
-                    resetStart = false;
+                    Debug.Assert(Process == null);
+
+                    should_start = false;
                     Start();
                 }
-                else if (Process != null)
+
+                if (HasWindow)
                 {
+                    Debug.Assert(State == Status.Running);
+                    Debug.Assert(Process != null);
+
                     Process.Refresh();
 
                     if (ProcessOptions.CrashedIfUnresponsive && !Process.Responding)
                     {
                         if (ProcessOptions.DoubleCheckEnabled)
                         {
-                            Task
-                                .Delay(TimeSpan.FromSeconds(ProcessOptions.DoubleCheckDuration))
-                                .ContinueWith(fn =>
-                                {
-                                    if (Process != null)
-                                    {
-                                        Process.Refresh();
-                                        resetStart = !Process.Responding;
-                                    }
-                                });
+                            if (double_check)
+                            {
+                                should_start = !Process.Responding;
+                                double_check = false;
+                            }
+                            else if (!double_check_timer.Enabled)
+                            {
+                                double_check_timer.Interval = TimeSpan.FromSeconds(ProcessOptions.DoubleCheckDuration).TotalMilliseconds;
+                                double_check_timer.Start();
+                            }
                         }
                         else
                         {
-                            Debug.Assert(State != Status.Stopped);
-                            resetStart = true;
+                            should_start = true;
                         }
 
+                        if (should_start && current_state == Status.Stopped)
+                            Stop();
                     }
-                    else if (hasMainWin && ProcessOptions.AlwaysOnTopEnabled)
+                    else if (ProcessOptions.AlwaysOnTopEnabled)
                     {
-                        if (NativeMethods.GetForegroundWindow() != Process.MainWindowHandle)
-                        {
-                            NativeMethods.SwitchToThisWindow(Process.MainWindowHandle, true);
-                            NativeMethods.SetForegroundWindow(Process.MainWindowHandle);
-                            NativeMethods.SetWindowPos(
-                                Process.MainWindowHandle,
-                                NativeMethods.HWND_TOPMOST,
-                                0, 0, 0, 0,
-                                NativeMethods.SetWindowPosFlags.SWP_NOSIZE |
-                                NativeMethods.SetWindowPosFlags.SWP_NOMOVE |
-                                NativeMethods.SetWindowPosFlags.SWP_SHOWWINDOW);
-                        }
+                        BringToFront();
                     }
                 }
             }
         }
+
+        private bool ShouldStart
+        {
+            get { return (should_start || (Process == null && ProcessOptions.CrashedIfNotRunning && !grace_period_timer.Enabled)); }
+        }
+
+        public void BringToFront()
+        {
+            if (Process == null || !HasWindow)
+                return;
+
+            Process.Refresh();
+
+            if (Process.HasExited || !Process.Responding)
+                return;
+
+            if (NativeMethods.GetForegroundWindow() != Process.MainWindowHandle)
+            {
+                NativeMethods.SwitchToThisWindow(Process.MainWindowHandle, true);
+                NativeMethods.SetForegroundWindow(Process.MainWindowHandle);
+                NativeMethods.SetWindowPos(
+                    Process.MainWindowHandle,
+                    NativeMethods.HWND_TOPMOST,
+                    0, 0, 0, 0,
+                    NativeMethods.SetWindowPosFlags.SWP_NOSIZE |
+                    NativeMethods.SetWindowPosFlags.SWP_NOMOVE |
+                    NativeMethods.SetWindowPosFlags.SWP_SHOWWINDOW);
+            }
+        }
+
+        #region Event callbacks
+
+        private void OnProcessStopped(object sender, EventArgs e)
+        {
+            Stop();
+
+            if (ProcessOptions.GracePeriodEnabled)
+            {
+                if (!grace_period_timer.Enabled)
+                {
+                    grace_period_timer.Interval = TimeSpan.FromSeconds(ProcessOptions.GracePeriodDuration).TotalMilliseconds;
+                    grace_period_timer.Start();
+                }
+            }
+            else
+            {
+                should_start = true;
+            }
+        }
+
+        private void DoubleCheckTimeElapsed(object sender, ElapsedEventArgs e)
+        {
+            double_check = true;
+        }
+
+        private void GracePeriodTimeElapsed(object sender, ElapsedEventArgs e)
+        {
+            should_start = true;
+        }
+
+        #endregion
 
         #region IDisposable Support
         public bool IsDisposed { get; private set; } = false;
@@ -292,8 +341,18 @@
             if (!IsDisposed)
             {
                 if (disposing)
-                    Stop();
+                {
+                    if (grace_period_timer != null)
+                        grace_period_timer.Dispose();
 
+                    if (double_check_timer != null)
+                        double_check_timer.Dispose();
+
+                    Stop();
+                }
+
+                grace_period_timer = null;
+                double_check_timer = null;
                 ProcessOptions = null;
                 Process = null;
 

@@ -155,15 +155,12 @@
             if (ProcessListView.FocusedItem == null)
                 return;
 
-            ProcessManager.Get(ProcessListView.FocusedItem.Text).Disable();
+            ProcessManager.Get(ProcessListView.FocusedItem.Text).IsDisabled = true;
         }
 
         private void OnProcessListViewItemChecked(object sender, ItemCheckedEventArgs e)
         {
-            if (e.Item.Checked)
-                ProcessManager.Get(e.Item.Text).Enable();
-            else
-                ProcessManager.Get(e.Item.Text).Disable();
+            ProcessManager.Get(e.Item.Text).IsDisabled = !e.Item.Checked;
         }
 
         private void OnProcessListViewDragDrop(object sender, DragEventArgs e)
