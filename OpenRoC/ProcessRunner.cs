@@ -3,7 +3,7 @@
     using System;
     using System.Diagnostics;
 
-    public class MonitorableProcess : IDisposable
+    public class ProcessRunner : IDisposable
     {
         bool resetTimer = false;
         bool isDisabled = false;
@@ -47,7 +47,7 @@
         public Stopwatch Stopwatch { get; private set; }
         public ProcessOptions ProcessOptions { get; private set; }
 
-        public MonitorableProcess(ProcessOptions opts)
+        public ProcessRunner(ProcessOptions opts)
         {
             ProcessOptions = opts;
             State = Status.Stopped;

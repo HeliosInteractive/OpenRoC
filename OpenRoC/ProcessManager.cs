@@ -6,11 +6,11 @@
 
     public class ProcessManager : IDisposable
     {
-        private readonly Dictionary<string, MonitorableProcess> Processes;
+        private readonly Dictionary<string, ProcessRunner> Processes;
 
         public ProcessManager()
         {
-            Processes = new Dictionary<string, MonitorableProcess>();
+            Processes = new Dictionary<string, ProcessRunner>();
         }
 
         public void Add(ProcessOptions opts)
@@ -18,7 +18,7 @@
             if (string.IsNullOrWhiteSpace(opts.Path))
                 return;
 
-            MonitorableProcess proc = new MonitorableProcess(opts);
+            ProcessRunner proc = new ProcessRunner(opts);
             Processes.Add(opts.Path, proc);
             proc.Start();
         }
@@ -41,7 +41,7 @@
             return Processes.ContainsKey(path);
         }
 
-        public MonitorableProcess Get(string path)
+        public ProcessRunner Get(string path)
         {
             return Processes[path];
         }
@@ -51,7 +51,7 @@
             Get(opts.Path).UpdateOptions(opts);
         }
 
-        public List<MonitorableProcess> ProcessList
+        public List<ProcessRunner> ProcessList
         {
             get { return Processes.Values.ToList(); }
         }

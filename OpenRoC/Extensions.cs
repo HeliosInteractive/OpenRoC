@@ -24,7 +24,7 @@
             return self.IsFile() && self.EndsWith(".exe");
         }
 
-        public static string GetStatusString(this MonitorableProcess self)
+        public static string GetStatusString(this ProcessRunner self)
         {
             return string.Format("{0} for {1:hh\\:mm\\:ss}", self.State, self.Stopwatch.Elapsed);
         }

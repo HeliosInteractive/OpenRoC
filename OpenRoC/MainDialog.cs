@@ -75,7 +75,7 @@
             {
                 if (ProcessListView.Items.ContainsKey(p.ProcessOptions.Path))
                 {
-                    ProcessListView.Items[p.ProcessOptions.Path].Checked = p.State != MonitorableProcess.Status.Disabled;
+                    ProcessListView.Items[p.ProcessOptions.Path].Checked = p.State != ProcessRunner.Status.Disabled;
                     ProcessListView.Items[p.ProcessOptions.Path].SubItems[1].Text = p.GetStatusString();
                 }
                 else
@@ -120,7 +120,7 @@
             if (!ProcessManager.Contains(ProcessListView.FocusedItem.Text))
                 return;
 
-            MonitorableProcess process = ProcessManager.Get(ProcessListView.FocusedItem.Text);
+            ProcessRunner process = ProcessManager.Get(ProcessListView.FocusedItem.Text);
 
             if (EditProcessForm == null || EditProcessForm.IsDisposed)
             {
