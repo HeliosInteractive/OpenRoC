@@ -2,9 +2,10 @@
 {
     using System;
     using System.Linq;
+    using System.ComponentModel;
     using System.Collections.Generic;
-    
-    public class ProcessOptions : INotifyPropertyChangedAuto, ICloneable
+
+    public class ProcessOptions : INotifyPropertyChanged, ICloneable
     {
         #region private data holders
 
@@ -51,7 +52,7 @@
                     return;
 
                 path = value;
-                NotifyPropertyChanged();
+                NotifyPropertyChanged("Path");
             }
         }
 
@@ -64,7 +65,7 @@
                     return;
 
                 workingDirectory = value;
-                NotifyPropertyChanged();
+                NotifyPropertyChanged("WorkingDirectory");
             }
         }
 
@@ -77,7 +78,7 @@
                     return;
 
                 crashedIfNotRunning = value;
-                NotifyPropertyChanged();
+                NotifyPropertyChanged("CrashedIfNotRunning");
             }
         }
 
@@ -90,7 +91,7 @@
                     return;
 
                 crashedIfUnresponsive = value;
-                NotifyPropertyChanged();
+                NotifyPropertyChanged("CrashedIfUnresponsive");
             }
         }
 
@@ -103,7 +104,7 @@
                     return;
 
                 doubleCheckEnabled = value;
-                NotifyPropertyChanged();
+                NotifyPropertyChanged("DoubleCheckEnabled");
             }
         }
 
@@ -116,7 +117,7 @@
                     return;
 
                 doubleCheckDuration = value;
-                NotifyPropertyChanged();
+                NotifyPropertyChanged("DoubleCheckDuration");
             }
         }
 
@@ -129,7 +130,7 @@
                     return;
 
                 gracePeriodEnabled = value;
-                NotifyPropertyChanged();
+                NotifyPropertyChanged("GracePeriodEnabled");
             }
         }
 
@@ -142,7 +143,7 @@
                     return;
 
                 gracePeriodDuration = value;
-                NotifyPropertyChanged();
+                NotifyPropertyChanged("GracePeriodDuration");
             }
         }
 
@@ -155,7 +156,7 @@
                     return;
 
                 preLaunchScriptEnabled = value;
-                NotifyPropertyChanged();
+                NotifyPropertyChanged("PreLaunchScriptEnabled");
             }
         }
 
@@ -168,7 +169,7 @@
                     return;
 
                 preLaunchScriptPath = value;
-                NotifyPropertyChanged();
+                NotifyPropertyChanged("PreLaunchScriptPath");
             }
         }
 
@@ -181,7 +182,7 @@
                     return;
 
                 aggressiveCleanupEnabled = value;
-                NotifyPropertyChanged();
+                NotifyPropertyChanged("AggressiveCleanupEnabled");
             }
         }
 
@@ -194,7 +195,7 @@
                     return;
 
                 postCrashScriptEnabled = value;
-                NotifyPropertyChanged();
+                NotifyPropertyChanged("PostCrashScriptEnabled");
             }
         }
 
@@ -207,7 +208,7 @@
                     return;
 
                 postCrashScriptPath = value;
-                NotifyPropertyChanged();
+                NotifyPropertyChanged("PostCrashScriptPath");
             }
         }
 
@@ -220,7 +221,7 @@
                     return;
 
                 screenShotEnabled = value;
-                NotifyPropertyChanged();
+                NotifyPropertyChanged("ScreenShotEnabled");
             }
         }
 
@@ -233,7 +234,7 @@
                     return;
 
                 alwaysOnTopEnabled = value;
-                NotifyPropertyChanged();
+                NotifyPropertyChanged("AlwaysOnTopEnabled");
             }
         }
 
@@ -246,7 +247,7 @@
                     return;
 
                 commandLineEnabled = value;
-                NotifyPropertyChanged();
+                NotifyPropertyChanged("CommandLineEnabled");
             }
         }
 
@@ -259,7 +260,7 @@
                     return;
 
                 commandLine = value;
-                NotifyPropertyChanged();
+                NotifyPropertyChanged("CommandLine");
             }
         }
 
@@ -272,7 +273,7 @@
                     return;
 
                 environmentVariablesEnabled = value;
-                NotifyPropertyChanged();
+                NotifyPropertyChanged("EnvironmentVariablesEnabled");
             }
         }
 
@@ -303,7 +304,7 @@
                     .ToList()
                     .ForEach(pair => environmentVariables.Add(pair.First(), pair.Last()));
 
-                NotifyPropertyChanged();
+                NotifyPropertyChanged("EnvironmentVariables");
             }
         }
 
@@ -311,6 +312,10 @@
         {
             get { return environmentVariables; }
         }
+
+        #endregion
+
+        #region ICloneable support
 
         public object Clone()
         {
@@ -336,6 +341,18 @@
             clone.environmentVariablesEnabled = EnvironmentVariablesEnabled;
 
             return clone;
+        }
+
+        #endregion
+
+        #region INotifyPropertyChanged support
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void NotifyPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #endregion
