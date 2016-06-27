@@ -1,8 +1,8 @@
 ﻿namespace oroc
 {
     using System.IO;
-    using System.Linq;
     using System.Windows.Forms;
+    using System.Collections.Generic;
 
     public partial class MainDialog : Form
     {
@@ -66,14 +66,34 @@
 
         public void UpdateProcessList()
         {
-            if (ProcessListView.Items.Count > 0)
-                ProcessListView.Items.Clear();
+            List<string> selected_items_before_update = new List<string>();
+            foreach (ListViewItem item in ProcessListView.SelectedItems)
+                selected_items_before_update.Add(item.Text);
+
+            foreach (ListViewItem item in ProcessListView.Items)
+                if (!ProcessManager.Contains(item.Text))
+                    item.Remove();
 
             ProcessManager.ProcessList.ForEach(p =>
             {
-                ListViewItem item = new ListViewItem(p.ProcessOptions.Path);
-                item.SubItems.Add(p.State.ToString());
-                ProcessListView.Items.Add(item);
+                if (ProcessListView.Items.ContainsKey(p.ProcessOptions.Path))
+                {
+                    ProcessListView.Items[p.ProcessOptions.Path].Checked = p.State != MonitorableProcess.Status.Disabled;
+                }
+                else
+                {
+                    ListViewItem item = new ListViewItem();
+
+                    item.Checked = true;
+                    item.Text = p.ProcessOptions.Path;
+                    item.Name = p.ProcessOptions.Path;
+                    item.SubItems.Add(p.State.ToString());
+
+                    ProcessListView.Items.Add(item);
+                }
+
+                if (selected_items_before_update.Contains(p.ProcessOptions.Path))
+                    ProcessListView.Items[p.ProcessOptions.Path].Selected = true;
             });
         }
 
@@ -141,7 +161,15 @@
             if (ProcessListView.FocusedItem == null)
                 return;
 
-            ProcessListView.FocusedItem.Checked = false;
+            ProcessManager.Get(ProcessListView.FocusedItem.Text).Disable();
+        }
+
+        private void OnProcessListViewItemChecked(object sender, ItemCheckedEventArgs e)
+        {
+            if (e.Item.Checked)
+                ProcessManager.Get(e.Item.Text).Enable();
+            else
+                ProcessManager.Get(e.Item.Text).Disable();
         }
 
         private void OnProcessListViewDragDrop(object sender, DragEventArgs e)
@@ -171,6 +199,12 @@
         private void OnProcessListViewDragEnter(object sender, DragEventArgs e)
         {
             e.Effect = DragDropEffects.Copy;
+        }
+
+        private void OnMainDialogUpdateTimerTick(object sender, System.EventArgs e)
+        {
+            ProcessManager.ProcessList.ForEach(p => p.Monitor());
+            UpdateProcessList();
         }
     }
 }

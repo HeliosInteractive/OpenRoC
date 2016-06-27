@@ -48,6 +48,8 @@
             this.ContextMenuSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.ContextMenuEditButton = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextMenuDisableButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.MainDialogUpdateTimer = new System.Windows.Forms.Timer(this.components);
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.StatusStrip.SuspendLayout();
             this.MenuStrip.SuspendLayout();
             this.RightClickContextMenuStrip.SuspendLayout();
@@ -152,6 +154,7 @@
             this.ProcessListView.TabIndex = 2;
             this.ProcessListView.UseCompatibleStateImageBehavior = false;
             this.ProcessListView.View = System.Windows.Forms.View.Details;
+            this.ProcessListView.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.OnProcessListViewItemChecked);
             this.ProcessListView.SizeChanged += new System.EventHandler(this.OnProcessListViewResize);
             this.ProcessListView.DragDrop += new System.Windows.Forms.DragEventHandler(this.OnProcessListViewDragDrop);
             this.ProcessListView.DragEnter += new System.Windows.Forms.DragEventHandler(this.OnProcessListViewDragEnter);
@@ -211,6 +214,11 @@
             this.ContextMenuDisableButton.Text = "Disable";
             this.ContextMenuDisableButton.Click += new System.EventHandler(this.OnContextMenuDisableButtonClick);
             // 
+            // MainDialogUpdateTimer
+            // 
+            this.MainDialogUpdateTimer.Enabled = true;
+            this.MainDialogUpdateTimer.Tick += new System.EventHandler(this.OnMainDialogUpdateTimerTick);
+            // 
             // MainDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -251,6 +259,8 @@
         private System.Windows.Forms.ToolStripSeparator ContextMenuSeparator;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuEditButton;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuDisableButton;
+        private System.Windows.Forms.Timer MainDialogUpdateTimer;
+        private System.Windows.Forms.Timer timer1;
     }
 }
 

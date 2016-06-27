@@ -5,6 +5,11 @@
 
     public class MonitorableProcess : IDisposable
     {
+        bool resetTimer = false;
+        bool isDisabled = false;
+        Status current_state = Status.Stopped;
+        Status pending_state = Status.Disabled;
+
         public enum Status
         {
             Stopped,
@@ -12,13 +17,40 @@
             Disabled
         }
 
-        public Status State { get; private set; }
+        public Status State
+        {
+            get
+            {
+                if (isDisabled)
+                    return Status.Disabled;
+                else
+                    return current_state;
+            }
+
+            private set
+            {
+                if (value == Status.Disabled)
+                {
+                    isDisabled = true;
+                    resetTimer = true;
+                }
+                else if (value != current_state)
+                {
+                    current_state = value;
+                    resetTimer = true;
+                }
+            }
+        }
+
         public Process Process { get; private set; }
+        public Stopwatch Stopwatch { get; private set; }
         public ProcessOptions ProcessOptions { get; private set; }
 
         public MonitorableProcess(ProcessOptions opts)
         {
             ProcessOptions = opts;
+            State = Status.Stopped;
+            Stopwatch = new Stopwatch();
         }
 
         public void UpdateOptions(ProcessOptions opts)
@@ -26,7 +58,15 @@
             if (ReferenceEquals(ProcessOptions, opts))
                 return;
 
-            // TODO stop and swap here
+            Status before_swap = State;
+
+            if (State == Status.Running)
+                Stop();
+
+            ProcessOptions = opts;
+
+            if (before_swap == Status.Running)
+                Start();
         }
 
         public void Start()
@@ -34,8 +74,9 @@
             if (State == Status.Running)
                 Stop();
 
-            if (ProcessOptions.PreLaunchScriptEnabled)
-                ProcessHelper.ExecuteScript(ProcessOptions.PreLaunchScriptPath);
+            Debug.Assert(Process == null);
+
+            OnProcessPreLaunch();
 
             ProcessStartInfo sinfo = new ProcessStartInfo
             {
@@ -44,8 +85,11 @@
                 UseShellExecute = false
             };
 
-            if (ProcessOptions.CommandLineEnabled)
+            if (ProcessOptions.CommandLineEnabled &&
+                !string.IsNullOrWhiteSpace(ProcessOptions.CommandLine))
+            {
                 sinfo.Arguments = ProcessOptions.CommandLine;
+            }
 
             if (ProcessOptions.EnvironmentVariablesEnabled &&
                 ProcessOptions.EnvironmentVariablesDictionary.Count > 0)
@@ -60,36 +104,115 @@
                 EnableRaisingEvents = true
             };
 
-            Process.Start();
+            Process.Disposed += OnProcessStopped;
+            Process.Exited += OnProcessStopped;
 
-            State = Status.Running;
+            Process.Start();
+            Process.Refresh();
+
+            if (Process.Responding)
+            {
+                OnProcessStarted(this, null);
+                State = Status.Running;
+            }
+            else Stop();
         }
 
         public void Stop()
         {
-            if (Process == null && Process.HasExited)
+            if (Process == null)
                 return;
 
-            State = Status.Stopped;
+            Process.Refresh();
 
             Process.EnableRaisingEvents = false;
+            Process.Disposed -= OnProcessStopped;
+            Process.Exited -= OnProcessStopped;
 
-            Process.CloseMainWindow();
-            Process.WaitForExit(1000);
+            if (Process.HasExited)
+            {
+                if (State == Status.Running)
+                    State = Status.Stopped;
+            }
+            else
+            {
+                Process.CloseMainWindow();
+                Process.WaitForExit(1000);
 
-            if (!Process.HasExited)
-                Process.Kill();
+                if (!Process.HasExited)
+                    Process.Kill();
+            }
 
             Process.Dispose();
             Process = null;
 
+            State = Status.Stopped;
+            OnProcessPostCrash();
+        }
+
+        public void Disable()
+        {
+            if (State != Status.Disabled)
+                State = Status.Disabled;
+        }
+
+        public void Enable()
+        {
+            isDisabled = false;
+        }
+
+        private void OnProcessStopped(object sender, EventArgs e)
+        {
+            if (State == Status.Stopped)
+                return;
+
+            Stop();
+        }
+
+        private void OnProcessStarted(object sender, EventArgs e)
+        {
+            if (State == Status.Running)
+                return;
+        }
+
+        private void OnProcessPreLaunch()
+        {
+            if (ProcessOptions.PreLaunchScriptEnabled)
+                ProcessHelper.ExecuteScript(ProcessOptions.PreLaunchScriptPath);
+        }
+
+        private void OnProcessPostCrash()
+        {
             if (ProcessOptions.PostCrashScriptEnabled)
                 ProcessHelper.ExecuteScript(ProcessOptions.PostCrashScriptPath);
         }
 
         public void Monitor()
         {
-            // TODO
+            if (resetTimer)
+            {
+                Stopwatch.Restart();
+                resetTimer = false;
+            }
+
+            if (isDisabled && current_state == Status.Running)
+            {
+                Debug.Assert(current_state != Status.Disabled);
+                Debug.Assert(pending_state == Status.Disabled);
+
+                // GUI requested "disable"
+                pending_state = current_state;
+                Stop();
+            }
+            else if (!isDisabled && pending_state != Status.Disabled)
+            {
+                Debug.Assert(current_state == Status.Stopped);
+                Debug.Assert(pending_state != Status.Stopped);
+
+                // GUI requested "enable"
+                Start();
+                pending_state = Status.Disabled;
+            }
         }
 
         #region IDisposable Support
@@ -100,10 +223,7 @@
             if (!IsDisposed)
             {
                 if (disposing)
-                {
-                    if (Process != null)
-                        Process.Dispose();
-                }
+                    Stop();
 
                 ProcessOptions = null;
                 Process = null;
