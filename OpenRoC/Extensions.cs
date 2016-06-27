@@ -2,6 +2,8 @@
 {
     using System;
     using System.IO;
+    using System.Reflection;
+    using System.Windows.Forms;
 
     public static class Extensions
     {
@@ -20,6 +22,17 @@
         public static bool IsExecutable(this string self)
         {
             return self.IsFile() && self.EndsWith(".exe");
+        }
+
+        public static string GetStatusString(this MonitorableProcess self)
+        {
+            return string.Format("{0} for {1:hh\\:mm\\:ss}", self.State, self.Stopwatch.Elapsed);
+        }
+
+        public static void SetDoubleBuffered(this Control control, bool enable)
+        {
+            PropertyInfo doubleBufferPropertyInfo = control.GetType().GetProperty("DoubleBuffered", BindingFlags.Instance | BindingFlags.NonPublic);
+            if (doubleBufferPropertyInfo != null) doubleBufferPropertyInfo.SetValue(control, enable, null);
         }
     }
 }

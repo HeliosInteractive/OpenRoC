@@ -18,6 +18,7 @@
         {
             InitializeComponent();
             ProcessManager = new ProcessManager();
+            ProcessListView.SetDoubleBuffered(true);
         }
 
         private void DisposeAddedComponents()
@@ -66,10 +67,6 @@
 
         public void UpdateProcessList()
         {
-            List<string> selected_items_before_update = new List<string>();
-            foreach (ListViewItem item in ProcessListView.SelectedItems)
-                selected_items_before_update.Add(item.Text);
-
             foreach (ListViewItem item in ProcessListView.Items)
                 if (!ProcessManager.Contains(item.Text))
                     item.Remove();
@@ -79,6 +76,7 @@
                 if (ProcessListView.Items.ContainsKey(p.ProcessOptions.Path))
                 {
                     ProcessListView.Items[p.ProcessOptions.Path].Checked = p.State != MonitorableProcess.Status.Disabled;
+                    ProcessListView.Items[p.ProcessOptions.Path].SubItems[1].Text = p.GetStatusString();
                 }
                 else
                 {
@@ -91,9 +89,6 @@
 
                     ProcessListView.Items.Add(item);
                 }
-
-                if (selected_items_before_update.Contains(p.ProcessOptions.Path))
-                    ProcessListView.Items[p.ProcessOptions.Path].Selected = true;
             });
         }
 

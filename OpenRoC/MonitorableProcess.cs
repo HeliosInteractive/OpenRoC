@@ -7,6 +7,7 @@
     {
         bool resetTimer = false;
         bool isDisabled = false;
+        bool resetStart = false;
         Status current_state = Status.Stopped;
         Status pending_state = Status.Disabled;
 
@@ -166,6 +167,7 @@
             if (State == Status.Stopped)
                 return;
 
+            resetStart = true;
             Stop();
         }
 
@@ -212,6 +214,12 @@
                 // GUI requested "enable"
                 Start();
                 pending_state = Status.Disabled;
+            }
+            
+            if (!isDisabled && resetStart)
+            {
+                resetStart = false;
+                Start();
             }
         }
 
