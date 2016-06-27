@@ -18,13 +18,16 @@
             if (string.IsNullOrWhiteSpace(opts.Path))
                 return;
 
-            Processes.Add(opts.Path, new MonitorableProcess(opts));
+            MonitorableProcess proc = new MonitorableProcess(opts);
+            Processes.Add(opts.Path, proc);
+            proc.Start();
         }
 
         public void Delete(string path)
         {
             if (Processes.ContainsKey(path))
             {
+                Processes[path].Stop();
                 Processes[path].Dispose();
                 Processes.Remove(path);
             }
@@ -63,7 +66,10 @@
                 if (disposing)
                 {
                     foreach (var pair in Processes)
+                    {
+                        pair.Value.Stop();
                         pair.Value.Dispose();
+                    }
                 }
 
                 IsDisposed = true;

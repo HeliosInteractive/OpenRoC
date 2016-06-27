@@ -84,6 +84,7 @@
     <Compile Include="MainDialog.Designer.cs">
       <DependentUpon>MainDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="ProcessHelper.cs" />
     <Compile Include="ProcessManager.cs" />
     <Compile Include="ProcessOptions.cs" />
     <Compile Include="Program.cs" />
