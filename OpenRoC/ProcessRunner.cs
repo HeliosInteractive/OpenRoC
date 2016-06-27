@@ -22,6 +22,12 @@
             Disabled
         }
 
+        public enum FocusMode
+        {
+            Normal,
+            Aggressive
+        }
+
         public Status State
         {
             get
@@ -266,7 +272,7 @@
                     }
                     else if (ProcessOptions.AlwaysOnTopEnabled)
                     {
-                        BringToFront();
+                        BringToFront(FocusMode.Aggressive);
                     }
                 }
             }
@@ -277,7 +283,7 @@
             get { return (should_start || (Process == null && ProcessOptions.CrashedIfNotRunning && !grace_period_timer.Enabled)); }
         }
 
-        public void BringToFront()
+        public void BringToFront(FocusMode mode)
         {
             if (Process == null || !HasWindow)
                 return;
@@ -291,13 +297,17 @@
             {
                 NativeMethods.SwitchToThisWindow(Process.MainWindowHandle, true);
                 NativeMethods.SetForegroundWindow(Process.MainWindowHandle);
-                NativeMethods.SetWindowPos(
-                    Process.MainWindowHandle,
-                    NativeMethods.HWND_TOPMOST,
-                    0, 0, 0, 0,
-                    NativeMethods.SetWindowPosFlags.SWP_NOSIZE |
-                    NativeMethods.SetWindowPosFlags.SWP_NOMOVE |
-                    NativeMethods.SetWindowPosFlags.SWP_SHOWWINDOW);
+
+                if (mode == FocusMode.Aggressive)
+                {
+                    NativeMethods.SetWindowPos(
+                        Process.MainWindowHandle,
+                        NativeMethods.HWND_TOPMOST,
+                        0, 0, 0, 0,
+                        NativeMethods.SetWindowPosFlags.SWP_NOSIZE |
+                        NativeMethods.SetWindowPosFlags.SWP_NOMOVE |
+                        NativeMethods.SetWindowPosFlags.SWP_SHOWWINDOW);
+                }
             }
         }
 
