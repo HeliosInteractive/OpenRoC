@@ -20,7 +20,6 @@
 
             ProcessRunner proc = new ProcessRunner(opts);
             Processes.Add(opts.Path, proc);
-            proc.Start();
         }
 
         public void Delete(string path)

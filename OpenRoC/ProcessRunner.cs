@@ -2,12 +2,14 @@
 {
     using System;
     using System.Diagnostics;
+    using System.Threading.Tasks;
 
     public class ProcessRunner : IDisposable
     {
         bool resetTimer = false;
         bool isDisabled = false;
         bool resetStart = false;
+        bool hasMainWin = false;
         Status current_state = Status.Stopped;
         Status pending_state = Status.Disabled;
 
@@ -111,7 +113,10 @@
             Process.Start();
             Process.Refresh();
 
-            if (Process.Responding)
+            try { Process.WaitForInputIdle(); hasMainWin = true; }
+            catch (Exception) { hasMainWin = false; }
+
+            if (!hasMainWin || Process.Responding)
             {
                 OnProcessStarted(this, null);
                 State = Status.Running;
@@ -167,8 +172,18 @@
             if (State == Status.Stopped)
                 return;
 
-            resetStart = true;
             Stop();
+
+            if (ProcessOptions.GracePeriodEnabled)
+            {
+                Task
+                    .Delay(TimeSpan.FromSeconds(ProcessOptions.GracePeriodDuration))
+                    .ContinueWith(fn => { resetStart = true; });
+            }
+            else
+            {
+                resetStart = true;
+            }
         }
 
         private void OnProcessStarted(object sender, EventArgs e)
@@ -216,10 +231,56 @@
                 pending_state = Status.Disabled;
             }
             
-            if (!isDisabled && resetStart)
+            if (!isDisabled)
             {
-                resetStart = false;
-                Start();
+                if (resetStart || (Process == null && ProcessOptions.CrashedIfNotRunning))
+                {
+                    Debug.Assert(State == Status.Stopped);
+                    resetStart = false;
+                    Start();
+                }
+                else if (Process != null)
+                {
+                    Process.Refresh();
+
+                    if (ProcessOptions.CrashedIfUnresponsive && !Process.Responding)
+                    {
+                        if (ProcessOptions.DoubleCheckEnabled)
+                        {
+                            Task
+                                .Delay(TimeSpan.FromSeconds(ProcessOptions.DoubleCheckDuration))
+                                .ContinueWith(fn =>
+                                {
+                                    if (Process != null)
+                                    {
+                                        Process.Refresh();
+                                        resetStart = !Process.Responding;
+                                    }
+                                });
+                        }
+                        else
+                        {
+                            Debug.Assert(State != Status.Stopped);
+                            resetStart = true;
+                        }
+
+                    }
+                    else if (hasMainWin && ProcessOptions.AlwaysOnTopEnabled)
+                    {
+                        if (NativeMethods.GetForegroundWindow() != Process.MainWindowHandle)
+                        {
+                            NativeMethods.SwitchToThisWindow(Process.MainWindowHandle, true);
+                            NativeMethods.SetForegroundWindow(Process.MainWindowHandle);
+                            NativeMethods.SetWindowPos(
+                                Process.MainWindowHandle,
+                                NativeMethods.HWND_TOPMOST,
+                                0, 0, 0, 0,
+                                NativeMethods.SetWindowPosFlags.SWP_NOSIZE |
+                                NativeMethods.SetWindowPosFlags.SWP_NOMOVE |
+                                NativeMethods.SetWindowPosFlags.SWP_SHOWWINDOW);
+                        }
+                    }
+                }
             }
         }
 

@@ -2,7 +2,6 @@
 {
     using System.IO;
     using System.Windows.Forms;
-    using System.Collections.Generic;
 
     public partial class MainDialog : Form
     {

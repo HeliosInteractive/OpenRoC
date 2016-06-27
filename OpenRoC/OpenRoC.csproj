@@ -64,6 +64,7 @@
       <DependentUpon>AboutDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Extensions.cs" />
+    <Compile Include="NativeMethods.cs" />
     <Compile Include="ProcessRunner.cs" />
     <Compile Include="ProcessDialog.cs">
       <SubType>Form</SubType>
