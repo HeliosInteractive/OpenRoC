@@ -45,11 +45,15 @@
             this.RightClickContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.ContextMenuAddButton = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextMenuDeleteButton = new System.Windows.Forms.ToolStripMenuItem();
-            this.ContextMenuSeparator = new System.Windows.Forms.ToolStripSeparator();
+            this.ContextMenuSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.ContextMenuEditButton = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextMenuDisableButton = new System.Windows.Forms.ToolStripMenuItem();
             this.MainDialogUpdateTimer = new System.Windows.Forms.Timer(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.ContextMenuSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.ContextMenuStart = new System.Windows.Forms.ToolStripMenuItem();
+            this.ContextMenuStop = new System.Windows.Forms.ToolStripMenuItem();
+            this.ContextMenuShow = new System.Windows.Forms.ToolStripMenuItem();
             this.StatusStrip.SuspendLayout();
             this.MenuStrip.SuspendLayout();
             this.RightClickContextMenuStrip.SuspendLayout();
@@ -174,43 +178,47 @@
             this.RightClickContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ContextMenuAddButton,
             this.ContextMenuDeleteButton,
-            this.ContextMenuSeparator,
+            this.ContextMenuSeparator1,
             this.ContextMenuEditButton,
-            this.ContextMenuDisableButton});
+            this.ContextMenuDisableButton,
+            this.ContextMenuSeparator2,
+            this.ContextMenuStart,
+            this.ContextMenuStop,
+            this.ContextMenuShow});
             this.RightClickContextMenuStrip.Name = "ContextMenuStrip";
             this.RightClickContextMenuStrip.ShowImageMargin = false;
-            this.RightClickContextMenuStrip.Size = new System.Drawing.Size(88, 98);
+            this.RightClickContextMenuStrip.Size = new System.Drawing.Size(128, 192);
             // 
             // ContextMenuAddButton
             // 
             this.ContextMenuAddButton.Name = "ContextMenuAddButton";
-            this.ContextMenuAddButton.Size = new System.Drawing.Size(87, 22);
+            this.ContextMenuAddButton.Size = new System.Drawing.Size(127, 22);
             this.ContextMenuAddButton.Text = "Add";
             this.ContextMenuAddButton.Click += new System.EventHandler(this.OnAddButtonClick);
             // 
             // ContextMenuDeleteButton
             // 
             this.ContextMenuDeleteButton.Name = "ContextMenuDeleteButton";
-            this.ContextMenuDeleteButton.Size = new System.Drawing.Size(87, 22);
+            this.ContextMenuDeleteButton.Size = new System.Drawing.Size(127, 22);
             this.ContextMenuDeleteButton.Text = "Delete";
             this.ContextMenuDeleteButton.Click += new System.EventHandler(this.OnContextMenuDeleteButtonClick);
             // 
-            // ContextMenuSeparator
+            // ContextMenuSeparator1
             // 
-            this.ContextMenuSeparator.Name = "ContextMenuSeparator";
-            this.ContextMenuSeparator.Size = new System.Drawing.Size(84, 6);
+            this.ContextMenuSeparator1.Name = "ContextMenuSeparator1";
+            this.ContextMenuSeparator1.Size = new System.Drawing.Size(124, 6);
             // 
             // ContextMenuEditButton
             // 
             this.ContextMenuEditButton.Name = "ContextMenuEditButton";
-            this.ContextMenuEditButton.Size = new System.Drawing.Size(87, 22);
+            this.ContextMenuEditButton.Size = new System.Drawing.Size(127, 22);
             this.ContextMenuEditButton.Text = "Edit";
             this.ContextMenuEditButton.Click += new System.EventHandler(this.OnContextMenuEditButtonClick);
             // 
             // ContextMenuDisableButton
             // 
             this.ContextMenuDisableButton.Name = "ContextMenuDisableButton";
-            this.ContextMenuDisableButton.Size = new System.Drawing.Size(87, 22);
+            this.ContextMenuDisableButton.Size = new System.Drawing.Size(127, 22);
             this.ContextMenuDisableButton.Text = "Disable";
             this.ContextMenuDisableButton.Click += new System.EventHandler(this.OnContextMenuDisableButtonClick);
             // 
@@ -218,6 +226,32 @@
             // 
             this.MainDialogUpdateTimer.Enabled = true;
             this.MainDialogUpdateTimer.Tick += new System.EventHandler(this.OnMainDialogUpdateTimerTick);
+            // 
+            // ContextMenuSeparator2
+            // 
+            this.ContextMenuSeparator2.Name = "ContextMenuSeparator2";
+            this.ContextMenuSeparator2.Size = new System.Drawing.Size(124, 6);
+            // 
+            // ContextMenuStart
+            // 
+            this.ContextMenuStart.Name = "ContextMenuStart";
+            this.ContextMenuStart.Size = new System.Drawing.Size(127, 22);
+            this.ContextMenuStart.Text = "Start Process";
+            this.ContextMenuStart.Click += new System.EventHandler(this.OnContextMenuStartClick);
+            // 
+            // ContextMenuStop
+            // 
+            this.ContextMenuStop.Name = "ContextMenuStop";
+            this.ContextMenuStop.Size = new System.Drawing.Size(127, 22);
+            this.ContextMenuStop.Text = "Stop Process";
+            this.ContextMenuStop.Click += new System.EventHandler(this.OnContextMenuStopClick);
+            // 
+            // ContextMenuShow
+            // 
+            this.ContextMenuShow.Name = "ContextMenuShow";
+            this.ContextMenuShow.Size = new System.Drawing.Size(127, 22);
+            this.ContextMenuShow.Text = "Show Window";
+            this.ContextMenuShow.Click += new System.EventHandler(this.OnContextMenuShowClick);
             // 
             // MainDialog
             // 
@@ -256,11 +290,15 @@
         private System.Windows.Forms.ContextMenuStrip RightClickContextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuAddButton;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuDeleteButton;
-        private System.Windows.Forms.ToolStripSeparator ContextMenuSeparator;
+        private System.Windows.Forms.ToolStripSeparator ContextMenuSeparator1;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuEditButton;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuDisableButton;
         private System.Windows.Forms.Timer MainDialogUpdateTimer;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.ToolStripSeparator ContextMenuSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem ContextMenuStart;
+        private System.Windows.Forms.ToolStripMenuItem ContextMenuStop;
+        private System.Windows.Forms.ToolStripMenuItem ContextMenuShow;
     }
 }
 

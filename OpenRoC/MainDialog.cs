@@ -197,5 +197,36 @@
             ProcessManager.ProcessList.ForEach(p => p.Monitor());
             UpdateProcessList();
         }
+
+        private void OnContextMenuShowClick(object sender, System.EventArgs e)
+        {
+            if (ProcessListView.FocusedItem == null)
+                return;
+
+            ProcessManager.Get(ProcessListView.FocusedItem.Text)
+                .BringToFront(ProcessRunner.FocusMode.Normal);
+        }
+
+        private void OnContextMenuStopClick(object sender, System.EventArgs e)
+        {
+            if (ProcessListView.FocusedItem == null)
+                return;
+
+            ProcessManager.Get(ProcessListView.FocusedItem.Text).Stop();
+        }
+
+        private void OnContextMenuStartClick(object sender, System.EventArgs e)
+        {
+            if (ProcessListView.FocusedItem == null)
+                return;
+
+            ProcessRunner process = ProcessManager.Get(ProcessListView.FocusedItem.Text);
+
+            if (process.IsDisabled)
+                process.IsDisabled = false;
+
+            if (process.State == ProcessRunner.Status.Stopped)
+                process.Start();
+        }
     }
 }
