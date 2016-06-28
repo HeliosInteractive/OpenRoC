@@ -28,7 +28,7 @@
 
         public static void TaskKill(string name)
         {
-            ExecuteScript("taskkill", string.Format("/F /T /IM \"{0}\"", name, true));
+            ExecuteScript("taskkill", string.Format("/F /T /IM \"{0}\"", name), true);
         }
 
         public static void TaskKill(Process process)
