@@ -61,8 +61,12 @@
             set { SwapOptions(value); }
         }
 
-        public ProcessRunner()
+        internal ProcessRunner() { /* stub for XML serializer */ }
+
+        public ProcessRunner(ProcessOptions opts)
         {
+            options = opts.Clone() as ProcessOptions;
+
             currentState = Status.Invalid;
             previousState = Status.Invalid;
             startSignal = new Signal(false);
@@ -70,7 +74,6 @@
             resetTimer = new Signal(false);
             gracePeriodTimer = new Timer { AutoReset = false };
             doubleCheckTimer = new Timer { AutoReset = false };
-            options = new ProcessOptions();
             Stopwatch = new Stopwatch();
 
             gracePeriodTimer.AutoReset = false;
@@ -78,12 +81,7 @@
 
             doubleCheckTimer.AutoReset = false;
             doubleCheckTimer.Elapsed += OnDoubleCheckTimeElapsed;
-        }
 
-        public ProcessRunner(ProcessOptions opts)
-            : this()
-        {
-            options = opts;
             State = Status.Stopped;
         }
 
