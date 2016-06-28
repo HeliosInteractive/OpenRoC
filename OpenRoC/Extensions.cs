@@ -2,9 +2,11 @@
 {
     using System;
     using System.IO;
+    using System.Xml;
     using System.Linq;
     using System.Reflection;
     using System.Windows.Forms;
+    using System.Xml.Serialization;
     using System.Collections.Generic;
 
     public static class Extensions
@@ -40,7 +42,7 @@
         public static string ToColonDelimitedString(this Dictionary<string, string> self)
         {
             if (self.Count == 0)
-                return string.Empty;
+                return null;
 
             return string.Join(";", self
                 .Select(x => string.Format("{0}={1}", x.Key, x.Value))
@@ -63,6 +65,20 @@
                 .ForEach(pair => self.Add(pair.First(), pair.Last()));
 
             return true;
+        }
+
+        public static string ToXmlNodeString<T>(this T self)
+        {
+            XmlSerializerNamespaces serializer_namespace = new XmlSerializerNamespaces(new[] { XmlQualifiedName.Empty });
+            XmlWriterSettings serializer_settings = new XmlWriterSettings { Indent = true, OmitXmlDeclaration = true };
+            XmlSerializer serializer = new XmlSerializer(typeof(T), string.Empty);
+
+            using (StringWriter string_writer = new StringWriter())
+            using (XmlWriter xml_writer = XmlWriter.Create(string_writer, serializer_settings))
+            {
+                serializer.Serialize(xml_writer, self, serializer_namespace);
+                return string_writer.ToString();
+            }
         }
     }
 }
