@@ -2,6 +2,7 @@
 {
     using System;
     using System.Linq;
+    using System.Xml.Serialization;
     using System.Collections.Generic;
 
     public class ProcessManager : IDisposable
@@ -53,9 +54,31 @@
         public List<ProcessRunner> ProcessList
         {
             get { return Processes.Values.ToList(); }
+            set
+            {
+                if (Processes.Count > 0)
+                {
+                    foreach (var pair in Processes)
+                    {
+                        pair.Value.Stop();
+                        pair.Value.Dispose();
+                    }
+                }
+
+                if (value == null)
+                    return;
+
+                value.ForEach(runner =>
+                {
+                    Add(runner.ProcessOptions.Clone() as ProcessOptions);
+                    Get(runner.ProcessOptions.Path).State = runner.State;
+                });
+            }
         }
 
         #region IDisposable Support
+
+        [XmlIgnore]
         public bool IsDisposed { get; private set; } = false;
 
         protected virtual void Dispose(bool disposing)
@@ -71,6 +94,7 @@
                     }
                 }
 
+                ProcessList = null;
                 IsDisposed = true;
             }
         }
