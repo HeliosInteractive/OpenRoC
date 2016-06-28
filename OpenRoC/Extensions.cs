@@ -8,6 +8,7 @@
     using System.Windows.Forms;
     using System.Xml.Serialization;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
 
     public static class Extensions
     {
@@ -67,6 +68,8 @@
             return true;
         }
 
+        // http://stackoverflow.com/a/3839419/388751
+        [SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")]
         public static string ToXmlNodeString<T>(this T self)
         {
             XmlSerializerNamespaces serializer_namespace = new XmlSerializerNamespaces(new[] { XmlQualifiedName.Empty });
