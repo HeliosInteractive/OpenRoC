@@ -1,20 +1,21 @@
 ﻿namespace oroc
 {
     using System;
+    using System.IO;
     using System.Timers;
     using System.Diagnostics;
-    using System.IO;
+    using Signal = System.Threading.ManualResetEventSlim;
 
     public class ProcessRunner : IDisposable
     {
-        bool is_disabled = false;
-        bool reset_timer = false;
-        bool should_start = false;
-        bool double_check = false;
-        Status current_state = Status.Stopped;
-        Status pending_state = Status.Disabled;
-        Timer grace_period_timer = new Timer();
-        Timer double_check_timer = new Timer();
+        bool isDisabled = false;
+        Status currentState = Status.Stopped;
+        Status pendingState = Status.Disabled;
+        Signal startSignal = new Signal(false);
+        Signal checkSignal = new Signal(false);
+        Signal resetTimer = new Signal(false);
+        Timer gracePeriodTimer = new Timer();
+        Timer doubleCheckTimer = new Timer();
 
         public enum Status
         {
@@ -33,10 +34,10 @@
         {
             get
             {
-                if (is_disabled)
+                if (isDisabled)
                     return Status.Disabled;
                 else
-                    return current_state;
+                    return currentState;
             }
 
             private set
@@ -45,10 +46,10 @@
                 {
                     IsDisabled = true;
                 }
-                else if (value != current_state)
+                else if (value != currentState)
                 {
-                    current_state = value;
-                    reset_timer = true;
+                    currentState = value;
+                    resetTimer.Set();
                 }
             }
         }
@@ -57,7 +58,7 @@
         {
             get
             {
-                return is_disabled;
+                return isDisabled;
             }
 
             set
@@ -67,15 +68,15 @@
 
                 if (value)
                 {
-                    is_disabled = true;
-                    reset_timer = true;
+                    isDisabled = true;
+                    resetTimer.Set();
 
-                    grace_period_timer.Stop();
-                    double_check_timer.Stop();
+                    gracePeriodTimer.Stop();
+                    doubleCheckTimer.Stop();
                 }
                 else
                 {
-                    is_disabled = false;
+                    isDisabled = false;
                 }
             }
         }
@@ -91,14 +92,14 @@
             State = Status.Stopped;
             Stopwatch = new Stopwatch();
 
-            grace_period_timer.AutoReset = false;
-            grace_period_timer.Elapsed += GracePeriodTimeElapsed;
+            gracePeriodTimer.AutoReset = false;
+            gracePeriodTimer.Elapsed += GracePeriodTimeElapsed;
 
-            double_check_timer.AutoReset = false;
-            double_check_timer.Elapsed += DoubleCheckTimeElapsed;
+            doubleCheckTimer.AutoReset = false;
+            doubleCheckTimer.Elapsed += DoubleCheckTimeElapsed;
         }
 
-        public void UpdateOptions(ProcessOptions opts)
+        public void SwapOptions(ProcessOptions opts)
         {
             if (ReferenceEquals(ProcessOptions, opts))
                 return;
@@ -171,8 +172,8 @@
                 return;
 
             HasWindow = false;
-            grace_period_timer.Stop();
-            double_check_timer.Stop();
+            gracePeriodTimer.Stop();
+            doubleCheckTimer.Stop();
 
             Process.Refresh();
 
@@ -221,39 +222,37 @@
 
         public void Monitor()
         {
-            if (reset_timer)
+            if (resetTimer.IsSet)
             {
                 Stopwatch.Restart();
-                reset_timer = false;
+                resetTimer.Reset();
             }
 
-            if (IsDisabled && current_state == Status.Running)
+            if (IsDisabled && currentState == Status.Running)
             {
-                Debug.Assert(current_state != Status.Disabled);
-                Debug.Assert(pending_state == Status.Disabled);
+                Debug.Assert(currentState != Status.Disabled);
+                Debug.Assert(pendingState == Status.Disabled);
 
-                // GUI requested "disable"
-                pending_state = current_state;
+                pendingState = currentState;
                 Stop();
             }
-            else if (!IsDisabled && pending_state != Status.Disabled)
+            else if (!IsDisabled)
             {
-                Debug.Assert(current_state == Status.Stopped);
-                Debug.Assert(pending_state != Status.Stopped);
+                if (pendingState != Status.Disabled)
+                {
+                    Debug.Assert(currentState == Status.Stopped);
+                    Debug.Assert(pendingState != Status.Stopped);
 
-                // GUI requested "enable"
-                Start();
-                pending_state = Status.Disabled;
-            }
-            
-            if (!IsDisabled)
-            {
+                    pendingState = Status.Disabled;
+                    Start();
+                }
+
                 if (ShouldStart)
                 {
                     Debug.Assert(State == Status.Stopped);
                     Debug.Assert(Process == null);
 
-                    should_start = false;
+                    startSignal.Reset();
                     Start();
                 }
 
@@ -268,23 +267,27 @@
                     {
                         if (ProcessOptions.DoubleCheckEnabled)
                         {
-                            if (double_check)
+                            if (checkSignal.IsSet)
                             {
-                                should_start = !Process.Responding;
-                                double_check = false;
+                                if (!Process.Responding)
+                                    startSignal.Set();
+                                else
+                                    startSignal.Reset();
+
+                                checkSignal.Reset();
                             }
-                            else if (!double_check_timer.Enabled)
+                            else if (!doubleCheckTimer.Enabled)
                             {
-                                double_check_timer.Interval = TimeSpan.FromSeconds(ProcessOptions.DoubleCheckDuration).TotalMilliseconds;
-                                double_check_timer.Start();
+                                doubleCheckTimer.Interval = TimeSpan.FromSeconds(ProcessOptions.DoubleCheckDuration).TotalMilliseconds;
+                                doubleCheckTimer.Start();
                             }
                         }
                         else
                         {
-                            should_start = true;
+                            startSignal.Set();
                         }
 
-                        if (should_start && current_state == Status.Stopped)
+                        if (startSignal.IsSet && currentState == Status.Stopped)
                             Stop();
                     }
                     else if (ProcessOptions.AlwaysOnTopEnabled)
@@ -293,11 +296,6 @@
                     }
                 }
             }
-        }
-
-        private bool ShouldStart
-        {
-            get { return (should_start || (Process == null && ProcessOptions.CrashedIfNotRunning && !grace_period_timer.Enabled)); }
         }
 
         public void BringToFront(FocusMode mode)
@@ -328,6 +326,11 @@
             }
         }
 
+        private bool ShouldStart
+        {
+            get { return (startSignal.IsSet || (Process == null && ProcessOptions.CrashedIfNotRunning && !gracePeriodTimer.Enabled)); }
+        }
+
         #region Event callbacks
 
         private void OnProcessStopped(object sender, EventArgs e)
@@ -336,26 +339,26 @@
 
             if (ProcessOptions.GracePeriodEnabled)
             {
-                if (!grace_period_timer.Enabled)
+                if (!gracePeriodTimer.Enabled)
                 {
-                    grace_period_timer.Interval = TimeSpan.FromSeconds(ProcessOptions.GracePeriodDuration).TotalMilliseconds;
-                    grace_period_timer.Start();
+                    gracePeriodTimer.Interval = TimeSpan.FromSeconds(ProcessOptions.GracePeriodDuration).TotalMilliseconds;
+                    gracePeriodTimer.Start();
                 }
             }
             else
             {
-                should_start = true;
+                startSignal.Set();
             }
         }
 
         private void DoubleCheckTimeElapsed(object sender, ElapsedEventArgs e)
         {
-            double_check = true;
+            checkSignal.Set();
         }
 
         private void GracePeriodTimeElapsed(object sender, ElapsedEventArgs e)
         {
-            should_start = true;
+            startSignal.Set();
         }
 
         #endregion
@@ -369,18 +372,30 @@
             {
                 if (disposing)
                 {
-                    if (grace_period_timer != null)
-                        grace_period_timer.Dispose();
+                    if (gracePeriodTimer != null)
+                        gracePeriodTimer.Dispose();
 
-                    if (double_check_timer != null)
-                        double_check_timer.Dispose();
+                    if (doubleCheckTimer != null)
+                        doubleCheckTimer.Dispose();
+
+                    if (startSignal != null)
+                        startSignal.Dispose();
+
+                    if (checkSignal != null)
+                        checkSignal.Dispose();
+
+                    if (resetTimer != null)
+                        resetTimer.Dispose();
 
                     Stop();
                 }
 
-                grace_period_timer = null;
-                double_check_timer = null;
+                gracePeriodTimer = null;
+                doubleCheckTimer = null;
                 ProcessOptions = null;
+                startSignal = null;
+                checkSignal = null;
+                resetTimer = null;
                 Process = null;
 
                 IsDisposed = true;

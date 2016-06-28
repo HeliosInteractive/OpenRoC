@@ -47,7 +47,7 @@
 
         public void Update(ProcessOptions opts)
         {
-            Get(opts.Path).UpdateOptions(opts);
+            Get(opts.Path).SwapOptions(opts);
         }
 
         public List<ProcessRunner> ProcessList
