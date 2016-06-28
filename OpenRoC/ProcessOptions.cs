@@ -2,6 +2,7 @@
 {
     using System;
     using System.ComponentModel;
+    using System.Xml.Serialization;
     using System.Collections.Generic;
 
     public class ProcessOptions : INotifyPropertyChanged, ICloneable
@@ -314,6 +315,7 @@
             }
         }
 
+        [XmlIgnore]
         public Dictionary<string, string> EnvironmentVariablesDictionary
         {
             get { return environmentVariables; }
