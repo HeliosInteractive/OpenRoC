@@ -4,21 +4,23 @@
     using System.IO;
     using System.Timers;
     using System.Diagnostics;
+    using System.Xml.Serialization;
     using Signal = System.Threading.ManualResetEventSlim;
 
     public class ProcessRunner : IDisposable
     {
-        bool isDisabled = false;
-        Status currentState = Status.Stopped;
-        Status pendingState = Status.Disabled;
-        Signal startSignal = new Signal(false);
-        Signal checkSignal = new Signal(false);
-        Signal resetTimer = new Signal(false);
-        Timer gracePeriodTimer = new Timer();
-        Timer doubleCheckTimer = new Timer();
+        Status currentState;
+        Status previousState;
+        Signal startSignal;
+        Signal checkSignal;
+        Signal resetTimer;
+        Timer gracePeriodTimer;
+        Timer doubleCheckTimer;
+        ProcessOptions options;
 
         public enum Status
         {
+            Invalid,
             Stopped,
             Running,
             Disabled
@@ -32,71 +34,67 @@
 
         public Status State
         {
-            get
-            {
-                if (isDisabled)
-                    return Status.Disabled;
-                else
-                    return currentState;
-            }
-
-            private set
-            {
-                if (value == Status.Disabled)
-                {
-                    IsDisabled = true;
-                }
-                else if (value != currentState)
-                {
-                    currentState = value;
-                    resetTimer.Set();
-                }
-            }
-        }
-
-        public bool IsDisabled
-        {
-            get
-            {
-                return isDisabled;
-            }
-
+            get { return currentState; }
             set
             {
-                if (IsDisabled == value)
+                if (value == State)
                     return;
 
-                if (value)
-                {
-                    isDisabled = true;
-                    resetTimer.Set();
-
-                    gracePeriodTimer.Stop();
-                    doubleCheckTimer.Stop();
-                }
-                else
-                {
-                    isDisabled = false;
-                }
+                previousState = currentState;
+                currentState = value;
+                ResetTimers();
             }
         }
 
+        [XmlIgnore]
         public Process Process { get; private set; }
-        public Stopwatch Stopwatch { get; private set; }
-        public bool HasWindow { get; private set; } = false;
-        public ProcessOptions ProcessOptions { get; private set; }
 
-        public ProcessRunner(ProcessOptions opts)
+        [XmlIgnore]
+        public Stopwatch Stopwatch { get; private set; }
+
+        [XmlIgnore]
+        public bool HasWindow { get; private set; } = false;
+
+        public ProcessOptions ProcessOptions
         {
-            ProcessOptions = opts;
-            State = Status.Stopped;
+            get { return options; }
+            set { SwapOptions(value); }
+        }
+
+        public ProcessRunner()
+        {
+            currentState = Status.Invalid;
+            previousState = Status.Invalid;
+            startSignal = new Signal(false);
+            checkSignal = new Signal(false);
+            resetTimer = new Signal(false);
+            gracePeriodTimer = new Timer { AutoReset = false };
+            doubleCheckTimer = new Timer { AutoReset = false };
+            options = new ProcessOptions();
             Stopwatch = new Stopwatch();
 
             gracePeriodTimer.AutoReset = false;
-            gracePeriodTimer.Elapsed += GracePeriodTimeElapsed;
+            gracePeriodTimer.Elapsed += OnGracePeriodTimeElapsed;
 
             doubleCheckTimer.AutoReset = false;
-            doubleCheckTimer.Elapsed += DoubleCheckTimeElapsed;
+            doubleCheckTimer.Elapsed += OnDoubleCheckTimeElapsed;
+        }
+
+        public ProcessRunner(ProcessOptions opts)
+            : this()
+        {
+            options = opts;
+            State = Status.Stopped;
+
+            try
+            {
+                var str = this.ToXmlNodeString();
+                Console.WriteLine(str);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.InnerException.Message);
+            }
         }
 
         public void SwapOptions(ProcessOptions opts)
@@ -109,7 +107,7 @@
             if (State == Status.Running)
                 Stop();
 
-            ProcessOptions = opts;
+            options = opts;
 
             if (before_swap == Status.Running)
                 Start();
@@ -117,7 +115,7 @@
 
         public void Start()
         {
-            if (State == Status.Running)
+            if (Process != null)
                 Stop();
 
             if (ProcessOptions.PreLaunchScriptEnabled)
@@ -160,8 +158,9 @@
 
             if (!HasWindow || Process.Responding)
             {
-                State = Status.Running;
-                IsDisabled = false;
+                previousState = Status.Invalid;
+                currentState = Status.Running;
+                ResetTimers();
             }
             else Stop();
         }
@@ -181,12 +180,7 @@
             Process.Disposed -= OnProcessStopped;
             Process.Exited -= OnProcessStopped;
 
-            if (Process.HasExited)
-            {
-                if (State == Status.Running)
-                    State = Status.Stopped;
-            }
-            else
+            if (!Process.HasExited)
             {
                 Process.CloseMainWindow();
                 Process.WaitForExit(1000);
@@ -198,23 +192,18 @@
             if (ProcessOptions.AggressiveCleanupEnabled)
             {
                 if (ProcessOptions.AggressiveCleanupByName)
-                    ProcessHelper.ExecuteScript("taskkill", string.Format("/F /T /IM \"{0}\"", Path.GetFileName(ProcessOptions.Path)), true);
+                    ProcessHelper.TaskKill(Path.GetFileName(ProcessOptions.Path));
 
                 if (ProcessOptions.AggressiveCleanupByPID)
-                {
-                    long pid = 0;
-                    try { pid = Process.Id; }
-                    catch(Exception) { pid = 0; }
-
-                    if (pid > 0)
-                        ProcessHelper.ExecuteScript("taskkill", string.Format("/F /T /PID {0}", pid), true);
-                }
+                    ProcessHelper.TaskKill(Process);
             }
 
             Process.Dispose();
             Process = null;
 
-            State = Status.Stopped;
+            previousState = Status.Invalid;
+            currentState = Status.Stopped;
+            ResetTimers();
 
             if (ProcessOptions.PostCrashScriptEnabled)
                 ProcessHelper.ExecuteScript(ProcessOptions.PostCrashScriptPath);
@@ -228,72 +217,72 @@
                 resetTimer.Reset();
             }
 
-            if (IsDisabled && currentState == Status.Running)
+            if (ShouldStart)
             {
-                Debug.Assert(currentState != Status.Disabled);
-                Debug.Assert(pendingState == Status.Disabled);
-
-                pendingState = currentState;
-                Stop();
+                startSignal.Reset();
+                Start();
             }
-            else if (!IsDisabled)
+
+            if (previousState == Status.Running && Process != null)
             {
-                if (pendingState != Status.Disabled)
+                if (currentState != Status.Running)
                 {
-                    Debug.Assert(currentState == Status.Stopped);
-                    Debug.Assert(pendingState != Status.Stopped);
+                    Status previousStateSnapshot = previousState;
+                    Status currentStateSnapshot = currentState;
 
-                    pendingState = Status.Disabled;
-                    Start();
+                    Stop();
+
+                    previousState = previousStateSnapshot;
+                    currentState = currentStateSnapshot;
                 }
-
-                if (ShouldStart)
-                {
-                    Debug.Assert(State == Status.Stopped);
-                    Debug.Assert(Process == null);
-
-                    startSignal.Reset();
+            }
+            else
+            if (previousState == Status.Stopped && Process == null)
+            {
+                if (currentState == Status.Running)
                     Start();
-                }
+            }
+            else
+            if (previousState == Status.Disabled && Process == null)
+            {
+                if (currentState == Status.Running)
+                    Start();
+            }
 
-                if (HasWindow)
+            if (currentState != Status.Disabled && HasWindow)
+            {
+                Process.Refresh();
+
+                if (ProcessOptions.CrashedIfUnresponsive && !Process.Responding)
                 {
-                    Debug.Assert(State == Status.Running);
-                    Debug.Assert(Process != null);
-
-                    Process.Refresh();
-
-                    if (ProcessOptions.CrashedIfUnresponsive && !Process.Responding)
+                    if (ProcessOptions.DoubleCheckEnabled)
                     {
-                        if (ProcessOptions.DoubleCheckEnabled)
+                        if (checkSignal.IsSet)
                         {
-                            if (checkSignal.IsSet)
-                            {
-                                if (!Process.Responding)
-                                    startSignal.Set();
-                                else
-                                    startSignal.Reset();
+                            if (!Process.Responding)
+                                startSignal.Set();
+                            else
+                                startSignal.Reset();
 
-                                checkSignal.Reset();
-                            }
-                            else if (!doubleCheckTimer.Enabled)
-                            {
-                                doubleCheckTimer.Interval = TimeSpan.FromSeconds(ProcessOptions.DoubleCheckDuration).TotalMilliseconds;
-                                doubleCheckTimer.Start();
-                            }
+                            checkSignal.Reset();
                         }
-                        else
+                        else if (!doubleCheckTimer.Enabled)
                         {
-                            startSignal.Set();
+                            doubleCheckTimer.Interval = TimeSpan.FromSeconds(ProcessOptions.DoubleCheckDuration).TotalMilliseconds;
+                            doubleCheckTimer.Start();
                         }
-
-                        if (startSignal.IsSet && currentState == Status.Stopped)
-                            Stop();
                     }
-                    else if (ProcessOptions.AlwaysOnTopEnabled)
+                    else
                     {
-                        BringToFront(FocusMode.Aggressive);
+                        startSignal.Set();
                     }
+
+                    if (startSignal.IsSet && currentState == Status.Stopped)
+                        Stop();
+                }
+                else if (ProcessOptions.AlwaysOnTopEnabled)
+                {
+                    BringToFront(FocusMode.Aggressive);
                 }
             }
         }
@@ -326,6 +315,13 @@
             }
         }
 
+        private void ResetTimers()
+        {
+            resetTimer.Set();
+            gracePeriodTimer.Stop();
+            doubleCheckTimer.Stop();
+        }
+
         private bool ShouldStart
         {
             get { return (startSignal.IsSet || (Process == null && ProcessOptions.CrashedIfNotRunning && !gracePeriodTimer.Enabled)); }
@@ -351,12 +347,12 @@
             }
         }
 
-        private void DoubleCheckTimeElapsed(object sender, ElapsedEventArgs e)
+        private void OnDoubleCheckTimeElapsed(object sender, ElapsedEventArgs e)
         {
             checkSignal.Set();
         }
 
-        private void GracePeriodTimeElapsed(object sender, ElapsedEventArgs e)
+        private void OnGracePeriodTimeElapsed(object sender, ElapsedEventArgs e)
         {
             startSignal.Set();
         }
@@ -364,6 +360,8 @@
         #endregion
 
         #region IDisposable Support
+
+        [XmlIgnore]
         public bool IsDisposed { get; private set; } = false;
 
         protected virtual void Dispose(bool disposing)
@@ -372,22 +370,23 @@
             {
                 if (disposing)
                 {
+                    ResetTimers();
+                    Stop();
+
                     if (gracePeriodTimer != null)
                         gracePeriodTimer.Dispose();
 
                     if (doubleCheckTimer != null)
                         doubleCheckTimer.Dispose();
 
+                    if (resetTimer != null)
+                        resetTimer.Dispose();
+
                     if (startSignal != null)
                         startSignal.Dispose();
 
                     if (checkSignal != null)
                         checkSignal.Dispose();
-
-                    if (resetTimer != null)
-                        resetTimer.Dispose();
-
-                    Stop();
                 }
 
                 gracePeriodTimer = null;

@@ -155,12 +155,15 @@
             if (ProcessListView.FocusedItem == null)
                 return;
 
-            ProcessManager.Get(ProcessListView.FocusedItem.Text).IsDisabled = true;
+            ProcessManager.Get(ProcessListView.FocusedItem.Text).State = ProcessRunner.Status.Disabled;
         }
 
         private void OnProcessListViewItemChecked(object sender, ItemCheckedEventArgs e)
         {
-            ProcessManager.Get(e.Item.Text).IsDisabled = !e.Item.Checked;
+            if (e.Item.Checked)
+                ProcessManager.Get(e.Item.Text).State = ProcessRunner.Status.Running;
+            else
+                ProcessManager.Get(e.Item.Text).State = ProcessRunner.Status.Disabled;
         }
 
         private void OnProcessListViewDragDrop(object sender, DragEventArgs e)
@@ -222,10 +225,7 @@
 
             ProcessRunner process = ProcessManager.Get(ProcessListView.FocusedItem.Text);
 
-            if (process.IsDisabled)
-                process.IsDisabled = false;
-
-            if (process.State == ProcessRunner.Status.Stopped)
+            if (process.State != ProcessRunner.Status.Running)
                 process.Start();
         }
     }
