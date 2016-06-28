@@ -85,16 +85,6 @@
         {
             options = opts;
             State = Status.Stopped;
-
-            try
-            {
-                var str = this.ToXmlNodeString();
-                Console.WriteLine(str);
-            }
-            catch(Exception ex)
-            {
-                Console.WriteLine(ex.InnerException.Message);
-            }
         }
 
         public void SwapOptions(ProcessOptions opts)
