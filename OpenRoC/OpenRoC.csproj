@@ -89,6 +89,7 @@
     <Compile Include="ProcessOptions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="SettingsDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -135,6 +136,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="phoenix.ico" />
+    <None Include="Resources\OpenRoc.xml" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -59,5 +59,53 @@ namespace oroc.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+        ///&lt;openroc&gt;
+        ///    &lt;log4net&gt;
+        ///        &lt;appender name=&quot;OpenRocRollingFile&quot; type=&quot;log4net.Appender.RollingFileAppender&quot;&gt;
+        ///            &lt;file value=&quot;OpenRoc.log&quot; /&gt;
+        ///            &lt;appendToFile value=&quot;true&quot; /&gt;
+        ///            &lt;maximumFileSize value=&quot;1MB&quot; /&gt;
+        ///            &lt;maxSizeRollBackups value=&quot;20&quot; /&gt;
+        ///
+        ///            &lt;layout type=&quot;log4net.Layout.PatternLayout&quot;&gt;
+        ///                &lt;conversionPattern value=&quot;%5level [%2thread] - %message%newline&quot; /&gt;
+        ///            &lt;/layout&gt;
+        ///        &lt;/a [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string SettingsBaseXml {
+            get {
+                return ResourceManager.GetString("SettingsBaseXml", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OpenRoc.xml.
+        /// </summary>
+        internal static string SettingsFileName {
+            get {
+                return ResourceManager.GetString("SettingsFileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to options.
+        /// </summary>
+        internal static string SettingsOptionNode {
+            get {
+                return ResourceManager.GetString("SettingsOptionNode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to openroc.
+        /// </summary>
+        internal static string SettingsRootNode {
+            get {
+                return ResourceManager.GetString("SettingsRootNode", resourceCulture);
+            }
+        }
     }
 }

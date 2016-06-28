@@ -10,18 +10,23 @@
         private SettingsDialog SettingsForm;
         private AboutDialog AboutForm;
         private LogsDialog LogsForm;
+        private Settings Settings;
 
         public readonly ProcessManager ProcessManager;
 
         public MainDialog()
         {
             InitializeComponent();
+
+            Settings = new Settings();
             ProcessManager = new ProcessManager();
             ProcessListView.SetDoubleBuffered(true);
         }
 
         private void DisposeAddedComponents()
         {
+            Settings.Save();
+
             if (ProcessManager != null)
                 ProcessManager.Dispose();
 
