@@ -6,7 +6,7 @@
     {
         public static void ExecuteScript(string script_path, string command_line = null, bool headless = false)
         {
-            if (string.IsNullOrWhiteSpace(script_path) || !script_path.IsFile())
+            if (string.IsNullOrWhiteSpace(script_path))
                 return;
 
             using (Process process = new Process

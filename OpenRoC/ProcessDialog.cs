@@ -36,6 +36,8 @@
             ProcessOptionPreLaunchScriptPathControl.DataBindings.Add(new Binding("Text", Options, "PreLaunchScriptPath"));
 
             ProcessOptionAggressiveCleanupEnabledControl.DataBindings.Add(new Binding("Checked", Options, "AggressiveCleanupEnabled"));
+            ProcessOptionAggressiveCleanupByNameControl.DataBindings.Add(new Binding("Checked", Options, "AggressiveCleanupByName"));
+            ProcessOptionAggressiveCleanupByPIDControl.DataBindings.Add(new Binding("Checked", Options, "AggressiveCleanupByPID"));
             ProcessOptionPostCrashScriptEnabledControl.DataBindings.Add(new Binding("Checked", Options, "PostCrashScriptEnabled"));
             ProcessOptionPostCrashScriptPathControl.DataBindings.Add(new Binding("Text", Options, "PostCrashScriptPath"));
 

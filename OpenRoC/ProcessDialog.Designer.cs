@@ -55,6 +55,8 @@
             this.ProcessOptionPostCrashScriptPathControl = new System.Windows.Forms.TextBox();
             this.ProcessOptionPostCrashScriptEnabledControl = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.ProcessOptionsCancelButton = new System.Windows.Forms.Button();
+            this.ProcessOptionsSaveButton = new System.Windows.Forms.Button();
             this.EnvironmentVariableFormatLabel = new System.Windows.Forms.Label();
             this.OpenScreenshotDirectoryButton = new System.Windows.Forms.Button();
             this.ProcessOptionEnvironmentVariablesControl = new System.Windows.Forms.TextBox();
@@ -63,8 +65,8 @@
             this.ProcessOptionCommandLineEnabledControl = new System.Windows.Forms.CheckBox();
             this.ProcessOptionAlwaysOnTopEnabledControl = new System.Windows.Forms.CheckBox();
             this.ProcessOptionScreenshotEnabledControl = new System.Windows.Forms.CheckBox();
-            this.ProcessOptionsSaveButton = new System.Windows.Forms.Button();
-            this.ProcessOptionsCancelButton = new System.Windows.Forms.Button();
+            this.ProcessOptionAggressiveCleanupByNameControl = new System.Windows.Forms.CheckBox();
+            this.ProcessOptionAggressiveCleanupByPIDControl = new System.Windows.Forms.CheckBox();
             this.MonitorThisProcessGroup.SuspendLayout();
             this.ProcessCrashAssumptionsGroup.SuspendLayout();
             this.ProcessPreStartGroup.SuspendLayout();
@@ -266,6 +268,8 @@
             // 
             // PostCrashGroup
             // 
+            this.PostCrashGroup.Controls.Add(this.ProcessOptionAggressiveCleanupByPIDControl);
+            this.PostCrashGroup.Controls.Add(this.ProcessOptionAggressiveCleanupByNameControl);
             this.PostCrashGroup.Controls.Add(this.ProcessOptionAggressiveCleanupEnabledControl);
             this.PostCrashGroup.Controls.Add(this.ProcessPostCrashCommandButton);
             this.PostCrashGroup.Controls.Add(this.ProcessOptionPostCrashScriptPathControl);
@@ -282,9 +286,9 @@
             this.ProcessOptionAggressiveCleanupEnabledControl.AutoSize = true;
             this.ProcessOptionAggressiveCleanupEnabledControl.Location = new System.Drawing.Point(10, 23);
             this.ProcessOptionAggressiveCleanupEnabledControl.Name = "ProcessOptionAggressiveCleanupEnabledControl";
-            this.ProcessOptionAggressiveCleanupEnabledControl.Size = new System.Drawing.Size(265, 17);
+            this.ProcessOptionAggressiveCleanupEnabledControl.Size = new System.Drawing.Size(263, 17);
             this.ProcessOptionAggressiveCleanupEnabledControl.TabIndex = 0;
-            this.ProcessOptionAggressiveCleanupEnabledControl.Text = "Perform a cleanup (aggressively close the process)";
+            this.ProcessOptionAggressiveCleanupEnabledControl.Text = "Perform a cleanup ( taskkill to close the process ) :";
             this.ProcessOptionAggressiveCleanupEnabledControl.UseVisualStyleBackColor = true;
             // 
             // ProcessPostCrashCommandButton
@@ -292,7 +296,7 @@
             this.ProcessPostCrashCommandButton.Location = new System.Drawing.Point(417, 69);
             this.ProcessPostCrashCommandButton.Name = "ProcessPostCrashCommandButton";
             this.ProcessPostCrashCommandButton.Size = new System.Drawing.Size(34, 23);
-            this.ProcessPostCrashCommandButton.TabIndex = 3;
+            this.ProcessPostCrashCommandButton.TabIndex = 5;
             this.ProcessPostCrashCommandButton.Text = "...";
             this.ProcessPostCrashCommandButton.UseVisualStyleBackColor = true;
             // 
@@ -301,7 +305,7 @@
             this.ProcessOptionPostCrashScriptPathControl.Location = new System.Drawing.Point(10, 70);
             this.ProcessOptionPostCrashScriptPathControl.Name = "ProcessOptionPostCrashScriptPathControl";
             this.ProcessOptionPostCrashScriptPathControl.Size = new System.Drawing.Size(399, 20);
-            this.ProcessOptionPostCrashScriptPathControl.TabIndex = 2;
+            this.ProcessOptionPostCrashScriptPathControl.TabIndex = 4;
             // 
             // ProcessOptionPostCrashScriptEnabledControl
             // 
@@ -309,7 +313,7 @@
             this.ProcessOptionPostCrashScriptEnabledControl.Location = new System.Drawing.Point(10, 46);
             this.ProcessOptionPostCrashScriptEnabledControl.Name = "ProcessOptionPostCrashScriptEnabledControl";
             this.ProcessOptionPostCrashScriptEnabledControl.Size = new System.Drawing.Size(200, 17);
-            this.ProcessOptionPostCrashScriptEnabledControl.TabIndex = 1;
+            this.ProcessOptionPostCrashScriptEnabledControl.TabIndex = 3;
             this.ProcessOptionPostCrashScriptEnabledControl.Text = "Execute a command (ShellExecute) :";
             this.ProcessOptionPostCrashScriptEnabledControl.UseVisualStyleBackColor = true;
             // 
@@ -331,6 +335,26 @@
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Miscellaneous options";
+            // 
+            // ProcessOptionsCancelButton
+            // 
+            this.ProcessOptionsCancelButton.Location = new System.Drawing.Point(294, 180);
+            this.ProcessOptionsCancelButton.Name = "ProcessOptionsCancelButton";
+            this.ProcessOptionsCancelButton.Size = new System.Drawing.Size(75, 23);
+            this.ProcessOptionsCancelButton.TabIndex = 12;
+            this.ProcessOptionsCancelButton.Text = "Cancel";
+            this.ProcessOptionsCancelButton.UseVisualStyleBackColor = true;
+            this.ProcessOptionsCancelButton.Click += new System.EventHandler(this.OnProcessOptionsCancelButtonClick);
+            // 
+            // ProcessOptionsSaveButton
+            // 
+            this.ProcessOptionsSaveButton.Location = new System.Drawing.Point(375, 180);
+            this.ProcessOptionsSaveButton.Name = "ProcessOptionsSaveButton";
+            this.ProcessOptionsSaveButton.Size = new System.Drawing.Size(75, 23);
+            this.ProcessOptionsSaveButton.TabIndex = 11;
+            this.ProcessOptionsSaveButton.Text = "Save";
+            this.ProcessOptionsSaveButton.UseVisualStyleBackColor = true;
+            this.ProcessOptionsSaveButton.Click += new System.EventHandler(this.OnProcessOptionsSaveButtonClick);
             // 
             // EnvironmentVariableFormatLabel
             // 
@@ -407,25 +431,25 @@
             this.ProcessOptionScreenshotEnabledControl.Text = "Take a screenshot of the main display on crash";
             this.ProcessOptionScreenshotEnabledControl.UseVisualStyleBackColor = true;
             // 
-            // ProcessOptionsSaveButton
+            // ProcessOptionAggressiveCleanupByNameControl
             // 
-            this.ProcessOptionsSaveButton.Location = new System.Drawing.Point(375, 180);
-            this.ProcessOptionsSaveButton.Name = "ProcessOptionsSaveButton";
-            this.ProcessOptionsSaveButton.Size = new System.Drawing.Size(75, 23);
-            this.ProcessOptionsSaveButton.TabIndex = 11;
-            this.ProcessOptionsSaveButton.Text = "Save";
-            this.ProcessOptionsSaveButton.UseVisualStyleBackColor = true;
-            this.ProcessOptionsSaveButton.Click += new System.EventHandler(this.OnProcessOptionsSaveButtonClick);
+            this.ProcessOptionAggressiveCleanupByNameControl.AutoSize = true;
+            this.ProcessOptionAggressiveCleanupByNameControl.Location = new System.Drawing.Point(282, 23);
+            this.ProcessOptionAggressiveCleanupByNameControl.Name = "ProcessOptionAggressiveCleanupByNameControl";
+            this.ProcessOptionAggressiveCleanupByNameControl.Size = new System.Drawing.Size(69, 17);
+            this.ProcessOptionAggressiveCleanupByNameControl.TabIndex = 1;
+            this.ProcessOptionAggressiveCleanupByNameControl.Text = "By Name";
+            this.ProcessOptionAggressiveCleanupByNameControl.UseVisualStyleBackColor = true;
             // 
-            // ProcessOptionsCancelButton
+            // ProcessOptionAggressiveCleanupByPIDControl
             // 
-            this.ProcessOptionsCancelButton.Location = new System.Drawing.Point(294, 180);
-            this.ProcessOptionsCancelButton.Name = "ProcessOptionsCancelButton";
-            this.ProcessOptionsCancelButton.Size = new System.Drawing.Size(75, 23);
-            this.ProcessOptionsCancelButton.TabIndex = 12;
-            this.ProcessOptionsCancelButton.Text = "Cancel";
-            this.ProcessOptionsCancelButton.UseVisualStyleBackColor = true;
-            this.ProcessOptionsCancelButton.Click += new System.EventHandler(this.OnProcessOptionsCancelButtonClick);
+            this.ProcessOptionAggressiveCleanupByPIDControl.AutoSize = true;
+            this.ProcessOptionAggressiveCleanupByPIDControl.Location = new System.Drawing.Point(357, 23);
+            this.ProcessOptionAggressiveCleanupByPIDControl.Name = "ProcessOptionAggressiveCleanupByPIDControl";
+            this.ProcessOptionAggressiveCleanupByPIDControl.Size = new System.Drawing.Size(59, 17);
+            this.ProcessOptionAggressiveCleanupByPIDControl.TabIndex = 2;
+            this.ProcessOptionAggressiveCleanupByPIDControl.Text = "By PID";
+            this.ProcessOptionAggressiveCleanupByPIDControl.UseVisualStyleBackColor = true;
             // 
             // ProcessDialog
             // 
@@ -494,5 +518,7 @@
         private System.Windows.Forms.Label EnvironmentVariableFormatLabel;
         private System.Windows.Forms.Button ProcessOptionsSaveButton;
         private System.Windows.Forms.Button ProcessOptionsCancelButton;
+        private System.Windows.Forms.CheckBox ProcessOptionAggressiveCleanupByNameControl;
+        private System.Windows.Forms.CheckBox ProcessOptionAggressiveCleanupByPIDControl;
     }
 }

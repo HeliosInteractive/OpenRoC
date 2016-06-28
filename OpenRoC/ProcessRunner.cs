@@ -3,6 +3,7 @@
     using System;
     using System.Timers;
     using System.Diagnostics;
+    using System.IO;
 
     public class ProcessRunner : IDisposable
     {
@@ -191,6 +192,22 @@
 
                 if (!Process.HasExited)
                     Process.Kill();
+            }
+
+            if (ProcessOptions.AggressiveCleanupEnabled)
+            {
+                if (ProcessOptions.AggressiveCleanupByName)
+                    ProcessHelper.ExecuteScript("taskkill", string.Format("/F /T /IM \"{0}\"", Path.GetFileName(ProcessOptions.Path)), true);
+
+                if (ProcessOptions.AggressiveCleanupByPID)
+                {
+                    long pid = 0;
+                    try { pid = Process.Id; }
+                    catch(Exception) { pid = 0; }
+
+                    if (pid > 0)
+                        ProcessHelper.ExecuteScript("taskkill", string.Format("/F /T /PID {0}", pid), true);
+                }
             }
 
             Process.Dispose();
