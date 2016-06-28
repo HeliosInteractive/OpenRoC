@@ -74,13 +74,27 @@
         {
             XmlSerializerNamespaces serializer_namespace = new XmlSerializerNamespaces(new[] { XmlQualifiedName.Empty });
             XmlWriterSettings serializer_settings = new XmlWriterSettings { Indent = true, OmitXmlDeclaration = true };
-            XmlSerializer serializer = new XmlSerializer(typeof(T), string.Empty);
+            XmlSerializer serializer = new XmlSerializer(typeof(T));
 
             using (StringWriter string_writer = new StringWriter())
             using (XmlWriter xml_writer = XmlWriter.Create(string_writer, serializer_settings))
             {
                 serializer.Serialize(xml_writer, self, serializer_namespace);
                 return string_writer.ToString();
+            }
+        }
+
+        // http://stackoverflow.com/a/3839419/388751
+        [SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")]
+        public static T FromXmlNodeString<T>(this T self, string node)
+        {
+            XmlReaderSettings serializer_settings = new XmlReaderSettings { ValidationType = ValidationType.None };
+            XmlSerializer serializer = new XmlSerializer(typeof(T));
+
+            using (StringReader string_reader = new StringReader(node))
+            using (XmlReader xml_reader = XmlReader.Create(string_reader, serializer_settings))
+            {
+                return (T)serializer.Deserialize(xml_reader);
             }
         }
     }
