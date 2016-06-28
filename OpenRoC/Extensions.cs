@@ -2,8 +2,10 @@
 {
     using System;
     using System.IO;
+    using System.Linq;
     using System.Reflection;
     using System.Windows.Forms;
+    using System.Collections.Generic;
 
     public static class Extensions
     {
@@ -33,6 +35,34 @@
         {
             PropertyInfo doubleBufferPropertyInfo = control.GetType().GetProperty("DoubleBuffered", BindingFlags.Instance | BindingFlags.NonPublic);
             if (doubleBufferPropertyInfo != null) doubleBufferPropertyInfo.SetValue(control, enable, null);
+        }
+
+        public static string ToColonDelimitedString(this Dictionary<string, string> self)
+        {
+            if (self.Count == 0)
+                return string.Empty;
+
+            return string.Join(";", self
+                .Select(x => string.Format("{0}={1}", x.Key, x.Value))
+                .ToArray());
+        }
+
+        public static bool FromColonDelimitedString(this Dictionary<string, string> self, string colon_delimited)
+        {
+            if (self.Count > 0)
+                self.Clear();
+
+            if (string.IsNullOrWhiteSpace(colon_delimited))
+                return false;
+
+            colon_delimited
+                .Split(';')
+                .Where(x => x.Contains('='))
+                .Select(x => x.Split('='))
+                .ToList()
+                .ForEach(pair => self.Add(pair.First(), pair.Last()));
+
+            return true;
         }
     }
 }

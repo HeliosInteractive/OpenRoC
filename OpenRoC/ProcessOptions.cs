@@ -1,7 +1,6 @@
 ﻿namespace oroc
 {
     using System;
-    using System.Linq;
     using System.ComponentModel;
     using System.Collections.Generic;
 
@@ -307,32 +306,11 @@
 
         public string EnvironmentVariables
         {
-            get
-            {
-                if (environmentVariables.Count == 0)
-                    return string.Empty;
-
-                return string.Join(";", environmentVariables
-                    .Select(x => string.Format("{0}={1}", x.Key, x.Value))
-                    .ToArray());
-            }
-
+            get { return environmentVariables.ToColonDelimitedString(); }
             set
             {
-                if (string.IsNullOrWhiteSpace(value))
-                    return;
-
-                if (environmentVariables.Count > 0)
-                    environmentVariables.Clear();
-
-                value
-                    .Split(';')
-                    .Where(x => x.Contains('='))
-                    .Select(x => x.Split('='))
-                    .ToList()
-                    .ForEach(pair => environmentVariables.Add(pair.First(), pair.Last()));
-
-                NotifyPropertyChanged("EnvironmentVariables");
+                if (environmentVariables.FromColonDelimitedString(value))
+                    NotifyPropertyChanged("EnvironmentVariables");
             }
         }
 
