@@ -16,6 +16,9 @@
         public Action<string> OnProcessAdded;
 
         [XmlIgnore]
+        public Action<string> OnProcessEdited;
+
+        [XmlIgnore]
         public Action<string> OnProcessDeleted;
 
         public void Add(ProcessOptions opts)
@@ -63,6 +66,9 @@
         public void Swap(ProcessOptions opts)
         {
             Get(opts.Path).SwapOptions(opts);
+
+            if (OnProcessEdited != null)
+                OnProcessEdited(opts.Path);
         }
 
         public void Setup()

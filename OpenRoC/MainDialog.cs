@@ -26,6 +26,7 @@
             ProcessListView.SetDoubleBuffered(true);
 
             ProcessManager.OnProcessAdded += fn => { UpdateSettings(); };
+            ProcessManager.OnProcessEdited += fn => { UpdateSettings(); };
             ProcessManager.OnProcessDeleted += fn => { UpdateSettings(); };
         }
 
