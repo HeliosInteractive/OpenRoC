@@ -30,16 +30,19 @@
         private string commandLine;
         private bool environmentVariablesEnabled;
         private readonly Dictionary<string, string> environmentVariables;
+        private ProcessRunner.Status initialState;
 
         #endregion
 
         public ProcessOptions()
         {
+            initialState = ProcessRunner.Status.Stopped;
             environmentVariables = new Dictionary<string, string>();
         }
 
         public ProcessOptions(Dictionary<string, string> variables)
         {
+            initialState = ProcessRunner.Status.Stopped;
             environmentVariables = variables;
         }
 
@@ -312,6 +315,21 @@
             {
                 if (environmentVariables.FromColonDelimitedString(value))
                     NotifyPropertyChanged("EnvironmentVariables");
+            }
+        }
+
+        public string InitialState
+        {
+            get { return initialState.ToString(); }
+            set
+            {
+                ProcessRunner.Status status;
+                if (Enum.TryParse(value, true, out status) &&
+                    status != initialState)
+                {
+                    initialState = status;
+                    NotifyPropertyChanged("EnvironmentVariables");
+                }
             }
         }
 

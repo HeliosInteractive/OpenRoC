@@ -50,6 +50,8 @@
             this.ProcessOptionPreLaunchScriptPathControl = new System.Windows.Forms.TextBox();
             this.ProcessOptionPreLaunchScriptEnabledControl = new System.Windows.Forms.CheckBox();
             this.PostCrashGroup = new System.Windows.Forms.GroupBox();
+            this.ProcessOptionAggressiveCleanupByPIDControl = new System.Windows.Forms.CheckBox();
+            this.ProcessOptionAggressiveCleanupByNameControl = new System.Windows.Forms.CheckBox();
             this.ProcessOptionAggressiveCleanupEnabledControl = new System.Windows.Forms.CheckBox();
             this.ProcessPostCrashCommandButton = new System.Windows.Forms.Button();
             this.ProcessOptionPostCrashScriptPathControl = new System.Windows.Forms.TextBox();
@@ -65,8 +67,10 @@
             this.ProcessOptionCommandLineEnabledControl = new System.Windows.Forms.CheckBox();
             this.ProcessOptionAlwaysOnTopEnabledControl = new System.Windows.Forms.CheckBox();
             this.ProcessOptionScreenshotEnabledControl = new System.Windows.Forms.CheckBox();
-            this.ProcessOptionAggressiveCleanupByNameControl = new System.Windows.Forms.CheckBox();
-            this.ProcessOptionAggressiveCleanupByPIDControl = new System.Windows.Forms.CheckBox();
+            this.StartupStateLabel = new System.Windows.Forms.Label();
+            this.StartupStateStoppedControl = new System.Windows.Forms.RadioButton();
+            this.StartupStateRunningControl = new System.Windows.Forms.RadioButton();
+            this.StartupStateDisabledControl = new System.Windows.Forms.RadioButton();
             this.MonitorThisProcessGroup.SuspendLayout();
             this.ProcessCrashAssumptionsGroup.SuspendLayout();
             this.ProcessPreStartGroup.SuspendLayout();
@@ -281,6 +285,26 @@
             this.PostCrashGroup.TabStop = false;
             this.PostCrashGroup.Text = "After process stops (crashes or hangs)";
             // 
+            // ProcessOptionAggressiveCleanupByPIDControl
+            // 
+            this.ProcessOptionAggressiveCleanupByPIDControl.AutoSize = true;
+            this.ProcessOptionAggressiveCleanupByPIDControl.Location = new System.Drawing.Point(357, 23);
+            this.ProcessOptionAggressiveCleanupByPIDControl.Name = "ProcessOptionAggressiveCleanupByPIDControl";
+            this.ProcessOptionAggressiveCleanupByPIDControl.Size = new System.Drawing.Size(59, 17);
+            this.ProcessOptionAggressiveCleanupByPIDControl.TabIndex = 2;
+            this.ProcessOptionAggressiveCleanupByPIDControl.Text = "By PID";
+            this.ProcessOptionAggressiveCleanupByPIDControl.UseVisualStyleBackColor = true;
+            // 
+            // ProcessOptionAggressiveCleanupByNameControl
+            // 
+            this.ProcessOptionAggressiveCleanupByNameControl.AutoSize = true;
+            this.ProcessOptionAggressiveCleanupByNameControl.Location = new System.Drawing.Point(282, 23);
+            this.ProcessOptionAggressiveCleanupByNameControl.Name = "ProcessOptionAggressiveCleanupByNameControl";
+            this.ProcessOptionAggressiveCleanupByNameControl.Size = new System.Drawing.Size(69, 17);
+            this.ProcessOptionAggressiveCleanupByNameControl.TabIndex = 1;
+            this.ProcessOptionAggressiveCleanupByNameControl.Text = "By Name";
+            this.ProcessOptionAggressiveCleanupByNameControl.UseVisualStyleBackColor = true;
+            // 
             // ProcessOptionAggressiveCleanupEnabledControl
             // 
             this.ProcessOptionAggressiveCleanupEnabledControl.AutoSize = true;
@@ -319,6 +343,10 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.StartupStateDisabledControl);
+            this.groupBox1.Controls.Add(this.StartupStateRunningControl);
+            this.groupBox1.Controls.Add(this.StartupStateStoppedControl);
+            this.groupBox1.Controls.Add(this.StartupStateLabel);
             this.groupBox1.Controls.Add(this.ProcessOptionsCancelButton);
             this.groupBox1.Controls.Add(this.ProcessOptionsSaveButton);
             this.groupBox1.Controls.Add(this.EnvironmentVariableFormatLabel);
@@ -331,27 +359,27 @@
             this.groupBox1.Controls.Add(this.ProcessOptionScreenshotEnabledControl);
             this.groupBox1.Location = new System.Drawing.Point(12, 457);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(460, 212);
+            this.groupBox1.Size = new System.Drawing.Size(460, 243);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Miscellaneous options";
             // 
             // ProcessOptionsCancelButton
             // 
-            this.ProcessOptionsCancelButton.Location = new System.Drawing.Point(294, 180);
+            this.ProcessOptionsCancelButton.Location = new System.Drawing.Point(294, 209);
             this.ProcessOptionsCancelButton.Name = "ProcessOptionsCancelButton";
             this.ProcessOptionsCancelButton.Size = new System.Drawing.Size(75, 23);
-            this.ProcessOptionsCancelButton.TabIndex = 12;
+            this.ProcessOptionsCancelButton.TabIndex = 11;
             this.ProcessOptionsCancelButton.Text = "Cancel";
             this.ProcessOptionsCancelButton.UseVisualStyleBackColor = true;
             this.ProcessOptionsCancelButton.Click += new System.EventHandler(this.OnProcessOptionsCancelButtonClick);
             // 
             // ProcessOptionsSaveButton
             // 
-            this.ProcessOptionsSaveButton.Location = new System.Drawing.Point(375, 180);
+            this.ProcessOptionsSaveButton.Location = new System.Drawing.Point(375, 209);
             this.ProcessOptionsSaveButton.Name = "ProcessOptionsSaveButton";
             this.ProcessOptionsSaveButton.Size = new System.Drawing.Size(75, 23);
-            this.ProcessOptionsSaveButton.TabIndex = 11;
+            this.ProcessOptionsSaveButton.TabIndex = 10;
             this.ProcessOptionsSaveButton.Text = "Save";
             this.ProcessOptionsSaveButton.UseVisualStyleBackColor = true;
             this.ProcessOptionsSaveButton.Click += new System.EventHandler(this.OnProcessOptionsSaveButtonClick);
@@ -431,31 +459,52 @@
             this.ProcessOptionScreenshotEnabledControl.Text = "Take a screenshot of the main display on crash";
             this.ProcessOptionScreenshotEnabledControl.UseVisualStyleBackColor = true;
             // 
-            // ProcessOptionAggressiveCleanupByNameControl
+            // StartupStateLabel
             // 
-            this.ProcessOptionAggressiveCleanupByNameControl.AutoSize = true;
-            this.ProcessOptionAggressiveCleanupByNameControl.Location = new System.Drawing.Point(282, 23);
-            this.ProcessOptionAggressiveCleanupByNameControl.Name = "ProcessOptionAggressiveCleanupByNameControl";
-            this.ProcessOptionAggressiveCleanupByNameControl.Size = new System.Drawing.Size(69, 17);
-            this.ProcessOptionAggressiveCleanupByNameControl.TabIndex = 1;
-            this.ProcessOptionAggressiveCleanupByNameControl.Text = "By Name";
-            this.ProcessOptionAggressiveCleanupByNameControl.UseVisualStyleBackColor = true;
+            this.StartupStateLabel.AutoSize = true;
+            this.StartupStateLabel.Location = new System.Drawing.Point(7, 182);
+            this.StartupStateLabel.Name = "StartupStateLabel";
+            this.StartupStateLabel.Size = new System.Drawing.Size(141, 13);
+            this.StartupStateLabel.TabIndex = 13;
+            this.StartupStateLabel.Text = "Initially add this process as : ";
             // 
-            // ProcessOptionAggressiveCleanupByPIDControl
+            // StartupStateStoppedControl
             // 
-            this.ProcessOptionAggressiveCleanupByPIDControl.AutoSize = true;
-            this.ProcessOptionAggressiveCleanupByPIDControl.Location = new System.Drawing.Point(357, 23);
-            this.ProcessOptionAggressiveCleanupByPIDControl.Name = "ProcessOptionAggressiveCleanupByPIDControl";
-            this.ProcessOptionAggressiveCleanupByPIDControl.Size = new System.Drawing.Size(59, 17);
-            this.ProcessOptionAggressiveCleanupByPIDControl.TabIndex = 2;
-            this.ProcessOptionAggressiveCleanupByPIDControl.Text = "By PID";
-            this.ProcessOptionAggressiveCleanupByPIDControl.UseVisualStyleBackColor = true;
+            this.StartupStateStoppedControl.AutoSize = true;
+            this.StartupStateStoppedControl.Checked = true;
+            this.StartupStateStoppedControl.Location = new System.Drawing.Point(156, 182);
+            this.StartupStateStoppedControl.Name = "StartupStateStoppedControl";
+            this.StartupStateStoppedControl.Size = new System.Drawing.Size(65, 17);
+            this.StartupStateStoppedControl.TabIndex = 7;
+            this.StartupStateStoppedControl.TabStop = true;
+            this.StartupStateStoppedControl.Text = "Stopped";
+            this.StartupStateStoppedControl.UseVisualStyleBackColor = true;
+            // 
+            // StartupStateRunningControl
+            // 
+            this.StartupStateRunningControl.AutoSize = true;
+            this.StartupStateRunningControl.Location = new System.Drawing.Point(228, 182);
+            this.StartupStateRunningControl.Name = "StartupStateRunningControl";
+            this.StartupStateRunningControl.Size = new System.Drawing.Size(65, 17);
+            this.StartupStateRunningControl.TabIndex = 8;
+            this.StartupStateRunningControl.Text = "Running";
+            this.StartupStateRunningControl.UseVisualStyleBackColor = true;
+            // 
+            // StartupStateDisabledControl
+            // 
+            this.StartupStateDisabledControl.AutoSize = true;
+            this.StartupStateDisabledControl.Location = new System.Drawing.Point(300, 182);
+            this.StartupStateDisabledControl.Name = "StartupStateDisabledControl";
+            this.StartupStateDisabledControl.Size = new System.Drawing.Size(66, 17);
+            this.StartupStateDisabledControl.TabIndex = 9;
+            this.StartupStateDisabledControl.Text = "Disabled";
+            this.StartupStateDisabledControl.UseVisualStyleBackColor = true;
             // 
             // ProcessDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(484, 681);
+            this.ClientSize = new System.Drawing.Size(484, 711);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.PostCrashGroup);
             this.Controls.Add(this.ProcessPreStartGroup);
@@ -520,5 +569,9 @@
         private System.Windows.Forms.Button ProcessOptionsCancelButton;
         private System.Windows.Forms.CheckBox ProcessOptionAggressiveCleanupByNameControl;
         private System.Windows.Forms.CheckBox ProcessOptionAggressiveCleanupByPIDControl;
+        private System.Windows.Forms.RadioButton StartupStateDisabledControl;
+        private System.Windows.Forms.RadioButton StartupStateRunningControl;
+        private System.Windows.Forms.RadioButton StartupStateStoppedControl;
+        private System.Windows.Forms.Label StartupStateLabel;
     }
 }
