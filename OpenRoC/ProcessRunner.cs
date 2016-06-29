@@ -4,10 +4,10 @@
     using System.IO;
     using System.Timers;
     using System.Diagnostics;
-    using System.Xml.Serialization;
+    using System.ComponentModel;
     using Signal = System.Threading.ManualResetEventSlim;
 
-    public class ProcessRunner : IDisposable
+    public class ProcessRunner : IDisposable, INotifyPropertyChanged
     {
         Status currentState;
         Status previousState;
@@ -26,12 +26,6 @@
             Disabled
         }
 
-        public enum FocusMode
-        {
-            Normal,
-            Aggressive
-        }
-
         public Status State
         {
             get { return currentState; }
@@ -40,60 +34,51 @@
                 if (value == State)
                     return;
 
+                options.InitialStateEnumValue = value;
                 previousState = currentState;
                 currentState = value;
                 ResetTimers();
+
+                NotifyPropertyChanged("State");
             }
         }
 
-        [XmlIgnore]
         public Process Process { get; private set; }
 
-        [XmlIgnore]
         public Stopwatch Stopwatch { get; private set; }
 
-        [XmlIgnore]
         public bool HasWindow { get; private set; } = false;
+
+        public string ProcessPath { get { return options.Path; } }
 
         public ProcessOptions ProcessOptions
         {
-            get { return options; }
-            set { SwapOptions(value); }
+            get { return options.Clone() as ProcessOptions; }
+            set { SwapOptions(value.Clone() as ProcessOptions); }
         }
 
-        internal ProcessRunner()
+        public ProcessRunner(ProcessOptions opts)
         {
             Stopwatch = new Stopwatch();
-            currentState = Status.Stopped;
+            currentState = opts.InitialStateEnumValue;
             previousState = Status.Invalid;
             resetTimer = new Signal(false);
             startSignal = new Signal(false);
             checkSignal = new Signal(false);
+            options = opts.Clone() as ProcessOptions;
             gracePeriodTimer = new Timer { AutoReset = false };
             doubleCheckTimer = new Timer { AutoReset = false };
             gracePeriodTimer.Elapsed += OnGracePeriodTimeElapsed;
             doubleCheckTimer.Elapsed += OnDoubleCheckTimeElapsed;
         }
 
-        public ProcessRunner(ProcessOptions opts) : this()
+        private void SwapOptions(ProcessOptions opts)
         {
-            options = opts.Clone() as ProcessOptions;
-        }
-
-        public void SwapOptions(ProcessOptions opts)
-        {
-            if (ReferenceEquals(ProcessOptions, opts))
-                return;
-
-            Status before_swap = State;
-
-            if (State == Status.Running)
-                Stop();
-
+            Stop();
             options = opts;
+            State = opts.InitialStateEnumValue;
 
-            if (before_swap == Status.Running)
-                Start();
+            NotifyPropertyChanged("ProcessOptions");
         }
 
         public void RestoreState()
@@ -108,26 +93,26 @@
             if (Process != null)
                 Stop();
 
-            if (ProcessOptions.PreLaunchScriptEnabled)
-                ProcessHelper.ExecuteScript(ProcessOptions.PreLaunchScriptPath);
+            if (options.PreLaunchScriptEnabled)
+                ProcessHelper.ExecuteScript(options.PreLaunchScriptPath);
 
             ProcessStartInfo sinfo = new ProcessStartInfo
             {
-                WorkingDirectory = ProcessOptions.WorkingDirectory,
-                FileName = ProcessOptions.Path,
+                WorkingDirectory = options.WorkingDirectory,
+                FileName = options.Path,
                 UseShellExecute = false
             };
 
-            if (ProcessOptions.CommandLineEnabled &&
-                !string.IsNullOrWhiteSpace(ProcessOptions.CommandLine))
+            if (options.CommandLineEnabled &&
+                !string.IsNullOrWhiteSpace(options.CommandLine))
             {
-                sinfo.Arguments = ProcessOptions.CommandLine;
+                sinfo.Arguments = options.CommandLine;
             }
 
-            if (ProcessOptions.EnvironmentVariablesEnabled &&
-                ProcessOptions.EnvironmentVariablesDictionary.Count > 0)
+            if (options.EnvironmentVariablesEnabled &&
+                options.EnvironmentVariablesDictionary.Count > 0)
             {
-                foreach (var pair in ProcessOptions.EnvironmentVariablesDictionary)
+                foreach (var pair in options.EnvironmentVariablesDictionary)
                     sinfo.EnvironmentVariables.Add(pair.Key, pair.Value);
             }
 
@@ -148,9 +133,8 @@
 
             if (!HasWindow || Process.Responding)
             {
-                previousState = Status.Invalid;
-                currentState = Status.Running;
-                ResetTimers();
+                State = Status.Invalid;
+                State = Status.Running;
             }
             else Stop();
         }
@@ -158,7 +142,12 @@
         public void Stop()
         {
             if (Process == null)
+            {
+                if (!IsDisposed && State == Status.Disabled)
+                    State = Status.Stopped;
+
                 return;
+            }
 
             HasWindow = false;
             gracePeriodTimer.Stop();
@@ -179,24 +168,26 @@
                     Process.Kill();
             }
 
-            if (ProcessOptions.AggressiveCleanupEnabled)
+            if (options.AggressiveCleanupEnabled)
             {
-                if (ProcessOptions.AggressiveCleanupByName)
-                    ProcessHelper.TaskKill(Path.GetFileName(ProcessOptions.Path));
+                if (options.AggressiveCleanupByName)
+                    ProcessHelper.TaskKill(Path.GetFileName(ProcessPath));
 
-                if (ProcessOptions.AggressiveCleanupByPID)
+                if (options.AggressiveCleanupByPID)
                     ProcessHelper.TaskKill(Process);
             }
 
             Process.Dispose();
             Process = null;
 
-            previousState = Status.Invalid;
-            currentState = Status.Stopped;
-            ResetTimers();
+            if (!IsDisposed)
+            {
+                State = Status.Invalid;
+                State = Status.Stopped;
+            }
 
-            if (ProcessOptions.PostCrashScriptEnabled)
-                ProcessHelper.ExecuteScript(ProcessOptions.PostCrashScriptPath);
+            if (options.PostCrashScriptEnabled)
+                ProcessHelper.ExecuteScript(options.PostCrashScriptPath);
         }
 
         public void Monitor()
@@ -243,9 +234,9 @@
             {
                 Process.Refresh();
 
-                if (ProcessOptions.CrashedIfUnresponsive && !Process.Responding)
+                if (options.CrashedIfUnresponsive && !Process.Responding)
                 {
-                    if (ProcessOptions.DoubleCheckEnabled)
+                    if (options.DoubleCheckEnabled)
                     {
                         if (checkSignal.IsSet)
                         {
@@ -258,7 +249,7 @@
                         }
                         else if (!doubleCheckTimer.Enabled)
                         {
-                            doubleCheckTimer.Interval = TimeSpan.FromSeconds(ProcessOptions.DoubleCheckDuration).TotalMilliseconds;
+                            doubleCheckTimer.Interval = TimeSpan.FromSeconds(options.DoubleCheckDuration).TotalMilliseconds;
                             doubleCheckTimer.Start();
                         }
                     }
@@ -270,14 +261,14 @@
                     if (startSignal.IsSet && currentState == Status.Stopped)
                         Stop();
                 }
-                else if (ProcessOptions.AlwaysOnTopEnabled)
+                else if (options.AlwaysOnTopEnabled)
                 {
-                    BringToFront(FocusMode.Aggressive);
+                    BringToFront(true);
                 }
             }
         }
 
-        public void BringToFront(FocusMode mode)
+        public void BringToFront(bool aggressive = false)
         {
             if (Process == null || !HasWindow)
                 return;
@@ -292,7 +283,7 @@
                 NativeMethods.SwitchToThisWindow(Process.MainWindowHandle, true);
                 NativeMethods.SetForegroundWindow(Process.MainWindowHandle);
 
-                if (mode == FocusMode.Aggressive)
+                if (aggressive)
                 {
                     NativeMethods.SetWindowPos(
                         Process.MainWindowHandle,
@@ -314,7 +305,7 @@
 
         private bool ShouldStart
         {
-            get { return (startSignal.IsSet || (Process == null && ProcessOptions.CrashedIfNotRunning && !gracePeriodTimer.Enabled)); }
+            get { return (startSignal.IsSet || (Process == null && options.CrashedIfNotRunning && !gracePeriodTimer.Enabled)); }
         }
 
         #region Event callbacks
@@ -323,11 +314,11 @@
         {
             Stop();
 
-            if (ProcessOptions.GracePeriodEnabled)
+            if (options.GracePeriodEnabled)
             {
                 if (!gracePeriodTimer.Enabled)
                 {
-                    gracePeriodTimer.Interval = TimeSpan.FromSeconds(ProcessOptions.GracePeriodDuration).TotalMilliseconds;
+                    gracePeriodTimer.Interval = TimeSpan.FromSeconds(options.GracePeriodDuration).TotalMilliseconds;
                     gracePeriodTimer.Start();
                 }
             }
@@ -349,15 +340,28 @@
 
         #endregion
 
+        #region INotifyPropertyChanged support
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void NotifyPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        #endregion
+
         #region IDisposable Support
 
-        [XmlIgnore]
         public bool IsDisposed { get; private set; } = false;
 
         protected virtual void Dispose(bool disposing)
         {
             if (!IsDisposed)
             {
+                IsDisposed = true;
+
                 if (disposing)
                 {
                     ResetTimers();
@@ -381,13 +385,10 @@
 
                 gracePeriodTimer = null;
                 doubleCheckTimer = null;
-                ProcessOptions = null;
                 startSignal = null;
                 checkSignal = null;
                 resetTimer = null;
                 Process = null;
-
-                IsDisposed = true;
             }
         }
 
@@ -395,6 +396,7 @@
         {
             Dispose(true);
         }
+
         #endregion
     }
 }
