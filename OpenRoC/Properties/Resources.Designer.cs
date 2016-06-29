@@ -67,13 +67,13 @@ namespace oroc.Properties {
         ///        &lt;appender name=&quot;OpenRocRollingFile&quot; type=&quot;log4net.Appender.RollingFileAppender&quot;&gt;
         ///            &lt;file value=&quot;OpenRoc.log&quot; /&gt;
         ///            &lt;appendToFile value=&quot;true&quot; /&gt;
-        ///            &lt;maximumFileSize value=&quot;1MB&quot; /&gt;
+        ///            &lt;maximumFileSize value=&quot;10MB&quot; /&gt;
         ///            &lt;maxSizeRollBackups value=&quot;20&quot; /&gt;
         ///
         ///            &lt;layout type=&quot;log4net.Layout.PatternLayout&quot;&gt;
-        ///                &lt;conversionPattern value=&quot;%5level [%2thread] - %message%newline&quot; /&gt;
+        ///                &lt;conversionPattern value=&quot;[%5level] [%2thread] - %message%newline&quot; /&gt;
         ///            &lt;/layout&gt;
-        ///        &lt;/a [rest of string was truncated]&quot;;.
+        ///         [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string SettingsBaseXml {
             get {
@@ -96,6 +96,15 @@ namespace oroc.Properties {
         internal static string SettingsOptionNode {
             get {
                 return ResourceManager.GetString("SettingsOptionNode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Processes.
+        /// </summary>
+        internal static string SettingsProcessListNode {
+            get {
+                return ResourceManager.GetString("SettingsProcessListNode", resourceCulture);
             }
         }
         

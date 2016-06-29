@@ -127,6 +127,9 @@
   <data name="SettingsOptionNode" xml:space="preserve">
     <value>options</value>
   </data>
+  <data name="SettingsProcessListNode" xml:space="preserve">
+    <value>Processes</value>
+  </data>
   <data name="SettingsRootNode" xml:space="preserve">
     <value>openroc</value>
   </data>
