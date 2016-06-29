@@ -324,12 +324,33 @@
             set
             {
                 ProcessRunner.Status status;
-                if (Enum.TryParse(value, true, out status) &&
-                    status != initialState)
+                if (Enum.TryParse(value, true, out status))
                 {
+                    if (status == initialState)
+                        return;
+
                     initialState = status;
-                    NotifyPropertyChanged("EnvironmentVariables");
+                    NotifyPropertyChanged("InitialState");
                 }
+                else
+                {
+                    initialState = ProcessRunner.Status.Invalid;
+                    NotifyPropertyChanged("InitialState");
+                }
+            }
+        }
+
+        [XmlIgnore]
+        public ProcessRunner.Status InitialStateEnumValue
+        {
+            get { return initialState; }
+            set
+            {
+                if (value == initialState)
+                    return;
+
+                initialState = value;
+                NotifyPropertyChanged("InitialState");
             }
         }
 
@@ -365,6 +386,7 @@
             clone.commandLineEnabled = CommandLineEnabled;
             clone.commandLine = CommandLine;
             clone.environmentVariablesEnabled = EnvironmentVariablesEnabled;
+            clone.initialState = InitialStateEnumValue;
 
             return clone;
         }
