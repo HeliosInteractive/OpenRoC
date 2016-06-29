@@ -12,7 +12,6 @@
         private SettingsDialog SettingsForm;
         private AboutDialog AboutForm;
         private LogsDialog LogsForm;
-        private Settings Settings;
 
         public readonly ProcessManager ProcessManager;
 
@@ -21,9 +20,7 @@
             InitializeComponent();
             ProcessListView.SetDoubleBuffered(true);
 
-            Settings = new Settings();
-
-            List<ProcessOptions> launchOptions = Settings.Read<List<ProcessOptions>>
+            List<ProcessOptions> launchOptions = Settings.Instance.Read<List<ProcessOptions>>
                 (Properties.Resources.SettingsProcessListNode);
 
             ProcessManager = new ProcessManager();
@@ -35,8 +32,8 @@
         {
             if (args.PropertyName == "ProcessMap")
             {
-                Settings.Write(Properties.Resources.SettingsProcessListNode, ProcessManager.ProcessOptionList);
-                Settings.Save();
+                Settings.Instance.Write(Properties.Resources.SettingsProcessListNode, ProcessManager.ProcessOptionList);
+                Settings.Instance.Save();
             }
         }
 
