@@ -96,6 +96,13 @@
                 Start();
         }
 
+        public void RestoreState()
+        {
+            if (previousState == Status.Invalid)
+                State = Status.Stopped;
+            else State = previousState;
+        }
+
         public void Start()
         {
             if (Process != null)
