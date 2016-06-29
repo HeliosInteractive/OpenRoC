@@ -1,25 +1,24 @@
 ﻿namespace oroc
 {
     using System;
-    using System.Xml.Serialization;
+    using System.Linq;
+    using System.ComponentModel;
     using System.Collections.Generic;
 
-    public class ProcessManager : IDisposable
+    public class ProcessManager : IDisposable, INotifyPropertyChanged
     {
         private Dictionary<string, ProcessRunner> ProcessMap
             = new Dictionary<string, ProcessRunner>();
 
-        public List<ProcessRunner> ProcessList { get; set; }
-            = new List<ProcessRunner>();
+        public List<ProcessRunner> ProcessRunnerList
+        {
+            get { return ProcessMap.Values.ToList(); }
+        }
 
-        [XmlIgnore]
-        public Action<string> OnProcessAdded;
-
-        [XmlIgnore]
-        public Action<string> OnProcessEdited;
-
-        [XmlIgnore]
-        public Action<string> OnProcessDeleted;
+        public List<ProcessOptions> ProcessOptionList
+        {
+            get { return ProcessRunnerList.Select(x => x.ProcessOptions).ToList(); }
+        }
 
         public void Add(ProcessOptions opts)
         {
@@ -27,12 +26,9 @@
                 return;
 
             ProcessRunner proc = new ProcessRunner(opts);
-
-            ProcessList.Add(proc);
+            proc.PropertyChanged += OnProcessPropertyChanged;
             ProcessMap.Add(opts.Path, proc);
-
-            if (OnProcessAdded != null)
-                OnProcessAdded(opts.Path);
+            NotifyPropertyChanged("ProcessMap");
         }
 
         public void Delete(string path)
@@ -43,19 +39,14 @@
 
                 proc.Dispose();
                 ProcessMap.Remove(path);
-                ProcessList.Remove(proc);
-
-                if (OnProcessDeleted != null)
-                    OnProcessDeleted(path);
+                NotifyPropertyChanged("ProcessMap");
             }
         }
 
         public bool Contains(string path)
         {
-            if (string.IsNullOrWhiteSpace(path))
-                return false;
-
-            return ProcessMap.ContainsKey(path);
+            return !string.IsNullOrWhiteSpace(path) &&
+                ProcessMap.ContainsKey(path);
         }
 
         public ProcessRunner Get(string path)
@@ -65,31 +56,29 @@
 
         public void Swap(ProcessOptions opts)
         {
-            Get(opts.Path).SwapOptions(opts);
-
-            if (OnProcessEdited != null)
-                OnProcessEdited(opts.Path);
+            Get(opts.Path).ProcessOptions = opts;
+            NotifyPropertyChanged("ProcessMap");
         }
 
-        public void Setup()
+        private void OnProcessPropertyChanged(object sender, PropertyChangedEventArgs args)
         {
-            if (ProcessMap.Count > 0)
-            {
-                foreach (var pair in ProcessMap)
-                    pair.Value.Dispose();
-
-                ProcessMap.Clear();
-            }
-
-            ProcessList.ForEach(runner =>
-            {
-                ProcessMap.Add(runner.ProcessOptions.Path, runner);
-            });
+            if (args.PropertyName == "State")
+                NotifyPropertyChanged("ProcessMap");
         }
+
+        #region INotifyPropertyChanged support
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void NotifyPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        #endregion
 
         #region IDisposable Support
-
-        [XmlIgnore]
         public bool IsDisposed { get; private set; } = false;
 
         protected virtual void Dispose(bool disposing)
@@ -99,13 +88,9 @@
                 if (disposing)
                 {
                     foreach (var pair in ProcessMap)
-                    {
-                        pair.Value.Stop();
                         pair.Value.Dispose();
-                    }
                 }
 
-                ProcessList = null;
                 IsDisposed = true;
             }
         }
