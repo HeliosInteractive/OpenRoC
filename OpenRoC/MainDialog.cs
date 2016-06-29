@@ -2,6 +2,8 @@
 {
     using System.IO;
     using System.Windows.Forms;
+    using System.ComponentModel;
+    using System.Collections.Generic;
 
     public partial class MainDialog : Form
     {
@@ -17,23 +19,25 @@
         public MainDialog()
         {
             InitializeComponent();
+            ProcessListView.SetDoubleBuffered(true);
 
             Settings = new Settings();
 
-            ProcessManager = Settings.Read<ProcessManager>("ProcessManager");
-            ProcessManager.Setup();
+            List<ProcessOptions> launchOptions = Settings.Read<List<ProcessOptions>>
+                (Properties.Resources.SettingsProcessListNode);
 
-            ProcessListView.SetDoubleBuffered(true);
-
-            ProcessManager.OnProcessAdded += fn => { UpdateSettings(); };
-            ProcessManager.OnProcessEdited += fn => { UpdateSettings(); };
-            ProcessManager.OnProcessDeleted += fn => { UpdateSettings(); };
+            ProcessManager = new ProcessManager();
+            launchOptions.ForEach((opt) => { ProcessManager.Add(opt); });
+            ProcessManager.PropertyChanged += OnProcessManagerPropertyChanged;
         }
 
-        private void UpdateSettings()
+        private void OnProcessManagerPropertyChanged(object sender, PropertyChangedEventArgs args)
         {
-            Settings.Write("ProcessManager", ProcessManager);
-            Settings.Save();
+            if (args.PropertyName == "ProcessMap")
+            {
+                Settings.Write(Properties.Resources.SettingsProcessListNode, ProcessManager.ProcessOptionList);
+                Settings.Save();
+            }
         }
 
         private void DisposeAddedComponents()
@@ -86,23 +90,26 @@
                 if (!ProcessManager.Contains(item.Text))
                     item.Remove();
 
-            ProcessManager.ProcessList.ForEach(p =>
+            ProcessManager.ProcessRunnerList.ForEach(p =>
             {
-                if (ProcessListView.Items.ContainsKey(p.ProcessOptions.Path))
+                if (ProcessListView.Items.ContainsKey(p.ProcessPath))
                 {
-                    ProcessListView.Items[p.ProcessOptions.Path].Checked = p.State != ProcessRunner.Status.Disabled;
-                    ProcessListView.Items[p.ProcessOptions.Path].SubItems[1].Text = p.GetStatusString();
+                    ProcessListView.Items[p.ProcessPath].Checked = p.State != ProcessRunner.Status.Disabled;
+                    ProcessListView.Items[p.ProcessPath].SubItems[1].Text = p.GetStatusString();
                 }
                 else
                 {
+                    ProcessListView.ItemChecked -= OnProcessListViewItemChecked;
+
                     ListViewItem item = new ListViewItem();
 
                     item.Checked = p.State != ProcessRunner.Status.Disabled;
-                    item.Text = p.ProcessOptions.Path;
-                    item.Name = p.ProcessOptions.Path;
+                    item.Text = p.ProcessPath;
+                    item.Name = p.ProcessPath;
                     item.SubItems.Add(p.State.ToString());
 
                     ProcessListView.Items.Add(item);
+                    ProcessListView.ItemChecked += OnProcessListViewItemChecked;
                 }
             });
         }
@@ -139,7 +146,7 @@
 
             if (EditProcessForm == null || EditProcessForm.IsDisposed)
             {
-                EditProcessForm = new ProcessDialog(process.ProcessOptions.Clone() as ProcessOptions);
+                EditProcessForm = new ProcessDialog(process.ProcessOptions);
                 EditProcessForm.Owner = this;
             }
 
@@ -176,7 +183,7 @@
 
         private void OnProcessListViewItemChecked(object sender, ItemCheckedEventArgs e)
         {
-            if (!ProcessListView.Items.ContainsKey(e.Item.Text))
+            if (e.Item.Checked == (ProcessManager.Get(e.Item.Text).State != ProcessRunner.Status.Disabled))
                 return;
 
             if (e.Item.Checked)
@@ -192,7 +199,7 @@
             if (dragged_files == null)
                 return;
 
-            foreach(string dragged_file in dragged_files)
+            foreach (string dragged_file in dragged_files)
             {
                 if (dragged_file.IsExecutable() &&
                     !ProcessManager.Contains(dragged_file))
@@ -216,7 +223,7 @@
 
         private void OnMainDialogUpdateTimerTick(object sender, System.EventArgs e)
         {
-            ProcessManager.ProcessList.ForEach(p => p.Monitor());
+            ProcessManager.ProcessRunnerList.ForEach(p => p.Monitor());
             UpdateProcessList();
         }
 
@@ -225,8 +232,7 @@
             if (ProcessListView.FocusedItem == null)
                 return;
 
-            ProcessManager.Get(ProcessListView.FocusedItem.Text)
-                .BringToFront(ProcessRunner.FocusMode.Normal);
+            ProcessManager.Get(ProcessListView.FocusedItem.Text).BringToFront();
         }
 
         private void OnContextMenuStopClick(object sender, System.EventArgs e)
