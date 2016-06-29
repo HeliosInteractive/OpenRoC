@@ -50,7 +50,8 @@
             if (optionsRoot.Element(node) == null)
                 optionsRoot.Add(new XElement(node));
 
-            optionsRoot.Element(node).ReplaceAll(XElement.Parse(value.ToXmlNodeString()).FirstNode);
+            optionsRoot.Element(node).ReplaceAll(
+                XElement.Parse(value.ToXmlNodeString()).Elements());
 
             dirty = true;
         }
@@ -59,7 +60,7 @@
         {
             if (optionsRoot.Element(node) != null)
                 return Extensions.FromXmlNodeString<T>(
-                    optionsRoot.Element(node).ToString());
+                    optionsRoot.Element(node).ToString(), node);
             else return new T();
         }
 
