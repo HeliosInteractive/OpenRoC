@@ -32,6 +32,22 @@
             }
         }
 
+        public void Write<T>(string node, T value) where T : new()
+        {
+            if (optionsRoot.Element(node) == null)
+                optionsRoot.Add(new XElement(node));
+
+            optionsRoot.Element(node).ReplaceAll(XElement.Parse(value.ToXmlNodeString()).FirstNode);
+        }
+
+        public T Read<T>(string node) where T : new()
+        {
+            if (optionsRoot.Element(node) != null)
+                return Extensions.FromXmlNodeString<T>(
+                    optionsRoot.Element(node).ToString());
+            else return new T();
+        }
+
         public void Save()
         {
             openrocRoot.Save(Path.Combine(

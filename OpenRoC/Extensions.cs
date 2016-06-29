@@ -86,7 +86,7 @@
 
         // http://stackoverflow.com/a/3839419/388751
         [SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")]
-        public static T FromXmlNodeString<T>(this T self, string node)
+        public static T FromXmlNodeString<T>(string node)
         {
             XmlReaderSettings serializer_settings = new XmlReaderSettings { ValidationType = ValidationType.None };
             XmlSerializer serializer = new XmlSerializer(typeof(T));

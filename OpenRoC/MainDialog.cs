@@ -19,13 +19,22 @@
             InitializeComponent();
 
             Settings = new Settings();
-            ProcessManager = new ProcessManager();
+            ProcessManager = Settings.Read<ProcessManager>("ProcessManager");
             ProcessListView.SetDoubleBuffered(true);
+
+            ProcessManager.OnProcessAdded += fn => { UpdateSettings(); };
+            ProcessManager.OnProcessDeleted += fn => { UpdateSettings(); };
+        }
+
+        private void UpdateSettings()
+        {
+            Settings.Write("ProcessManager", ProcessManager);
+            Settings.Save();
         }
 
         private void DisposeAddedComponents()
         {
-            Settings.Save();
+            UpdateSettings();
 
             if (ProcessManager != null)
                 ProcessManager.Dispose();

@@ -9,6 +9,12 @@
     {
         private readonly Dictionary<string, ProcessRunner> Processes;
 
+        [XmlIgnore]
+        public Action<string> OnProcessAdded;
+
+        [XmlIgnore]
+        public Action<string> OnProcessDeleted;
+
         public ProcessManager()
         {
             Processes = new Dictionary<string, ProcessRunner>();
@@ -21,6 +27,9 @@
 
             ProcessRunner proc = new ProcessRunner(opts);
             Processes.Add(opts.Path, proc);
+
+            if (OnProcessAdded != null)
+                OnProcessAdded(opts.Path);
         }
 
         public void Delete(string path)
@@ -30,6 +39,9 @@
                 Processes[path].Stop();
                 Processes[path].Dispose();
                 Processes.Remove(path);
+
+                if (OnProcessDeleted != null)
+                    OnProcessDeleted(path);
             }
         }
 
@@ -51,6 +63,8 @@
             Get(opts.Path).SwapOptions(opts);
         }
 
+        [XmlArray]
+        //[XmlArrayItem(ElementName = "ProcessRunners")]
         public List<ProcessRunner> ProcessList
         {
             get { return Processes.Values.ToList(); }
