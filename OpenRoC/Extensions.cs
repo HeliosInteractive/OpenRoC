@@ -4,6 +4,8 @@
     using System.IO;
     using System.Xml;
     using System.Linq;
+    using System.Drawing;
+    using System.Xml.Linq;
     using System.Reflection;
     using System.Windows.Forms;
     using System.Xml.Serialization;
@@ -96,6 +98,23 @@
             {
                 return (T)serializer.Deserialize(xml_reader);
             }
+        }
+
+        public static XmlElement AsXmlElement(this XElement el)
+        {
+            var doc = new XmlDocument();
+            doc.Load(el.CreateReader());
+            return doc.DocumentElement;
+        }
+
+        public static void AppendText(this RichTextBox box, string text, Color color)
+        {
+            box.SelectionStart = box.TextLength;
+            box.SelectionLength = 0;
+
+            box.SelectionColor = color;
+            box.AppendText(text);
+            box.SelectionColor = box.ForeColor;
         }
     }
 }

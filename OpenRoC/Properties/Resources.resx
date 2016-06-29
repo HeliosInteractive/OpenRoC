@@ -124,6 +124,9 @@
   <data name="SettingsFileName" xml:space="preserve">
     <value>OpenRoc.xml</value>
   </data>
+  <data name="SettingsLog4NetNode" xml:space="preserve">
+    <value>log4net</value>
+  </data>
   <data name="SettingsOptionNode" xml:space="preserve">
     <value>options</value>
   </data>

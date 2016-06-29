@@ -52,6 +52,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "LogsDialog";
             this.Text = "Logs";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OnLogsDialogFormClosing);
             this.ResumeLayout(false);
 
         }

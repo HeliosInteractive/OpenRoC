@@ -91,6 +91,15 @@ namespace oroc.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to log4net.
+        /// </summary>
+        internal static string SettingsLog4NetNode {
+            get {
+                return ResourceManager.GetString("SettingsLog4NetNode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to options.
         /// </summary>
         internal static string SettingsOptionNode {

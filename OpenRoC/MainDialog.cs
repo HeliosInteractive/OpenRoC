@@ -1,5 +1,6 @@
 ﻿namespace oroc
 {
+    using System;
     using System.IO;
     using System.Windows.Forms;
     using System.ComponentModel;
@@ -18,12 +19,18 @@
         public MainDialog()
         {
             InitializeComponent();
+            HandleCreated += OnHandleCreated;
+            ProcessManager = new ProcessManager();
             ProcessListView.SetDoubleBuffered(true);
 
+            LogsForm = new LogsDialog();
+        }
+
+        private void OnHandleCreated(object sender, EventArgs e)
+        {
             List<ProcessOptions> launchOptions = Settings.Instance.Read<List<ProcessOptions>>
                 (Properties.Resources.SettingsProcessListNode);
 
-            ProcessManager = new ProcessManager();
             launchOptions.ForEach((opt) => { ProcessManager.Add(opt); });
             ProcessManager.PropertyChanged += OnProcessManagerPropertyChanged;
         }
