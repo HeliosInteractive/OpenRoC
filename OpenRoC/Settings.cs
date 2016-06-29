@@ -4,13 +4,28 @@
     using System.IO;
     using System.Xml.Linq;
 
-    class Settings
+    public sealed class Settings
     {
+        private static volatile Settings instance;
         private XElement openrocRoot;
         private XElement optionsRoot;
         private bool dirty = false;
 
-        public Settings()
+        public static Settings Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    if (instance == null)
+                        instance = new Settings();
+                }
+
+                return instance;
+            }
+        }
+
+        Settings()
         {
             FileInfo config_file = new FileInfo(Path.Combine(
                 Program.Directory, Properties.Resources.SettingsFileName));
