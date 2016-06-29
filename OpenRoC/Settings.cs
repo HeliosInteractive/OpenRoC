@@ -8,20 +8,32 @@
     {
         private XElement openrocRoot;
         private XElement optionsRoot;
+        private bool dirty = false;
 
         public Settings()
         {
-            FileInfo config_file = new FileInfo(
-                Path.Combine(Program.Directory, Properties.Resources.SettingsFileName));
+            FileInfo config_file = new FileInfo(Path.Combine(
+                Program.Directory, Properties.Resources.SettingsFileName));
 
             if (!config_file.Exists)
                 File.WriteAllText(config_file.FullName, Properties.Resources.SettingsBaseXml);
 
-            try { openrocRoot = XElement.Load(config_file.FullName); }
-            catch (Exception) { openrocRoot = XElement.Parse(Properties.Resources.SettingsBaseXml); }
+            try
+            {
+                openrocRoot = XElement.Load(config_file.FullName);
+                dirty = false;
+            }
+            catch (Exception)
+            {
+                openrocRoot = XElement.Parse(Properties.Resources.SettingsBaseXml);
+                dirty = true;
+            }
 
             if (openrocRoot == null || openrocRoot.Name != Properties.Resources.SettingsRootNode)
+            {
                 openrocRoot = new XElement(Properties.Resources.SettingsRootNode);
+                dirty = true;
+            }
 
             optionsRoot = openrocRoot.Element(Properties.Resources.SettingsOptionNode);
 
@@ -29,6 +41,7 @@
             {
                 optionsRoot = new XElement(Properties.Resources.SettingsOptionNode);
                 openrocRoot.Add(optionsRoot);
+                dirty = true;
             }
         }
 
@@ -38,6 +51,8 @@
                 optionsRoot.Add(new XElement(node));
 
             optionsRoot.Element(node).ReplaceAll(XElement.Parse(value.ToXmlNodeString()).FirstNode);
+
+            dirty = true;
         }
 
         public T Read<T>(string node) where T : new()
@@ -50,9 +65,14 @@
 
         public void Save()
         {
+            if (!dirty)
+                return;
+
             openrocRoot.Save(Path.Combine(
                 Program.Directory,
                 Properties.Resources.SettingsFileName));
+
+            dirty = false;
         }
     }
 }
