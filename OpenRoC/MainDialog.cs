@@ -19,7 +19,10 @@
             InitializeComponent();
 
             Settings = new Settings();
+
             ProcessManager = Settings.Read<ProcessManager>("ProcessManager");
+            ProcessManager.Setup();
+
             ProcessListView.SetDoubleBuffered(true);
 
             ProcessManager.OnProcessAdded += fn => { UpdateSettings(); };
@@ -34,8 +37,6 @@
 
         private void DisposeAddedComponents()
         {
-            UpdateSettings();
-
             if (ProcessManager != null)
                 ProcessManager.Dispose();
 
@@ -95,7 +96,7 @@
                 {
                     ListViewItem item = new ListViewItem();
 
-                    item.Checked = true;
+                    item.Checked = p.State != ProcessRunner.Status.Disabled;
                     item.Text = p.ProcessOptions.Path;
                     item.Name = p.ProcessOptions.Path;
                     item.SubItems.Add(p.State.ToString());
@@ -174,8 +175,11 @@
 
         private void OnProcessListViewItemChecked(object sender, ItemCheckedEventArgs e)
         {
+            if (!ProcessListView.Items.ContainsKey(e.Item.Text))
+                return;
+
             if (e.Item.Checked)
-                ProcessManager.Get(e.Item.Text).State = ProcessRunner.Status.Running;
+                ProcessManager.Get(e.Item.Text).RestoreState();
             else
                 ProcessManager.Get(e.Item.Text).State = ProcessRunner.Status.Disabled;
         }

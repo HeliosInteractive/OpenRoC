@@ -56,7 +56,7 @@
             if (main != null)
             {
                 if (main.ProcessManager.Contains(Options.Path))
-                    main.ProcessManager.Update(Options);
+                    main.ProcessManager.Swap(Options);
                 else
                     main.ProcessManager.Add(Options);
 

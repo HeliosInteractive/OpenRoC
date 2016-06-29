@@ -1,13 +1,16 @@
 ﻿namespace oroc
 {
     using System;
-    using System.Linq;
     using System.Xml.Serialization;
     using System.Collections.Generic;
 
     public class ProcessManager : IDisposable
     {
-        private readonly Dictionary<string, ProcessRunner> Processes;
+        private Dictionary<string, ProcessRunner> ProcessMap
+            = new Dictionary<string, ProcessRunner>();
+
+        public List<ProcessRunner> ProcessList { get; set; }
+            = new List<ProcessRunner>();
 
         [XmlIgnore]
         public Action<string> OnProcessAdded;
@@ -15,18 +18,15 @@
         [XmlIgnore]
         public Action<string> OnProcessDeleted;
 
-        public ProcessManager()
-        {
-            Processes = new Dictionary<string, ProcessRunner>();
-        }
-
         public void Add(ProcessOptions opts)
         {
             if (string.IsNullOrWhiteSpace(opts.Path))
                 return;
 
             ProcessRunner proc = new ProcessRunner(opts);
-            Processes.Add(opts.Path, proc);
+
+            ProcessList.Add(proc);
+            ProcessMap.Add(opts.Path, proc);
 
             if (OnProcessAdded != null)
                 OnProcessAdded(opts.Path);
@@ -34,11 +34,13 @@
 
         public void Delete(string path)
         {
-            if (Processes.ContainsKey(path))
+            if (ProcessMap.ContainsKey(path))
             {
-                Processes[path].Stop();
-                Processes[path].Dispose();
-                Processes.Remove(path);
+                ProcessRunner proc = ProcessMap[path];
+
+                proc.Dispose();
+                ProcessMap.Remove(path);
+                ProcessList.Remove(proc);
 
                 if (OnProcessDeleted != null)
                     OnProcessDeleted(path);
@@ -50,44 +52,33 @@
             if (string.IsNullOrWhiteSpace(path))
                 return false;
 
-            return Processes.ContainsKey(path);
+            return ProcessMap.ContainsKey(path);
         }
 
         public ProcessRunner Get(string path)
         {
-            return Processes[path];
+            return ProcessMap[path];
         }
 
-        public void Update(ProcessOptions opts)
+        public void Swap(ProcessOptions opts)
         {
             Get(opts.Path).SwapOptions(opts);
         }
 
-        [XmlArray]
-        //[XmlArrayItem(ElementName = "ProcessRunners")]
-        public List<ProcessRunner> ProcessList
+        public void Setup()
         {
-            get { return Processes.Values.ToList(); }
-            set
+            if (ProcessMap.Count > 0)
             {
-                if (Processes.Count > 0)
-                {
-                    foreach (var pair in Processes)
-                    {
-                        pair.Value.Stop();
-                        pair.Value.Dispose();
-                    }
-                }
+                foreach (var pair in ProcessMap)
+                    pair.Value.Dispose();
 
-                if (value == null)
-                    return;
-
-                value.ForEach(runner =>
-                {
-                    Add(runner.ProcessOptions.Clone() as ProcessOptions);
-                    Get(runner.ProcessOptions.Path).State = runner.State;
-                });
+                ProcessMap.Clear();
             }
+
+            ProcessList.ForEach(runner =>
+            {
+                ProcessMap.Add(runner.ProcessOptions.Path, runner);
+            });
         }
 
         #region IDisposable Support
@@ -101,7 +92,7 @@
             {
                 if (disposing)
                 {
-                    foreach (var pair in Processes)
+                    foreach (var pair in ProcessMap)
                     {
                         pair.Value.Stop();
                         pair.Value.Dispose();
