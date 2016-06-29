@@ -143,7 +143,7 @@
         {
             if (Process == null)
             {
-                if (!IsDisposed && State == Status.Disabled)
+                if (!IsDisposed && State != Status.Stopped)
                     State = Status.Stopped;
 
                 return;
@@ -213,8 +213,8 @@
 
                     Stop();
 
-                    previousState = previousStateSnapshot;
-                    currentState = currentStateSnapshot;
+                    State = previousStateSnapshot;
+                    State = currentStateSnapshot;
                 }
             }
             else
