@@ -11,6 +11,9 @@
         private XElement optionsRoot;
         private bool dirty = false;
 
+        public bool IsSingleInsntaceEnabled { get; set; } = true;
+        public bool IsStartMinimizedEnabled { get; set; } = false;
+
         public static Settings Instance
         {
             get
