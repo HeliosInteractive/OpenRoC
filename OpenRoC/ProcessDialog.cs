@@ -47,6 +47,8 @@
             ProcessOptionCommandLineControl.DataBindings.Add(new Binding("Text", Options, "CommandLine"));
             ProcessOptionEnvironmentVariablesEnabledControl.DataBindings.Add(new Binding("Checked", Options, "EnvironmentVariablesEnabled"));
             ProcessOptionEnvironmentVariablesControl.DataBindings.Add(new Binding("Text", Options, "EnvironmentVariables"));
+
+            SyncStartupStateRadioGroup();
         }
 
         private void OnProcessOptionsSaveButtonClick(object sender, System.EventArgs e)
@@ -72,6 +74,11 @@
         }
 
         private void OnStartupStateRadioGroupCheckedChanged(object sender, System.EventArgs e)
+        {
+            SyncStartupStateRadioGroup();
+        }
+
+        private void SyncStartupStateRadioGroup()
         {
             if (StartupStateStoppedControl.Checked)
                 Options.InitialStateEnumValue = ProcessRunner.Status.Stopped;
