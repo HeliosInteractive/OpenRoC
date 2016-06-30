@@ -10,6 +10,14 @@
     using log4net.Appender;
     using System.Windows.Forms;
 
+    class Log
+    {
+        public static void d(string fmt, params object[] args) { Logger.Instance.DebugFormat(fmt, args); }
+        public static void w(string fmt, params object[] args) { Logger.Instance.WarnFormat(fmt, args); }
+        public static void e(string fmt, params object[] args) { Logger.Instance.ErrorFormat(fmt, args); }
+        public static void i(string fmt, params object[] args) { Logger.Instance.InfoFormat(fmt, args); }
+    }
+
     class Logger
     {
         public static readonly ILog Instance = LogManager.GetLogger(typeof(Logger));
@@ -51,7 +59,7 @@
             XmlConfigurator.Configure(log4net_root.AsXmlElement());
             BasicConfigurator.Configure(new TextBoxAppender(logBox, owner));
 
-            Instance.Debug("Logger configured.");
+            Log.d("Logger configured.");
         }
 
         internal class TextBoxAppender : AppenderSkeleton
