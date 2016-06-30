@@ -84,9 +84,8 @@
             catch (Exception ex)
             {
                 Log.e("Failed to write XML string for node: {0}. Reason: {1}", node, ex.Message);
+                dirty = false;
             }
-
-            dirty = false;
         }
 
         public T Read<T>(string node) where T : new()
