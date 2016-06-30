@@ -19,17 +19,20 @@
         public MainDialog()
         {
             InitializeComponent();
+            LogsForm = new LogsDialog();
             HandleCreated += OnHandleCreated;
             ProcessManager = new ProcessManager();
             ProcessListView.SetDoubleBuffered(true);
-
-            LogsForm = new LogsDialog();
         }
 
         private void OnHandleCreated(object sender, EventArgs e)
         {
+            Log.d("Main dialog handle created.");
+
             List<ProcessOptions> launchOptions = Settings.Instance.Read<List<ProcessOptions>>
                 (Properties.Resources.SettingsProcessListNode);
+
+            Log.d("Launch options parsed. Number of launch processes: {0}", launchOptions.Count);
 
             launchOptions.ForEach((opt) => { ProcessManager.Add(opt); });
             ProcessManager.PropertyChanged += OnProcessManagerPropertyChanged;
