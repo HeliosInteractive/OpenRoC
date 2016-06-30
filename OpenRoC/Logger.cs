@@ -95,7 +95,7 @@
                 if (level == Level.Error || level == Level.Critical || level == Level.Fatal)
                     return Color.Red;
                 else if (level == Level.Debug || level == Level.Notice)
-                    return Color.DarkSlateGray;
+                    return Color.DimGray;
                 else if (level == Level.Warn)
                     return Color.Blue;
                 else
