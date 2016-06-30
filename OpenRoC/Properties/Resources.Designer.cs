@@ -70,6 +70,15 @@ namespace oroc.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Application.
+        /// </summary>
+        internal static string SettingsApplicationNode {
+            get {
+                return ResourceManager.GetString("SettingsApplicationNode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
         ///&lt;openroc&gt;
         ///    &lt;log4net&gt;

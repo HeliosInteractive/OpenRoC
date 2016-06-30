@@ -145,7 +145,44 @@
             UpdateProcessList();
         }
 
-        #region Context menu event callbacks
+        #region Start minimized support
+
+        protected override void SetVisibleCore(bool value)
+        {
+            if (!IsHandleCreated)
+            {
+                CreateHandle();
+                base.SetVisibleCore(!Settings.Instance.IsStartMinimizedEnabled);
+            }
+            else
+            {
+                base.SetVisibleCore(value);
+            }
+        }
+
+        #endregion
+
+        #region Taskbar right-click context menu event callbacks
+
+        private void OnTaskbarContextMenuToggleViewButtonClick(object sender, EventArgs e)
+        {
+            if (e is MouseEventArgs && (e as MouseEventArgs).Button != MouseButtons.Left)
+                return;
+
+            Visible = !Visible;
+
+            if (Visible)
+                Focus();
+        }
+
+        private void OnTaskbarContextMenuExitButtonClick(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        #endregion
+
+        #region Process right-click context menu event callbacks
 
         private void OnContextMenuEditButtonClick(object sender, EventArgs e)
         {

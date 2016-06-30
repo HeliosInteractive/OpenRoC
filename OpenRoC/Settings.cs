@@ -7,12 +7,42 @@
     public sealed class Settings
     {
         private static volatile Settings instance;
+        private Application application;
         private XElement openrocRoot;
         private XElement optionsRoot;
         private bool dirty = false;
 
-        public bool IsSingleInsntaceEnabled { get; set; } = true;
-        public bool IsStartMinimizedEnabled { get; set; } = false;
+        public class Application
+        {
+            public bool singleInsntace = false;
+            public bool startMinimized = false;
+        }
+
+        public bool IsSingleInsntaceEnabled
+        {
+            get { return application.singleInsntace; }
+            set
+            {
+                if (value == application.singleInsntace)
+                    return;
+
+                application.singleInsntace = value;
+                dirty = true;
+            }
+        }
+
+        public bool IsStartMinimizedEnabled
+        {
+            get { return application.startMinimized; }
+            set
+            {
+                if (value == application.startMinimized)
+                    return;
+
+                application.startMinimized = value;
+                dirty = true;
+            }
+        }
 
         public static Settings Instance
         {
@@ -21,14 +51,18 @@
                 if (instance == null)
                 {
                     if (instance == null)
+                    {
                         instance = new Settings();
+                        instance.Setup();
+                        instance.Save();
+                    }
                 }
 
                 return instance;
             }
         }
 
-        Settings()
+        private void Setup()
         {
             FileInfo config_file = new FileInfo(Path.Combine(
                 Program.Directory, Properties.Resources.SettingsFileName));
@@ -69,7 +103,9 @@
                 dirty = true;
             }
 
-            Save();
+            application =  Read<Application>(Properties.Resources.SettingsApplicationNode);
+            Write(Properties.Resources.SettingsApplicationNode, application);
+
         }
 
         public void Write<T>(string node, T value) where T : new()
@@ -111,11 +147,12 @@
         {
             if (!dirty)
                 return;
+            Write(Properties.Resources.SettingsApplicationNode, application);
 
             openrocRoot.Save(Path.Combine(
                 Program.Directory,
                 Properties.Resources.SettingsFileName));
-
+            
             dirty = false;
         }
     }

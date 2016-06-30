@@ -37,6 +37,7 @@
                 Launch();
             }
 
+            Settings.Instance.Save();
             return 0;
         }
 

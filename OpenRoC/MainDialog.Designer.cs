@@ -53,9 +53,15 @@
             this.ContextMenuStop = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextMenuShow = new System.Windows.Forms.ToolStripMenuItem();
             this.MainDialogUpdateTimer = new System.Windows.Forms.Timer(this.components);
+            this.TaskbarIcon = new System.Windows.Forms.NotifyIcon(this.components);
+            this.TaskbarContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.TaskbarContextMenuToggleViewButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.TaskbarContextMenuSeparator = new System.Windows.Forms.ToolStripSeparator();
+            this.TaskbarContextMenuExitButton = new System.Windows.Forms.ToolStripMenuItem();
             this.StatusStrip.SuspendLayout();
             this.MenuStrip.SuspendLayout();
             this.RightClickContextMenuStrip.SuspendLayout();
+            this.TaskbarContextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // StatusStrip
@@ -256,6 +262,44 @@
             this.MainDialogUpdateTimer.Enabled = true;
             this.MainDialogUpdateTimer.Tick += new System.EventHandler(this.OnMainDialogUpdateTimerTick);
             // 
+            // TaskbarIcon
+            // 
+            this.TaskbarIcon.ContextMenuStrip = this.TaskbarContextMenuStrip;
+            this.TaskbarIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("TaskbarIcon.Icon")));
+            this.TaskbarIcon.Text = "OpenRoc";
+            this.TaskbarIcon.Visible = true;
+            this.TaskbarIcon.Click += new System.EventHandler(this.OnTaskbarContextMenuToggleViewButtonClick);
+            // 
+            // TaskbarContextMenuStrip
+            // 
+            this.TaskbarContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.TaskbarContextMenuToggleViewButton,
+            this.TaskbarContextMenuSeparator,
+            this.TaskbarContextMenuExitButton});
+            this.TaskbarContextMenuStrip.Name = "TaskbarContextMenuStrip";
+            this.TaskbarContextMenuStrip.ShowImageMargin = false;
+            this.TaskbarContextMenuStrip.Size = new System.Drawing.Size(110, 54);
+            // 
+            // TaskbarContextMenuToggleViewButton
+            // 
+            this.TaskbarContextMenuToggleViewButton.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TaskbarContextMenuToggleViewButton.Name = "TaskbarContextMenuToggleViewButton";
+            this.TaskbarContextMenuToggleViewButton.Size = new System.Drawing.Size(109, 22);
+            this.TaskbarContextMenuToggleViewButton.Text = "Show/Hide";
+            this.TaskbarContextMenuToggleViewButton.Click += new System.EventHandler(this.OnTaskbarContextMenuToggleViewButtonClick);
+            // 
+            // TaskbarContextMenuSeparator
+            // 
+            this.TaskbarContextMenuSeparator.Name = "TaskbarContextMenuSeparator";
+            this.TaskbarContextMenuSeparator.Size = new System.Drawing.Size(106, 6);
+            // 
+            // TaskbarContextMenuExitButton
+            // 
+            this.TaskbarContextMenuExitButton.Name = "TaskbarContextMenuExitButton";
+            this.TaskbarContextMenuExitButton.Size = new System.Drawing.Size(109, 22);
+            this.TaskbarContextMenuExitButton.Text = "Exit";
+            this.TaskbarContextMenuExitButton.Click += new System.EventHandler(this.OnTaskbarContextMenuExitButtonClick);
+            // 
             // MainDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -272,6 +316,7 @@
             this.MenuStrip.ResumeLayout(false);
             this.MenuStrip.PerformLayout();
             this.RightClickContextMenuStrip.ResumeLayout(false);
+            this.TaskbarContextMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -301,6 +346,11 @@
         private System.Windows.Forms.ToolStripMenuItem ContextMenuStart;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuStop;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuShow;
+        private System.Windows.Forms.NotifyIcon TaskbarIcon;
+        private System.Windows.Forms.ContextMenuStrip TaskbarContextMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem TaskbarContextMenuToggleViewButton;
+        private System.Windows.Forms.ToolStripSeparator TaskbarContextMenuSeparator;
+        private System.Windows.Forms.ToolStripMenuItem TaskbarContextMenuExitButton;
     }
 }
 
