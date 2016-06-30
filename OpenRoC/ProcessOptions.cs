@@ -36,14 +36,43 @@
 
         public ProcessOptions()
         {
-            initialState = ProcessRunner.Status.Stopped;
+            SetDefaults();
             environmentVariables = new Dictionary<string, string>();
         }
 
         public ProcessOptions(Dictionary<string, string> variables)
         {
-            initialState = ProcessRunner.Status.Stopped;
+            SetDefaults();
             environmentVariables = variables;
+        }
+
+        void SetDefaults()
+        {
+            path = string.Empty;
+            workingDirectory = string.Empty;
+            crashedIfNotRunning = true;
+            crashedIfUnresponsive = true;
+            doubleCheckEnabled = false;
+            doubleCheckDuration = 0;
+            gracePeriodEnabled = false;
+            gracePeriodDuration = 0;
+            preLaunchScriptEnabled = false;
+            preLaunchScriptPath = string.Empty;
+            aggressiveCleanupEnabled = false;
+            aggressiveCleanupByName = false;
+            aggressiveCleanupByPID = false;
+            postCrashScriptEnabled = false;
+            postCrashScriptPath = string.Empty;
+            screenShotEnabled = false;
+            alwaysOnTopEnabled = false;
+            commandLineEnabled = false;
+            commandLine = string.Empty;
+            environmentVariablesEnabled = false;
+
+            if (environmentVariables != null)
+                environmentVariables.Clear();
+
+            initialState = ProcessRunner.Status.Stopped;
         }
 
         #region DataBind accessible properties 
