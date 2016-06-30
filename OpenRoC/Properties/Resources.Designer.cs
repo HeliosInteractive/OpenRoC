@@ -61,6 +61,15 @@ namespace oroc.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to oroclock.
+        /// </summary>
+        internal static string OpenRoCMutexName {
+            get {
+                return ResourceManager.GetString("OpenRoCMutexName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
         ///&lt;openroc&gt;
         ///    &lt;log4net&gt;
@@ -69,11 +78,9 @@ namespace oroc.Properties {
         ///            &lt;appendToFile value=&quot;true&quot; /&gt;
         ///            &lt;maximumFileSize value=&quot;10MB&quot; /&gt;
         ///            &lt;maxSizeRollBackups value=&quot;20&quot; /&gt;
-        ///
         ///            &lt;layout type=&quot;log4net.Layout.PatternLayout&quot;&gt;
-        ///                &lt;conversionPattern value=&quot;[%5level] [%2thread] - %message%newline&quot; /&gt;
-        ///            &lt;/layout&gt;
-        ///         [rest of string was truncated]&quot;;.
+        ///                &lt;conversionPattern value=&quot;[%5level] [%date{yyyy-MM-dd HH:mm:ss}] [%2thread] - %message%newline&quot; /&gt;
+        ///     [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string SettingsBaseXml {
             get {
