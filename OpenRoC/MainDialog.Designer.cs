@@ -53,7 +53,6 @@
             this.ContextMenuStop = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextMenuShow = new System.Windows.Forms.ToolStripMenuItem();
             this.MainDialogUpdateTimer = new System.Windows.Forms.Timer(this.components);
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.StatusStrip.SuspendLayout();
             this.MenuStrip.SuspendLayout();
             this.RightClickContextMenuStrip.SuspendLayout();
@@ -298,7 +297,6 @@
         private System.Windows.Forms.ToolStripMenuItem ContextMenuEditButton;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuDisableButton;
         private System.Windows.Forms.Timer MainDialogUpdateTimer;
-        private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.ToolStripSeparator ContextMenuSeparator2;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuStart;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuStop;
