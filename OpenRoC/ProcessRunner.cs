@@ -39,6 +39,9 @@
                 currentState = value;
                 ResetTimers();
 
+                Log.d("State changed from {0} to {1} for {2}",
+                    previousState, currentState, ProcessPath);
+
                 NotifyPropertyChanged("State");
             }
         }
@@ -70,6 +73,8 @@
             doubleCheckTimer = new Timer { AutoReset = false };
             gracePeriodTimer.Elapsed += OnGracePeriodTimeElapsed;
             doubleCheckTimer.Elapsed += OnDoubleCheckTimeElapsed;
+
+            Log.d("A new ProcessRunner is constructed for {0}", opts.Path);
         }
 
         private void SwapOptions(ProcessOptions opts)
@@ -78,6 +83,7 @@
             options = opts;
             State = opts.InitialStateEnumValue;
 
+            Log.d("Options swaped for {0}", ProcessPath);
             NotifyPropertyChanged("ProcessOptions");
         }
 
@@ -86,15 +92,25 @@
             if (previousState == Status.Invalid)
                 State = Status.Stopped;
             else State = previousState;
+
+            Log.d("State is restored for {0}", ProcessPath);
         }
 
         public void Start()
         {
+            Log.d("About to start {0}", ProcessPath);
+
             if (Process != null)
+            {
+                Log.d("Another instance found for {0}.", ProcessPath);
                 Stop();
+            }
 
             if (options.PreLaunchScriptEnabled)
+            {
+                Log.d("Executin pre-launch script of {0}.", ProcessPath);
                 ProcessHelper.ExecuteScript(options.PreLaunchScriptPath);
+            }
 
             ProcessStartInfo sinfo = new ProcessStartInfo
             {
@@ -128,23 +144,44 @@
             Process.Start();
             Process.Refresh();
 
-            try { Process.WaitForInputIdle(); HasWindow = true; }
-            catch (Exception) { HasWindow = false; }
+            try
+            {
+                Log.d("Waiting for Window of {0}", ProcessPath);
+                Process.WaitForInputIdle();
+                HasWindow = true;
+            }
+            catch (Exception)
+            {
+                Log.w("No Window for {0}. Is this a console process?", ProcessPath);
+                HasWindow = false;
+            }
 
             if (!HasWindow || Process.Responding)
             {
                 State = Status.Invalid;
                 State = Status.Running;
             }
-            else Stop();
+            else
+            {
+                Log.e("Unable to start {0}. It is neither responding nor has a Window",
+                    ProcessPath);
+                Stop();
+            }
         }
 
         public void Stop()
         {
+            Log.d("About to stop {0}", ProcessPath);
+
             if (Process == null)
             {
+                Log.d("Instance is already null {0}", ProcessPath);
+
                 if (!IsDisposed && State != Status.Stopped)
+                {
+                    Log.d("Force-stopping {0}", ProcessPath);
                     State = Status.Stopped;
+                }
 
                 return;
             }
@@ -161,22 +198,36 @@
 
             if (!Process.HasExited)
             {
+                Log.d("Attempting to close main Window of {0}", ProcessPath);
+
                 Process.CloseMainWindow();
                 Process.WaitForExit(1000);
 
                 if (!Process.HasExited)
+                {
+                    Log.d("Window did not exit after 1 second {0}", ProcessPath);
                     Process.Kill();
+                }
             }
 
             if (options.AggressiveCleanupEnabled)
             {
                 if (options.AggressiveCleanupByName)
+                {
+                    Log.d("Performing an aggressive clean-up by name {0}. This will not work if you are not admin.",
+                        ProcessPath);
                     ProcessHelper.TaskKill(Path.GetFileName(ProcessPath));
+                }
 
                 if (options.AggressiveCleanupByPID)
+                {
+                    Log.d("Performing an aggressive clean-up by PID {0}. This will not work if you are not admin.",
+                        ProcessPath);
                     ProcessHelper.TaskKill(Process);
+                }
             }
 
+            Log.d("Disposing {0}", ProcessPath);
             Process.Dispose();
             Process = null;
 
@@ -187,19 +238,24 @@
             }
 
             if (options.PostCrashScriptEnabled)
+            {
+                Log.d("Executin post-crash script of {0}.", ProcessPath);
                 ProcessHelper.ExecuteScript(options.PostCrashScriptPath);
+            }
         }
 
         public void Monitor()
         {
             if (resetTimer.IsSet)
             {
+                Log.d("State timer for {0} is reset.", ProcessPath);
                 Stopwatch.Restart();
                 resetTimer.Reset();
             }
 
             if (ShouldStart)
             {
+                Log.d("Process should start but it's not running {0}.", ProcessPath);
                 if (startSignal.IsSet)
                     startSignal.Reset();
 
@@ -238,14 +294,24 @@
 
                 if (options.CrashedIfUnresponsive && !Process.Responding)
                 {
+                    Log.d("Window is not responding {0}.", ProcessPath);
+
                     if (options.DoubleCheckEnabled)
                     {
+                        Log.d("Will double check again in {0} seconds: {1}.", options.DoubleCheckDuration, ProcessPath);
+
                         if (checkSignal.IsSet)
                         {
                             if (!Process.Responding)
+                            {
+                                Log.d("Window is still not responding {0}.", ProcessPath);
                                 startSignal.Set();
+                            }
                             else
+                            {
+                                Log.d("Window is alive again {0}.", ProcessPath);
                                 startSignal.Reset();
+                            }
 
                             checkSignal.Reset();
                         }
@@ -257,11 +323,15 @@
                     }
                     else
                     {
+                        Log.d("Double check is disabled. Process will restart {0}.", ProcessPath);
                         startSignal.Set();
                     }
 
                     if (startSignal.IsSet && currentState == Status.Stopped)
+                    {
+                        Log.d("Start signal is masked by GUI {0}.", ProcessPath);
                         Stop();
+                    }
                 }
                 else if (options.AlwaysOnTopEnabled)
                 {
@@ -300,6 +370,7 @@
 
         private void ResetTimers()
         {
+            Log.d("All timers for {0} are reset.", ProcessPath);
             resetTimer.Set();
             gracePeriodTimer.Stop();
             doubleCheckTimer.Stop();
@@ -307,13 +378,15 @@
 
         private bool ShouldStart
         {
-            get { return (startSignal.IsSet || (Process == null && State != Status.Disabled && options.CrashedIfNotRunning && !gracePeriodTimer.Enabled)); }
+            get { return (startSignal.IsSet || (Process == null && State == Status.Running && options.CrashedIfNotRunning && !gracePeriodTimer.Enabled)); }
         }
 
         #region Event callbacks
 
         private void OnProcessStopped(object sender, EventArgs e)
         {
+            Log.w("Process is crashed {0}.", ProcessPath);
+
             Stop();
 
             if (options.GracePeriodEnabled)
@@ -348,6 +421,8 @@
 
         protected void NotifyPropertyChanged(string propertyName)
         {
+            Log.d("Prcoess property {0} changed in {1}.", propertyName, ProcessPath);
+
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
@@ -360,6 +435,8 @@
 
         protected virtual void Dispose(bool disposing)
         {
+            Log.d("Process is disposed {0}", ProcessPath);
+
             if (!IsDisposed)
             {
                 IsDisposed = true;
