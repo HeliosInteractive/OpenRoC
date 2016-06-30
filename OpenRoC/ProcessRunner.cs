@@ -65,7 +65,7 @@
             Stopwatch = new Stopwatch();
             currentState = opts.InitialStateEnumValue;
             previousState = Status.Invalid;
-            resetTimer = new Signal(false);
+            resetTimer = new Signal(true);
             startSignal = new Signal(false);
             checkSignal = new Signal(false);
             options = opts.Clone() as ProcessOptions;
