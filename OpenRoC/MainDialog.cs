@@ -13,8 +13,8 @@
         private SettingsDialog SettingsForm;
         private AboutDialog AboutForm;
         private LogsDialog LogsForm;
-
-        public readonly ProcessManager ProcessManager;
+        private bool inhibitAutoCheck;
+        public ProcessManager ProcessManager { get; private set; }
 
         public MainDialog()
         {
@@ -47,28 +47,7 @@
             }
         }
 
-        private void DisposeAddedComponents()
-        {
-            if (ProcessManager != null)
-                ProcessManager.Dispose();
-
-            if (EditProcessForm != null)
-                EditProcessForm.Dispose();
-
-            if (AddProcessForm != null)
-                AddProcessForm.Dispose();
-
-            if (SettingsForm != null)
-                SettingsForm.Dispose();
-
-            if (AboutForm != null)
-                AboutForm.Dispose();
-
-            if (LogsForm != null)
-                LogsForm.Dispose();
-        }
-
-        private void OnProcessListViewResize(object sender, System.EventArgs e)
+        private void OnProcessListViewResize(object sender, EventArgs e)
         {
             if (ProcessListView.Columns.Count > 0)
                 ProcessListView.AutoResizeColumn(
@@ -121,27 +100,54 @@
             });
         }
 
-        private void OnSettingsButtonClick(object sender, System.EventArgs e)
+        private void OnSettingsButtonClick(object sender, EventArgs e)
         {
             HandleDialogRequest(ref SettingsForm);
         }
 
-        private void OnAddButtonClick(object sender, System.EventArgs e)
+        private void OnAddButtonClick(object sender, EventArgs e)
         {
             HandleDialogRequest(ref AddProcessForm);
         }
 
-        private void OnAboutButtonClick(object sender, System.EventArgs e)
+        private void OnAboutButtonClick(object sender, EventArgs e)
         {
             HandleDialogRequest(ref AboutForm);
         }
 
-        private void OnLogButtonClick(object sender, System.EventArgs e)
+        private void OnLogButtonClick(object sender, EventArgs e)
         {
             HandleDialogRequest(ref LogsForm);
         }
 
-        private void OnContextMenuEditButtonClick(object sender, System.EventArgs e)
+        private void OnDeleteButtonClick(object sender, EventArgs e)
+        {
+            foreach (ListViewItem item in ProcessListView.SelectedItems)
+                ProcessManager.Delete(item.Text);
+
+            UpdateProcessList();
+        }
+
+        private void OnProcessListViewItemChecked(object sender, ItemCheckedEventArgs e)
+        {
+            if (e.Item.Checked == (ProcessManager.Get(e.Item.Text).State != ProcessRunner.Status.Disabled))
+                return;
+
+            if (e.Item.Checked)
+                ProcessManager.Get(e.Item.Text).RestoreState();
+            else
+                ProcessManager.Get(e.Item.Text).State = ProcessRunner.Status.Disabled;
+        }
+
+        private void OnMainDialogUpdateTimerTick(object sender, EventArgs e)
+        {
+            ProcessManager.ProcessRunnerList.ForEach(p => p.Monitor());
+            UpdateProcessList();
+        }
+
+        #region Context menu event callbacks
+
+        private void OnContextMenuEditButtonClick(object sender, EventArgs e)
         {
             if (ProcessListView.FocusedItem == null)
                 return;
@@ -163,7 +169,7 @@
                 EditProcessForm.Focus();
         }
 
-        private void OnContextMenuDeleteButtonClick(object sender, System.EventArgs e)
+        private void OnContextMenuDeleteButtonClick(object sender, EventArgs e)
         {
             if (ProcessListView.FocusedItem == null)
                 return;
@@ -172,15 +178,7 @@
             UpdateProcessList();
         }
 
-        private void OnDeleteButtonClick(object sender, System.EventArgs e)
-        {
-            foreach (ListViewItem item in ProcessListView.SelectedItems)
-                ProcessManager.Delete(item.Text);
-
-            UpdateProcessList();
-        }
-
-        private void OnContextMenuDisableButtonClick(object sender, System.EventArgs e)
+        private void OnContextMenuDisableButtonClick(object sender, EventArgs e)
         {
             if (ProcessListView.FocusedItem == null)
                 return;
@@ -188,16 +186,36 @@
             ProcessManager.Get(ProcessListView.FocusedItem.Text).State = ProcessRunner.Status.Disabled;
         }
 
-        private void OnProcessListViewItemChecked(object sender, ItemCheckedEventArgs e)
+        private void OnContextMenuShowClick(object sender, EventArgs e)
         {
-            if (e.Item.Checked == (ProcessManager.Get(e.Item.Text).State != ProcessRunner.Status.Disabled))
+            if (ProcessListView.FocusedItem == null)
                 return;
 
-            if (e.Item.Checked)
-                ProcessManager.Get(e.Item.Text).RestoreState();
-            else
-                ProcessManager.Get(e.Item.Text).State = ProcessRunner.Status.Disabled;
+            ProcessManager.Get(ProcessListView.FocusedItem.Text).BringToFront();
         }
+
+        private void OnContextMenuStopClick(object sender, EventArgs e)
+        {
+            if (ProcessListView.FocusedItem == null)
+                return;
+
+            ProcessManager.Get(ProcessListView.FocusedItem.Text).Stop();
+        }
+
+        private void OnContextMenuStartClick(object sender, EventArgs e)
+        {
+            if (ProcessListView.FocusedItem == null)
+                return;
+
+            ProcessRunner process = ProcessManager.Get(ProcessListView.FocusedItem.Text);
+
+            if (process.State != ProcessRunner.Status.Running)
+                process.Start();
+        }
+
+        #endregion
+
+        #region Drag and drop file support
 
         private void OnProcessListViewDragDrop(object sender, DragEventArgs e)
         {
@@ -228,37 +246,54 @@
             e.Effect = DragDropEffects.Copy;
         }
 
-        private void OnMainDialogUpdateTimerTick(object sender, System.EventArgs e)
+        #endregion
+
+        #region Disable auto-check feature of ListView on double-click
+
+        private void OnProcessListViewMouseUp(object sender, MouseEventArgs e)
         {
-            ProcessManager.ProcessRunnerList.ForEach(p => p.Monitor());
-            UpdateProcessList();
+            inhibitAutoCheck = false;
         }
 
-        private void OnContextMenuShowClick(object sender, System.EventArgs e)
+        private void OnProcessListViewMouseDown(object sender, MouseEventArgs e)
         {
-            if (ProcessListView.FocusedItem == null)
-                return;
-
-            ProcessManager.Get(ProcessListView.FocusedItem.Text).BringToFront();
+            inhibitAutoCheck = true;
         }
 
-        private void OnContextMenuStopClick(object sender, System.EventArgs e)
+        private void OnProcessListViewItemCheck(object sender, ItemCheckEventArgs e)
         {
-            if (ProcessListView.FocusedItem == null)
-                return;
-
-            ProcessManager.Get(ProcessListView.FocusedItem.Text).Stop();
+            if (inhibitAutoCheck)
+                e.NewValue = e.CurrentValue;
         }
 
-        private void OnContextMenuStartClick(object sender, System.EventArgs e)
+        #endregion
+
+        private void DisposeAddedComponents()
         {
-            if (ProcessListView.FocusedItem == null)
-                return;
+            if (ProcessManager != null)
+                ProcessManager.Dispose();
 
-            ProcessRunner process = ProcessManager.Get(ProcessListView.FocusedItem.Text);
+            if (EditProcessForm != null)
+                EditProcessForm.Dispose();
 
-            if (process.State != ProcessRunner.Status.Running)
-                process.Start();
+            if (AddProcessForm != null)
+                AddProcessForm.Dispose();
+
+            if (SettingsForm != null)
+                SettingsForm.Dispose();
+
+            if (AboutForm != null)
+                AboutForm.Dispose();
+
+            if (LogsForm != null)
+                LogsForm.Dispose();
+
+            ProcessManager = null;
+            EditProcessForm = null;
+            AddProcessForm = null;
+            SettingsForm = null;
+            AboutForm = null;
+            LogsForm = null;
         }
     }
 }

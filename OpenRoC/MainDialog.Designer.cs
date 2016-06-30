@@ -48,12 +48,12 @@
             this.ContextMenuSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.ContextMenuEditButton = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextMenuDisableButton = new System.Windows.Forms.ToolStripMenuItem();
-            this.MainDialogUpdateTimer = new System.Windows.Forms.Timer(this.components);
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.ContextMenuSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.ContextMenuStart = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextMenuStop = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextMenuShow = new System.Windows.Forms.ToolStripMenuItem();
+            this.MainDialogUpdateTimer = new System.Windows.Forms.Timer(this.components);
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.StatusStrip.SuspendLayout();
             this.MenuStrip.SuspendLayout();
             this.RightClickContextMenuStrip.SuspendLayout();
@@ -158,10 +158,14 @@
             this.ProcessListView.TabIndex = 2;
             this.ProcessListView.UseCompatibleStateImageBehavior = false;
             this.ProcessListView.View = System.Windows.Forms.View.Details;
+            this.ProcessListView.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.OnProcessListViewItemCheck);
             this.ProcessListView.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.OnProcessListViewItemChecked);
             this.ProcessListView.SizeChanged += new System.EventHandler(this.OnProcessListViewResize);
             this.ProcessListView.DragDrop += new System.Windows.Forms.DragEventHandler(this.OnProcessListViewDragDrop);
             this.ProcessListView.DragEnter += new System.Windows.Forms.DragEventHandler(this.OnProcessListViewDragEnter);
+            this.ProcessListView.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.OnContextMenuEditButtonClick);
+            this.ProcessListView.MouseDown += new System.Windows.Forms.MouseEventHandler(this.OnProcessListViewMouseDown);
+            this.ProcessListView.MouseUp += new System.Windows.Forms.MouseEventHandler(this.OnProcessListViewMouseUp);
             // 
             // Process
             // 
@@ -187,71 +191,71 @@
             this.ContextMenuShow});
             this.RightClickContextMenuStrip.Name = "ContextMenuStrip";
             this.RightClickContextMenuStrip.ShowImageMargin = false;
-            this.RightClickContextMenuStrip.Size = new System.Drawing.Size(128, 192);
+            this.RightClickContextMenuStrip.Size = new System.Drawing.Size(126, 170);
             // 
             // ContextMenuAddButton
             // 
             this.ContextMenuAddButton.Name = "ContextMenuAddButton";
-            this.ContextMenuAddButton.Size = new System.Drawing.Size(127, 22);
+            this.ContextMenuAddButton.Size = new System.Drawing.Size(125, 22);
             this.ContextMenuAddButton.Text = "Add";
             this.ContextMenuAddButton.Click += new System.EventHandler(this.OnAddButtonClick);
             // 
             // ContextMenuDeleteButton
             // 
             this.ContextMenuDeleteButton.Name = "ContextMenuDeleteButton";
-            this.ContextMenuDeleteButton.Size = new System.Drawing.Size(127, 22);
+            this.ContextMenuDeleteButton.Size = new System.Drawing.Size(125, 22);
             this.ContextMenuDeleteButton.Text = "Delete";
             this.ContextMenuDeleteButton.Click += new System.EventHandler(this.OnContextMenuDeleteButtonClick);
             // 
             // ContextMenuSeparator1
             // 
             this.ContextMenuSeparator1.Name = "ContextMenuSeparator1";
-            this.ContextMenuSeparator1.Size = new System.Drawing.Size(124, 6);
+            this.ContextMenuSeparator1.Size = new System.Drawing.Size(122, 6);
             // 
             // ContextMenuEditButton
             // 
             this.ContextMenuEditButton.Name = "ContextMenuEditButton";
-            this.ContextMenuEditButton.Size = new System.Drawing.Size(127, 22);
+            this.ContextMenuEditButton.Size = new System.Drawing.Size(125, 22);
             this.ContextMenuEditButton.Text = "Edit";
             this.ContextMenuEditButton.Click += new System.EventHandler(this.OnContextMenuEditButtonClick);
             // 
             // ContextMenuDisableButton
             // 
             this.ContextMenuDisableButton.Name = "ContextMenuDisableButton";
-            this.ContextMenuDisableButton.Size = new System.Drawing.Size(127, 22);
+            this.ContextMenuDisableButton.Size = new System.Drawing.Size(125, 22);
             this.ContextMenuDisableButton.Text = "Disable";
             this.ContextMenuDisableButton.Click += new System.EventHandler(this.OnContextMenuDisableButtonClick);
-            // 
-            // MainDialogUpdateTimer
-            // 
-            this.MainDialogUpdateTimer.Enabled = true;
-            this.MainDialogUpdateTimer.Tick += new System.EventHandler(this.OnMainDialogUpdateTimerTick);
             // 
             // ContextMenuSeparator2
             // 
             this.ContextMenuSeparator2.Name = "ContextMenuSeparator2";
-            this.ContextMenuSeparator2.Size = new System.Drawing.Size(124, 6);
+            this.ContextMenuSeparator2.Size = new System.Drawing.Size(122, 6);
             // 
             // ContextMenuStart
             // 
             this.ContextMenuStart.Name = "ContextMenuStart";
-            this.ContextMenuStart.Size = new System.Drawing.Size(127, 22);
+            this.ContextMenuStart.Size = new System.Drawing.Size(125, 22);
             this.ContextMenuStart.Text = "Start Process";
             this.ContextMenuStart.Click += new System.EventHandler(this.OnContextMenuStartClick);
             // 
             // ContextMenuStop
             // 
             this.ContextMenuStop.Name = "ContextMenuStop";
-            this.ContextMenuStop.Size = new System.Drawing.Size(127, 22);
+            this.ContextMenuStop.Size = new System.Drawing.Size(125, 22);
             this.ContextMenuStop.Text = "Stop Process";
             this.ContextMenuStop.Click += new System.EventHandler(this.OnContextMenuStopClick);
             // 
             // ContextMenuShow
             // 
             this.ContextMenuShow.Name = "ContextMenuShow";
-            this.ContextMenuShow.Size = new System.Drawing.Size(127, 22);
+            this.ContextMenuShow.Size = new System.Drawing.Size(125, 22);
             this.ContextMenuShow.Text = "Show Window";
             this.ContextMenuShow.Click += new System.EventHandler(this.OnContextMenuShowClick);
+            // 
+            // MainDialogUpdateTimer
+            // 
+            this.MainDialogUpdateTimer.Enabled = true;
+            this.MainDialogUpdateTimer.Tick += new System.EventHandler(this.OnMainDialogUpdateTimerTick);
             // 
             // MainDialog
             // 
