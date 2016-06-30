@@ -200,7 +200,9 @@
 
             if (ShouldStart)
             {
-                startSignal.Reset();
+                if (startSignal.IsSet)
+                    startSignal.Reset();
+
                 Start();
             }
 
@@ -305,7 +307,7 @@
 
         private bool ShouldStart
         {
-            get { return (startSignal.IsSet || (Process == null && options.CrashedIfNotRunning && !gracePeriodTimer.Enabled)); }
+            get { return (startSignal.IsSet || (Process == null && State != Status.Disabled && options.CrashedIfNotRunning && !gracePeriodTimer.Enabled)); }
         }
 
         #region Event callbacks
