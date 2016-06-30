@@ -70,5 +70,15 @@
         {
             Close();
         }
+
+        private void OnStartupStateRadioGroupCheckedChanged(object sender, System.EventArgs e)
+        {
+            if (StartupStateStoppedControl.Checked)
+                Options.InitialStateEnumValue = ProcessRunner.Status.Stopped;
+            else if (StartupStateRunningControl.Checked)
+                Options.InitialStateEnumValue = ProcessRunner.Status.Running;
+            else if (StartupStateDisabledControl.Checked)
+                Options.InitialStateEnumValue = ProcessRunner.Status.Disabled;
+        }
     }
 }

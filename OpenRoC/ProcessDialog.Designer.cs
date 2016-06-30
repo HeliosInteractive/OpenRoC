@@ -57,6 +57,10 @@
             this.ProcessOptionPostCrashScriptPathControl = new System.Windows.Forms.TextBox();
             this.ProcessOptionPostCrashScriptEnabledControl = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.StartupStateDisabledControl = new System.Windows.Forms.RadioButton();
+            this.StartupStateRunningControl = new System.Windows.Forms.RadioButton();
+            this.StartupStateStoppedControl = new System.Windows.Forms.RadioButton();
+            this.StartupStateLabel = new System.Windows.Forms.Label();
             this.ProcessOptionsCancelButton = new System.Windows.Forms.Button();
             this.ProcessOptionsSaveButton = new System.Windows.Forms.Button();
             this.EnvironmentVariableFormatLabel = new System.Windows.Forms.Label();
@@ -67,10 +71,6 @@
             this.ProcessOptionCommandLineEnabledControl = new System.Windows.Forms.CheckBox();
             this.ProcessOptionAlwaysOnTopEnabledControl = new System.Windows.Forms.CheckBox();
             this.ProcessOptionScreenshotEnabledControl = new System.Windows.Forms.CheckBox();
-            this.StartupStateLabel = new System.Windows.Forms.Label();
-            this.StartupStateStoppedControl = new System.Windows.Forms.RadioButton();
-            this.StartupStateRunningControl = new System.Windows.Forms.RadioButton();
-            this.StartupStateDisabledControl = new System.Windows.Forms.RadioButton();
             this.MonitorThisProcessGroup.SuspendLayout();
             this.ProcessCrashAssumptionsGroup.SuspendLayout();
             this.ProcessPreStartGroup.SuspendLayout();
@@ -364,6 +364,48 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Miscellaneous options";
             // 
+            // StartupStateDisabledControl
+            // 
+            this.StartupStateDisabledControl.AutoSize = true;
+            this.StartupStateDisabledControl.Location = new System.Drawing.Point(300, 182);
+            this.StartupStateDisabledControl.Name = "StartupStateDisabledControl";
+            this.StartupStateDisabledControl.Size = new System.Drawing.Size(66, 17);
+            this.StartupStateDisabledControl.TabIndex = 9;
+            this.StartupStateDisabledControl.Text = "Disabled";
+            this.StartupStateDisabledControl.UseVisualStyleBackColor = true;
+            // 
+            // StartupStateRunningControl
+            // 
+            this.StartupStateRunningControl.AutoSize = true;
+            this.StartupStateRunningControl.Location = new System.Drawing.Point(228, 182);
+            this.StartupStateRunningControl.Name = "StartupStateRunningControl";
+            this.StartupStateRunningControl.Size = new System.Drawing.Size(65, 17);
+            this.StartupStateRunningControl.TabIndex = 8;
+            this.StartupStateRunningControl.Text = "Running";
+            this.StartupStateRunningControl.UseVisualStyleBackColor = true;
+            // 
+            // StartupStateStoppedControl
+            // 
+            this.StartupStateStoppedControl.AutoSize = true;
+            this.StartupStateStoppedControl.Checked = true;
+            this.StartupStateStoppedControl.Location = new System.Drawing.Point(156, 182);
+            this.StartupStateStoppedControl.Name = "StartupStateStoppedControl";
+            this.StartupStateStoppedControl.Size = new System.Drawing.Size(65, 17);
+            this.StartupStateStoppedControl.TabIndex = 7;
+            this.StartupStateStoppedControl.TabStop = true;
+            this.StartupStateStoppedControl.Text = "Stopped";
+            this.StartupStateStoppedControl.UseVisualStyleBackColor = true;
+            this.StartupStateStoppedControl.CheckedChanged += new System.EventHandler(this.OnStartupStateRadioGroupCheckedChanged);
+            // 
+            // StartupStateLabel
+            // 
+            this.StartupStateLabel.AutoSize = true;
+            this.StartupStateLabel.Location = new System.Drawing.Point(7, 182);
+            this.StartupStateLabel.Name = "StartupStateLabel";
+            this.StartupStateLabel.Size = new System.Drawing.Size(141, 13);
+            this.StartupStateLabel.TabIndex = 13;
+            this.StartupStateLabel.Text = "Initially add this process as : ";
+            // 
             // ProcessOptionsCancelButton
             // 
             this.ProcessOptionsCancelButton.Location = new System.Drawing.Point(294, 209);
@@ -458,47 +500,6 @@
             this.ProcessOptionScreenshotEnabledControl.TabIndex = 0;
             this.ProcessOptionScreenshotEnabledControl.Text = "Take a screenshot of the main display on crash";
             this.ProcessOptionScreenshotEnabledControl.UseVisualStyleBackColor = true;
-            // 
-            // StartupStateLabel
-            // 
-            this.StartupStateLabel.AutoSize = true;
-            this.StartupStateLabel.Location = new System.Drawing.Point(7, 182);
-            this.StartupStateLabel.Name = "StartupStateLabel";
-            this.StartupStateLabel.Size = new System.Drawing.Size(141, 13);
-            this.StartupStateLabel.TabIndex = 13;
-            this.StartupStateLabel.Text = "Initially add this process as : ";
-            // 
-            // StartupStateStoppedControl
-            // 
-            this.StartupStateStoppedControl.AutoSize = true;
-            this.StartupStateStoppedControl.Checked = true;
-            this.StartupStateStoppedControl.Location = new System.Drawing.Point(156, 182);
-            this.StartupStateStoppedControl.Name = "StartupStateStoppedControl";
-            this.StartupStateStoppedControl.Size = new System.Drawing.Size(65, 17);
-            this.StartupStateStoppedControl.TabIndex = 7;
-            this.StartupStateStoppedControl.TabStop = true;
-            this.StartupStateStoppedControl.Text = "Stopped";
-            this.StartupStateStoppedControl.UseVisualStyleBackColor = true;
-            // 
-            // StartupStateRunningControl
-            // 
-            this.StartupStateRunningControl.AutoSize = true;
-            this.StartupStateRunningControl.Location = new System.Drawing.Point(228, 182);
-            this.StartupStateRunningControl.Name = "StartupStateRunningControl";
-            this.StartupStateRunningControl.Size = new System.Drawing.Size(65, 17);
-            this.StartupStateRunningControl.TabIndex = 8;
-            this.StartupStateRunningControl.Text = "Running";
-            this.StartupStateRunningControl.UseVisualStyleBackColor = true;
-            // 
-            // StartupStateDisabledControl
-            // 
-            this.StartupStateDisabledControl.AutoSize = true;
-            this.StartupStateDisabledControl.Location = new System.Drawing.Point(300, 182);
-            this.StartupStateDisabledControl.Name = "StartupStateDisabledControl";
-            this.StartupStateDisabledControl.Size = new System.Drawing.Size(66, 17);
-            this.StartupStateDisabledControl.TabIndex = 9;
-            this.StartupStateDisabledControl.Text = "Disabled";
-            this.StartupStateDisabledControl.UseVisualStyleBackColor = true;
             // 
             // ProcessDialog
             // 
