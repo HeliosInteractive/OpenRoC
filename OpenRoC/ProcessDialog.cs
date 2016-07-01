@@ -1,5 +1,6 @@
 ﻿namespace oroc
 {
+    using System;
     using System.Windows.Forms;
 
     public partial class ProcessDialog : Form
@@ -10,7 +11,6 @@
         {
             InitializeComponent();
             Options = new ProcessOptions();
-            SetupDataBindings();
 
             HandleCreated += OnProcessDialogHandleCreated;
         }
@@ -19,12 +19,11 @@
         {
             InitializeComponent();
             Options = opts;
-            SetupDataBindings();
 
             HandleCreated += OnProcessDialogHandleCreated;
         }
 
-        private void OnProcessDialogHandleCreated(object sender, System.EventArgs e)
+        private void OnProcessDialogHandleCreated(object sender, EventArgs e)
         {
             if (!(Owner is MainDialog))
             {
@@ -64,6 +63,7 @@
             main_dialog.SetStatusBarText(StartupStateRunningControl, "Run the process when it is added to the process list for the first time.");
             main_dialog.SetStatusBarText(StartupStateDisabledControl, "Do not monitor the process when it is added to the process list for the first time.");
 
+            SetupDataBindings();
             SyncCheckedStates();
         }
 
@@ -96,7 +96,7 @@
             ProcessOptionEnvironmentVariablesControl.DataBindings.Add(new Binding("Text", Options, "EnvironmentVariables"));
         }
 
-        private void OnProcessOptionsSaveButtonClick(object sender, System.EventArgs e)
+        private void OnProcessOptionsSaveButtonClick(object sender, EventArgs e)
         {
             MainDialog main = Owner as MainDialog;
 
@@ -113,12 +113,12 @@
             Close();
         }
 
-        private void OnProcessOptionsCancelButtonClick(object sender, System.EventArgs e)
+        private void OnProcessOptionsCancelButtonClick(object sender, EventArgs e)
         {
             Close();
         }
 
-        private void OnStartupStateRadioGroupCheckedChanged(object sender, System.EventArgs e)
+        private void OnStartupStateRadioGroupCheckedChanged(object sender, EventArgs e)
         {
             SyncCheckedStates();
         }
@@ -141,7 +141,7 @@
             OnProcessOptionEnvironmentVariablesEnabledControlCheckedChanged(this, null);
         }
 
-        private void OnProcessOptionDoubleCheckEnabledControlCheckedChanged(object sender, System.EventArgs e)
+        private void OnProcessOptionDoubleCheckEnabledControlCheckedChanged(object sender, EventArgs e)
         {
             CheckBox checkbox = ProcessOptionDoubleCheckEnabledControl;
 
@@ -149,7 +149,7 @@
                 ProcessOptionDoubleCheckDurationControl.Enabled = checkbox.Checked;
         }
 
-        private void OnProcessOptionGracePeriodEnabledControlCheckedChanged(object sender, System.EventArgs e)
+        private void OnProcessOptionGracePeriodEnabledControlCheckedChanged(object sender, EventArgs e)
         {
             CheckBox checkbox = ProcessOptionGracePeriodEnabledControl;
 
@@ -157,7 +157,7 @@
                 ProcessOptionGracePeriodDurationControl.Enabled = checkbox.Checked;
         }
 
-        private void OnProcessOptionPreLaunchScriptEnabledControlCheckedChanged(object sender, System.EventArgs e)
+        private void OnProcessOptionPreLaunchScriptEnabledControlCheckedChanged(object sender, EventArgs e)
         {
             CheckBox checkbox = ProcessOptionPreLaunchScriptEnabledControl;
 
@@ -168,7 +168,7 @@
                 ProcessOptionPreLaunchScriptButton.Enabled = checkbox.Checked;
         }
 
-        private void OnProcessOptionAggressiveCleanupEnabledControlCheckedChanged(object sender, System.EventArgs e)
+        private void OnProcessOptionAggressiveCleanupEnabledControlCheckedChanged(object sender, EventArgs e)
         {
             CheckBox checkbox = ProcessOptionAggressiveCleanupEnabledControl;
 
@@ -179,7 +179,7 @@
                 ProcessOptionAggressiveCleanupByPIDControl.Enabled = checkbox.Checked;
         }
 
-        private void OnProcessOptionPostCrashScriptEnabledControlCheckedChanged(object sender, System.EventArgs e)
+        private void OnProcessOptionPostCrashScriptEnabledControlCheckedChanged(object sender, EventArgs e)
         {
             CheckBox checkbox = ProcessOptionPostCrashScriptEnabledControl;
 
@@ -190,7 +190,7 @@
                 ProcessOptionPostCrashScriptButton.Enabled = checkbox.Checked;
         }
 
-        private void OnProcessOptionCommandLineEnabledControlCheckedChanged(object sender, System.EventArgs e)
+        private void OnProcessOptionCommandLineEnabledControlCheckedChanged(object sender, EventArgs e)
         {
             CheckBox checkbox = ProcessOptionCommandLineEnabledControl;
 
@@ -198,7 +198,7 @@
                 ProcessOptionCommandLineControl.Enabled = checkbox.Checked;
         }
 
-        private void OnProcessOptionEnvironmentVariablesEnabledControlCheckedChanged(object sender, System.EventArgs e)
+        private void OnProcessOptionEnvironmentVariablesEnabledControlCheckedChanged(object sender, EventArgs e)
         {
             CheckBox checkbox = ProcessOptionEnvironmentVariablesEnabledControl;
 
