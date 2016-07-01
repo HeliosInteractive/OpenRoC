@@ -16,7 +16,7 @@
         {
             if (!(Owner is MainDialog))
             {
-                Log.e("Owner of Settings Window has changed but it is not the right type.");
+                Log.e("Owner of Settings Window is not the right type.");
                 return;
             }
 

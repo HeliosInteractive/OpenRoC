@@ -143,7 +143,7 @@ namespace oroc.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ready (drag and drop executables or click Add).
+        ///   Looks up a localized string similar to Ready (drag and drop executables or click Add. Double click to Edit).
         /// </summary>
         internal static string StatusTextDefaultString {
             get {
