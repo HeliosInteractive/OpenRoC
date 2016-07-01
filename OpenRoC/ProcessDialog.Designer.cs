@@ -46,14 +46,14 @@
             this.ProcessOptionCrashedIfUnresponsiveControl = new System.Windows.Forms.CheckBox();
             this.ProcessOptionCrashedIfNotRunningControl = new System.Windows.Forms.CheckBox();
             this.ProcessPreStartGroup = new System.Windows.Forms.GroupBox();
-            this.ProcessPreStartCommandButton = new System.Windows.Forms.Button();
+            this.ProcessOptionPreLaunchScriptButton = new System.Windows.Forms.Button();
             this.ProcessOptionPreLaunchScriptPathControl = new System.Windows.Forms.TextBox();
             this.ProcessOptionPreLaunchScriptEnabledControl = new System.Windows.Forms.CheckBox();
             this.PostCrashGroup = new System.Windows.Forms.GroupBox();
             this.ProcessOptionAggressiveCleanupByPIDControl = new System.Windows.Forms.CheckBox();
             this.ProcessOptionAggressiveCleanupByNameControl = new System.Windows.Forms.CheckBox();
             this.ProcessOptionAggressiveCleanupEnabledControl = new System.Windows.Forms.CheckBox();
-            this.ProcessPostCrashCommandButton = new System.Windows.Forms.Button();
+            this.ProcessOptionPostCrashScriptButton = new System.Windows.Forms.Button();
             this.ProcessOptionPostCrashScriptPathControl = new System.Windows.Forms.TextBox();
             this.ProcessOptionPostCrashScriptEnabledControl = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -201,6 +201,7 @@
             this.ProcessOptionGracePeriodEnabledControl.TabIndex = 4;
             this.ProcessOptionGracePeriodEnabledControl.Text = "Wait";
             this.ProcessOptionGracePeriodEnabledControl.UseVisualStyleBackColor = true;
+            this.ProcessOptionGracePeriodEnabledControl.CheckedChanged += new System.EventHandler(this.OnProcessOptionGracePeriodEnabledControlCheckedChanged);
             // 
             // ProcessOptionDoubleCheckEnabledControl
             // 
@@ -211,6 +212,7 @@
             this.ProcessOptionDoubleCheckEnabledControl.TabIndex = 2;
             this.ProcessOptionDoubleCheckEnabledControl.Text = "Wait";
             this.ProcessOptionDoubleCheckEnabledControl.UseVisualStyleBackColor = true;
+            this.ProcessOptionDoubleCheckEnabledControl.CheckedChanged += new System.EventHandler(this.OnProcessOptionDoubleCheckEnabledControlCheckedChanged);
             // 
             // ProcessOptionCrashedIfUnresponsiveControl
             // 
@@ -234,7 +236,7 @@
             // 
             // ProcessPreStartGroup
             // 
-            this.ProcessPreStartGroup.Controls.Add(this.ProcessPreStartCommandButton);
+            this.ProcessPreStartGroup.Controls.Add(this.ProcessOptionPreLaunchScriptButton);
             this.ProcessPreStartGroup.Controls.Add(this.ProcessOptionPreLaunchScriptPathControl);
             this.ProcessPreStartGroup.Controls.Add(this.ProcessOptionPreLaunchScriptEnabledControl);
             this.ProcessPreStartGroup.Location = new System.Drawing.Point(12, 258);
@@ -244,14 +246,14 @@
             this.ProcessPreStartGroup.TabStop = false;
             this.ProcessPreStartGroup.Text = "Before process starts";
             // 
-            // ProcessPreStartCommandButton
+            // ProcessOptionPreLaunchScriptButton
             // 
-            this.ProcessPreStartCommandButton.Location = new System.Drawing.Point(417, 46);
-            this.ProcessPreStartCommandButton.Name = "ProcessPreStartCommandButton";
-            this.ProcessPreStartCommandButton.Size = new System.Drawing.Size(34, 23);
-            this.ProcessPreStartCommandButton.TabIndex = 2;
-            this.ProcessPreStartCommandButton.Text = "...";
-            this.ProcessPreStartCommandButton.UseVisualStyleBackColor = true;
+            this.ProcessOptionPreLaunchScriptButton.Location = new System.Drawing.Point(417, 46);
+            this.ProcessOptionPreLaunchScriptButton.Name = "ProcessOptionPreLaunchScriptButton";
+            this.ProcessOptionPreLaunchScriptButton.Size = new System.Drawing.Size(34, 23);
+            this.ProcessOptionPreLaunchScriptButton.TabIndex = 2;
+            this.ProcessOptionPreLaunchScriptButton.Text = "...";
+            this.ProcessOptionPreLaunchScriptButton.UseVisualStyleBackColor = true;
             // 
             // ProcessOptionPreLaunchScriptPathControl
             // 
@@ -269,13 +271,14 @@
             this.ProcessOptionPreLaunchScriptEnabledControl.TabIndex = 0;
             this.ProcessOptionPreLaunchScriptEnabledControl.Text = "Execute a command (ShellExecute) :";
             this.ProcessOptionPreLaunchScriptEnabledControl.UseVisualStyleBackColor = true;
+            this.ProcessOptionPreLaunchScriptEnabledControl.CheckedChanged += new System.EventHandler(this.OnProcessOptionPreLaunchScriptEnabledControlCheckedChanged);
             // 
             // PostCrashGroup
             // 
             this.PostCrashGroup.Controls.Add(this.ProcessOptionAggressiveCleanupByPIDControl);
             this.PostCrashGroup.Controls.Add(this.ProcessOptionAggressiveCleanupByNameControl);
             this.PostCrashGroup.Controls.Add(this.ProcessOptionAggressiveCleanupEnabledControl);
-            this.PostCrashGroup.Controls.Add(this.ProcessPostCrashCommandButton);
+            this.PostCrashGroup.Controls.Add(this.ProcessOptionPostCrashScriptButton);
             this.PostCrashGroup.Controls.Add(this.ProcessOptionPostCrashScriptPathControl);
             this.PostCrashGroup.Controls.Add(this.ProcessOptionPostCrashScriptEnabledControl);
             this.PostCrashGroup.Location = new System.Drawing.Point(12, 346);
@@ -314,15 +317,16 @@
             this.ProcessOptionAggressiveCleanupEnabledControl.TabIndex = 0;
             this.ProcessOptionAggressiveCleanupEnabledControl.Text = "Perform a cleanup ( taskkill to close the process ) :";
             this.ProcessOptionAggressiveCleanupEnabledControl.UseVisualStyleBackColor = true;
+            this.ProcessOptionAggressiveCleanupEnabledControl.CheckedChanged += new System.EventHandler(this.OnProcessOptionAggressiveCleanupEnabledControlCheckedChanged);
             // 
-            // ProcessPostCrashCommandButton
+            // ProcessOptionPostCrashScriptButton
             // 
-            this.ProcessPostCrashCommandButton.Location = new System.Drawing.Point(417, 69);
-            this.ProcessPostCrashCommandButton.Name = "ProcessPostCrashCommandButton";
-            this.ProcessPostCrashCommandButton.Size = new System.Drawing.Size(34, 23);
-            this.ProcessPostCrashCommandButton.TabIndex = 5;
-            this.ProcessPostCrashCommandButton.Text = "...";
-            this.ProcessPostCrashCommandButton.UseVisualStyleBackColor = true;
+            this.ProcessOptionPostCrashScriptButton.Location = new System.Drawing.Point(417, 69);
+            this.ProcessOptionPostCrashScriptButton.Name = "ProcessOptionPostCrashScriptButton";
+            this.ProcessOptionPostCrashScriptButton.Size = new System.Drawing.Size(34, 23);
+            this.ProcessOptionPostCrashScriptButton.TabIndex = 5;
+            this.ProcessOptionPostCrashScriptButton.Text = "...";
+            this.ProcessOptionPostCrashScriptButton.UseVisualStyleBackColor = true;
             // 
             // ProcessOptionPostCrashScriptPathControl
             // 
@@ -340,6 +344,7 @@
             this.ProcessOptionPostCrashScriptEnabledControl.TabIndex = 3;
             this.ProcessOptionPostCrashScriptEnabledControl.Text = "Execute a command (ShellExecute) :";
             this.ProcessOptionPostCrashScriptEnabledControl.UseVisualStyleBackColor = true;
+            this.ProcessOptionPostCrashScriptEnabledControl.CheckedChanged += new System.EventHandler(this.OnProcessOptionPostCrashScriptEnabledControlCheckedChanged);
             // 
             // groupBox1
             // 
@@ -462,6 +467,7 @@
             this.ProcessOptionEnvironmentVariablesEnabledControl.TabIndex = 5;
             this.ProcessOptionEnvironmentVariablesEnabledControl.Text = "Merge listed variables with system environment variables";
             this.ProcessOptionEnvironmentVariablesEnabledControl.UseVisualStyleBackColor = true;
+            this.ProcessOptionEnvironmentVariablesEnabledControl.CheckedChanged += new System.EventHandler(this.OnProcessOptionEnvironmentVariablesEnabledControlCheckedChanged);
             // 
             // ProcessOptionCommandLineControl
             // 
@@ -479,6 +485,7 @@
             this.ProcessOptionCommandLineEnabledControl.TabIndex = 3;
             this.ProcessOptionCommandLineEnabledControl.Text = "Pass command line :";
             this.ProcessOptionCommandLineEnabledControl.UseVisualStyleBackColor = true;
+            this.ProcessOptionCommandLineEnabledControl.CheckedChanged += new System.EventHandler(this.OnProcessOptionCommandLineEnabledControlCheckedChanged);
             // 
             // ProcessOptionAlwaysOnTopEnabledControl
             // 
@@ -547,10 +554,10 @@
         private System.Windows.Forms.TextBox ProcessOptionGracePeriodDurationControl;
         private System.Windows.Forms.GroupBox ProcessPreStartGroup;
         private System.Windows.Forms.CheckBox ProcessOptionPreLaunchScriptEnabledControl;
-        private System.Windows.Forms.Button ProcessPreStartCommandButton;
+        private System.Windows.Forms.Button ProcessOptionPreLaunchScriptButton;
         private System.Windows.Forms.TextBox ProcessOptionPreLaunchScriptPathControl;
         private System.Windows.Forms.GroupBox PostCrashGroup;
-        private System.Windows.Forms.Button ProcessPostCrashCommandButton;
+        private System.Windows.Forms.Button ProcessOptionPostCrashScriptButton;
         private System.Windows.Forms.TextBox ProcessOptionPostCrashScriptPathControl;
         private System.Windows.Forms.CheckBox ProcessOptionPostCrashScriptEnabledControl;
         private System.Windows.Forms.CheckBox ProcessOptionAggressiveCleanupEnabledControl;

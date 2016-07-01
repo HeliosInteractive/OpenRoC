@@ -63,6 +63,8 @@
             main_dialog.SetStatusBarText(StartupStateStoppedControl, "Stop the process when it is added to the process list for the first time.");
             main_dialog.SetStatusBarText(StartupStateRunningControl, "Run the process when it is added to the process list for the first time.");
             main_dialog.SetStatusBarText(StartupStateDisabledControl, "Do not monitor the process when it is added to the process list for the first time.");
+
+            SyncCheckedStates();
         }
 
         private void SetupDataBindings()
@@ -92,8 +94,6 @@
             ProcessOptionCommandLineControl.DataBindings.Add(new Binding("Text", Options, "CommandLine"));
             ProcessOptionEnvironmentVariablesEnabledControl.DataBindings.Add(new Binding("Checked", Options, "EnvironmentVariablesEnabled"));
             ProcessOptionEnvironmentVariablesControl.DataBindings.Add(new Binding("Text", Options, "EnvironmentVariables"));
-
-            SyncStartupStateRadioGroup();
         }
 
         private void OnProcessOptionsSaveButtonClick(object sender, System.EventArgs e)
@@ -120,10 +120,10 @@
 
         private void OnStartupStateRadioGroupCheckedChanged(object sender, System.EventArgs e)
         {
-            SyncStartupStateRadioGroup();
+            SyncCheckedStates();
         }
 
-        private void SyncStartupStateRadioGroup()
+        private void SyncCheckedStates()
         {
             if (StartupStateStoppedControl.Checked)
                 Options.InitialStateEnumValue = ProcessRunner.Status.Stopped;
@@ -131,6 +131,79 @@
                 Options.InitialStateEnumValue = ProcessRunner.Status.Running;
             else if (StartupStateDisabledControl.Checked)
                 Options.InitialStateEnumValue = ProcessRunner.Status.Disabled;
+
+            OnProcessOptionDoubleCheckEnabledControlCheckedChanged(this, null);
+            OnProcessOptionGracePeriodEnabledControlCheckedChanged(this, null);
+            OnProcessOptionPreLaunchScriptEnabledControlCheckedChanged(this, null);
+            OnProcessOptionAggressiveCleanupEnabledControlCheckedChanged(this, null);
+            OnProcessOptionPostCrashScriptEnabledControlCheckedChanged(this, null);
+            OnProcessOptionCommandLineEnabledControlCheckedChanged(this, null);
+            OnProcessOptionEnvironmentVariablesEnabledControlCheckedChanged(this, null);
+        }
+
+        private void OnProcessOptionDoubleCheckEnabledControlCheckedChanged(object sender, System.EventArgs e)
+        {
+            CheckBox checkbox = ProcessOptionDoubleCheckEnabledControl;
+
+            if (ProcessOptionDoubleCheckDurationControl.Enabled != checkbox.Checked)
+                ProcessOptionDoubleCheckDurationControl.Enabled = checkbox.Checked;
+        }
+
+        private void OnProcessOptionGracePeriodEnabledControlCheckedChanged(object sender, System.EventArgs e)
+        {
+            CheckBox checkbox = ProcessOptionGracePeriodEnabledControl;
+
+            if (ProcessOptionGracePeriodDurationControl.Enabled != checkbox.Checked)
+                ProcessOptionGracePeriodDurationControl.Enabled = checkbox.Checked;
+        }
+
+        private void OnProcessOptionPreLaunchScriptEnabledControlCheckedChanged(object sender, System.EventArgs e)
+        {
+            CheckBox checkbox = ProcessOptionPreLaunchScriptEnabledControl;
+
+            if (ProcessOptionPreLaunchScriptPathControl.Enabled != checkbox.Checked)
+                ProcessOptionPreLaunchScriptPathControl.Enabled = checkbox.Checked;
+
+            if (ProcessOptionPreLaunchScriptButton.Enabled != checkbox.Checked)
+                ProcessOptionPreLaunchScriptButton.Enabled = checkbox.Checked;
+        }
+
+        private void OnProcessOptionAggressiveCleanupEnabledControlCheckedChanged(object sender, System.EventArgs e)
+        {
+            CheckBox checkbox = ProcessOptionAggressiveCleanupEnabledControl;
+
+            if (ProcessOptionAggressiveCleanupByNameControl.Enabled != checkbox.Checked)
+                ProcessOptionAggressiveCleanupByNameControl.Enabled = checkbox.Checked;
+
+            if (ProcessOptionAggressiveCleanupByPIDControl.Enabled != checkbox.Checked)
+                ProcessOptionAggressiveCleanupByPIDControl.Enabled = checkbox.Checked;
+        }
+
+        private void OnProcessOptionPostCrashScriptEnabledControlCheckedChanged(object sender, System.EventArgs e)
+        {
+            CheckBox checkbox = ProcessOptionPostCrashScriptEnabledControl;
+
+            if (ProcessOptionPostCrashScriptPathControl.Enabled != checkbox.Checked)
+                ProcessOptionPostCrashScriptPathControl.Enabled = checkbox.Checked;
+
+            if (ProcessOptionPostCrashScriptButton.Enabled != checkbox.Checked)
+                ProcessOptionPostCrashScriptButton.Enabled = checkbox.Checked;
+        }
+
+        private void OnProcessOptionCommandLineEnabledControlCheckedChanged(object sender, System.EventArgs e)
+        {
+            CheckBox checkbox = ProcessOptionCommandLineEnabledControl;
+
+            if (ProcessOptionCommandLineControl.Enabled != checkbox.Checked)
+                ProcessOptionCommandLineControl.Enabled = checkbox.Checked;
+        }
+
+        private void OnProcessOptionEnvironmentVariablesEnabledControlCheckedChanged(object sender, System.EventArgs e)
+        {
+            CheckBox checkbox = ProcessOptionEnvironmentVariablesEnabledControl;
+
+            if (ProcessOptionEnvironmentVariablesControl.Enabled != checkbox.Checked)
+                ProcessOptionEnvironmentVariablesControl.Enabled = checkbox.Checked;
         }
     }
 }
