@@ -30,14 +30,14 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsDialog));
             this.StartOptionsGroup = new System.Windows.Forms.GroupBox();
-            this.StartMinimizedCheckBox = new System.Windows.Forms.CheckBox();
             this.SingleInstanceCheckBox = new System.Windows.Forms.CheckBox();
+            this.StartMinimizedCheckBox = new System.Windows.Forms.CheckBox();
             this.HttpGroup = new System.Windows.Forms.GroupBox();
-            this.HttpInterfaceEnabledCheckBox = new System.Windows.Forms.CheckBox();
-            this.HttpHostTextBox = new System.Windows.Forms.TextBox();
-            this.HttpPortTextBox = new System.Windows.Forms.TextBox();
-            this.HostLabel = new System.Windows.Forms.Label();
             this.PortLabel = new System.Windows.Forms.Label();
+            this.HostLabel = new System.Windows.Forms.Label();
+            this.HttpPortTextBox = new System.Windows.Forms.TextBox();
+            this.HttpHostTextBox = new System.Windows.Forms.TextBox();
+            this.HttpInterfaceEnabledCheckBox = new System.Windows.Forms.CheckBox();
             this.StartOptionsGroup.SuspendLayout();
             this.HttpGroup.SuspendLayout();
             this.SuspendLayout();
@@ -53,16 +53,6 @@
             this.StartOptionsGroup.TabStop = false;
             this.StartOptionsGroup.Text = "Next time on start";
             // 
-            // StartMinimizedCheckBox
-            // 
-            this.StartMinimizedCheckBox.AutoSize = true;
-            this.StartMinimizedCheckBox.Location = new System.Drawing.Point(10, 23);
-            this.StartMinimizedCheckBox.Name = "StartMinimizedCheckBox";
-            this.StartMinimizedCheckBox.Size = new System.Drawing.Size(146, 17);
-            this.StartMinimizedCheckBox.TabIndex = 0;
-            this.StartMinimizedCheckBox.Text = "Start OpenRoC minimized";
-            this.StartMinimizedCheckBox.UseVisualStyleBackColor = true;
-            // 
             // SingleInstanceCheckBox
             // 
             this.SingleInstanceCheckBox.AutoSize = true;
@@ -72,6 +62,16 @@
             this.SingleInstanceCheckBox.TabIndex = 1;
             this.SingleInstanceCheckBox.Text = "Force single-instance mode";
             this.SingleInstanceCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // StartMinimizedCheckBox
+            // 
+            this.StartMinimizedCheckBox.AutoSize = true;
+            this.StartMinimizedCheckBox.Location = new System.Drawing.Point(10, 23);
+            this.StartMinimizedCheckBox.Name = "StartMinimizedCheckBox";
+            this.StartMinimizedCheckBox.Size = new System.Drawing.Size(146, 17);
+            this.StartMinimizedCheckBox.TabIndex = 0;
+            this.StartMinimizedCheckBox.Text = "Start OpenRoC minimized";
+            this.StartMinimizedCheckBox.UseVisualStyleBackColor = true;
             // 
             // HttpGroup
             // 
@@ -87,29 +87,14 @@
             this.HttpGroup.TabStop = false;
             this.HttpGroup.Text = "HTTP interface";
             // 
-            // HttpInterfaceEnabledCheckBox
+            // PortLabel
             // 
-            this.HttpInterfaceEnabledCheckBox.AutoSize = true;
-            this.HttpInterfaceEnabledCheckBox.Location = new System.Drawing.Point(10, 23);
-            this.HttpInterfaceEnabledCheckBox.Name = "HttpInterfaceEnabledCheckBox";
-            this.HttpInterfaceEnabledCheckBox.Size = new System.Drawing.Size(132, 17);
-            this.HttpInterfaceEnabledCheckBox.TabIndex = 0;
-            this.HttpInterfaceEnabledCheckBox.Text = "Enable web interface :";
-            this.HttpInterfaceEnabledCheckBox.UseVisualStyleBackColor = true;
-            // 
-            // HttpHostTextBox
-            // 
-            this.HttpHostTextBox.Location = new System.Drawing.Point(42, 44);
-            this.HttpHostTextBox.Name = "HttpHostTextBox";
-            this.HttpHostTextBox.Size = new System.Drawing.Size(208, 20);
-            this.HttpHostTextBox.TabIndex = 1;
-            // 
-            // HttpPortTextBox
-            // 
-            this.HttpPortTextBox.Location = new System.Drawing.Point(42, 67);
-            this.HttpPortTextBox.Name = "HttpPortTextBox";
-            this.HttpPortTextBox.Size = new System.Drawing.Size(208, 20);
-            this.HttpPortTextBox.TabIndex = 2;
+            this.PortLabel.AutoSize = true;
+            this.PortLabel.Location = new System.Drawing.Point(7, 69);
+            this.PortLabel.Name = "PortLabel";
+            this.PortLabel.Size = new System.Drawing.Size(32, 13);
+            this.PortLabel.TabIndex = 4;
+            this.PortLabel.Text = "Port :";
             // 
             // HostLabel
             // 
@@ -120,14 +105,32 @@
             this.HostLabel.TabIndex = 3;
             this.HostLabel.Text = "Host :";
             // 
-            // PortLabel
+            // HttpPortTextBox
             // 
-            this.PortLabel.AutoSize = true;
-            this.PortLabel.Location = new System.Drawing.Point(7, 69);
-            this.PortLabel.Name = "PortLabel";
-            this.PortLabel.Size = new System.Drawing.Size(32, 13);
-            this.PortLabel.TabIndex = 4;
-            this.PortLabel.Text = "Port :";
+            this.HttpPortTextBox.Enabled = false;
+            this.HttpPortTextBox.Location = new System.Drawing.Point(42, 67);
+            this.HttpPortTextBox.Name = "HttpPortTextBox";
+            this.HttpPortTextBox.Size = new System.Drawing.Size(208, 20);
+            this.HttpPortTextBox.TabIndex = 2;
+            // 
+            // HttpHostTextBox
+            // 
+            this.HttpHostTextBox.Enabled = false;
+            this.HttpHostTextBox.Location = new System.Drawing.Point(42, 44);
+            this.HttpHostTextBox.Name = "HttpHostTextBox";
+            this.HttpHostTextBox.Size = new System.Drawing.Size(208, 20);
+            this.HttpHostTextBox.TabIndex = 1;
+            // 
+            // HttpInterfaceEnabledCheckBox
+            // 
+            this.HttpInterfaceEnabledCheckBox.AutoSize = true;
+            this.HttpInterfaceEnabledCheckBox.Enabled = false;
+            this.HttpInterfaceEnabledCheckBox.Location = new System.Drawing.Point(10, 23);
+            this.HttpInterfaceEnabledCheckBox.Name = "HttpInterfaceEnabledCheckBox";
+            this.HttpInterfaceEnabledCheckBox.Size = new System.Drawing.Size(132, 17);
+            this.HttpInterfaceEnabledCheckBox.TabIndex = 0;
+            this.HttpInterfaceEnabledCheckBox.Text = "Enable web interface :";
+            this.HttpInterfaceEnabledCheckBox.UseVisualStyleBackColor = true;
             // 
             // SettingsDialog
             // 
