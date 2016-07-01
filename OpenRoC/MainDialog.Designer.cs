@@ -37,7 +37,7 @@
             this.AddButton = new System.Windows.Forms.ToolStripButton();
             this.DeleteButton = new System.Windows.Forms.ToolStripButton();
             this.SettingsButton = new System.Windows.Forms.ToolStripButton();
-            this.LogButton = new System.Windows.Forms.ToolStripButton();
+            this.LogsButton = new System.Windows.Forms.ToolStripButton();
             this.AboutButton = new System.Windows.Forms.ToolStripButton();
             this.ProcessListView = new System.Windows.Forms.ListView();
             this.Process = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -85,7 +85,7 @@
             this.AddButton,
             this.DeleteButton,
             this.SettingsButton,
-            this.LogButton,
+            this.LogsButton,
             this.AboutButton});
             this.MenuStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
             this.MenuStrip.Location = new System.Drawing.Point(0, 0);
@@ -96,6 +96,7 @@
             // 
             // AddButton
             // 
+            this.AddButton.AutoToolTip = false;
             this.AddButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.AddButton.Image = ((System.Drawing.Image)(resources.GetObject("AddButton.Image")));
             this.AddButton.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -106,6 +107,7 @@
             // 
             // DeleteButton
             // 
+            this.DeleteButton.AutoToolTip = false;
             this.DeleteButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.DeleteButton.Image = ((System.Drawing.Image)(resources.GetObject("DeleteButton.Image")));
             this.DeleteButton.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -116,6 +118,7 @@
             // 
             // SettingsButton
             // 
+            this.SettingsButton.AutoToolTip = false;
             this.SettingsButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.SettingsButton.Image = ((System.Drawing.Image)(resources.GetObject("SettingsButton.Image")));
             this.SettingsButton.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -124,18 +127,20 @@
             this.SettingsButton.Text = "Settings";
             this.SettingsButton.Click += new System.EventHandler(this.OnSettingsButtonClick);
             // 
-            // LogButton
+            // LogsButton
             // 
-            this.LogButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.LogButton.Image = ((System.Drawing.Image)(resources.GetObject("LogButton.Image")));
-            this.LogButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.LogButton.Name = "LogButton";
-            this.LogButton.Size = new System.Drawing.Size(36, 19);
-            this.LogButton.Text = "Logs";
-            this.LogButton.Click += new System.EventHandler(this.OnLogButtonClick);
+            this.LogsButton.AutoToolTip = false;
+            this.LogsButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.LogsButton.Image = ((System.Drawing.Image)(resources.GetObject("LogsButton.Image")));
+            this.LogsButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.LogsButton.Name = "LogsButton";
+            this.LogsButton.Size = new System.Drawing.Size(36, 19);
+            this.LogsButton.Text = "Logs";
+            this.LogsButton.Click += new System.EventHandler(this.OnLogButtonClick);
             // 
             // AboutButton
             // 
+            this.AboutButton.AutoToolTip = false;
             this.AboutButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.AboutButton.Image = ((System.Drawing.Image)(resources.GetObject("AboutButton.Image")));
             this.AboutButton.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -331,7 +336,7 @@
         private System.Windows.Forms.ToolStripButton AddButton;
         private System.Windows.Forms.ToolStripButton DeleteButton;
         private System.Windows.Forms.ToolStripButton SettingsButton;
-        private System.Windows.Forms.ToolStripButton LogButton;
+        private System.Windows.Forms.ToolStripButton LogsButton;
         private System.Windows.Forms.ToolStripButton AboutButton;
         private System.Windows.Forms.ColumnHeader Process;
         private System.Windows.Forms.ColumnHeader Status;

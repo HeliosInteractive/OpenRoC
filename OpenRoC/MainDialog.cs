@@ -20,6 +20,7 @@
         {
             InitializeComponent();
             LogsForm = new LogsDialog();
+            SetupMainDialogStatusTexts();
             HandleCreated += OnHandleCreated;
             ProcessManager = new ProcessManager();
             ProcessListView.SetDoubleBuffered(true);
@@ -53,21 +54,6 @@
                 ProcessListView.AutoResizeColumn(
                     ProcessListView.Columns.Count - 1,
                     ColumnHeaderAutoResizeStyle.HeaderSize);
-        }
-
-        private void HandleDialogRequest<T>(ref T host)
-            where T : Form, new()
-        {
-            if (host == null || host.IsDisposed)
-            {
-                host = new T();
-                host.Owner = this;
-            }
-
-            if (!host.Visible)
-                host.Show();
-            else
-                host.Focus();
         }
 
         public void UpdateProcessList()
@@ -120,6 +106,29 @@
             HandleDialogRequest(ref LogsForm);
         }
 
+        private void HandleDialogRequest<T>(ref T host) where T : Form, new()
+        {
+            if (host == null || host.IsDisposed)
+            {
+                host = new T();
+                host.Owner = this;
+
+                if (host.Handle == IntPtr.Zero)
+                    Log.d("Forced handle to be created.");
+            }
+
+            if (!host.Visible)
+            {
+                host.Show();
+                host.Focus();
+            }
+            else
+            {
+                host.Focus();
+                return;
+            }
+        }
+
         private void OnDeleteButtonClick(object sender, EventArgs e)
         {
             foreach (ListViewItem item in ProcessListView.SelectedItems)
@@ -144,6 +153,44 @@
             ProcessManager.ProcessRunnerList.ForEach(p => p.Monitor());
             UpdateProcessList();
         }
+
+        #region StatusBar text feature
+
+        public void SetStatusBarText(Control control, string text)
+        {
+            control.MouseEnter += (s, e) => { StatusText.Text = text; };
+            control.MouseLeave += (s, e) => { ResetStatusBarText(); };
+        }
+
+        public void SetStatusBarText(ToolStripItem control, string text)
+        {
+            control.MouseEnter += (s, e) => { StatusText.Text = text; };
+            control.MouseLeave += (s, e) => { ResetStatusBarText(); };
+        }
+
+        public void ResetStatusBarText()
+        {
+            StatusText.Text = Properties.Resources.StatusTextDefaultString;
+        }
+
+        private void SetupMainDialogStatusTexts()
+        {
+            ResetStatusBarText();
+            SetStatusBarText(AddButton, "Add a new process to monitor.");
+            SetStatusBarText(DeleteButton, "Delete selected processes.");
+            SetStatusBarText(SettingsButton, "Adjust OpenRoC settings.");
+            SetStatusBarText(LogsButton, "Open logging history window.");
+            SetStatusBarText(AboutButton, "Read about OpenRoC project.");
+            SetStatusBarText(ContextMenuAddButton, "Add a new process.");
+            SetStatusBarText(ContextMenuEditButton, "Edit the process.");
+            SetStatusBarText(ContextMenuDeleteButton, "Delete selected processes.");
+            SetStatusBarText(ContextMenuDisableButton, "Disable selected processes.");
+            SetStatusBarText(ContextMenuStart, "Run selected processes if they are stopped.");
+            SetStatusBarText(ContextMenuStop, "Stop selected processes if they are running.");
+            SetStatusBarText(ContextMenuShow, "Attempt to bring the main Window of the selected processes to top.");
+        }
+
+        #endregion
 
         #region Start minimized support
 

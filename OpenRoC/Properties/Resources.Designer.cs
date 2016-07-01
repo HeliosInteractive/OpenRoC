@@ -141,5 +141,14 @@ namespace oroc.Properties {
                 return ResourceManager.GetString("SettingsRootNode", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ready (drag and drop executables or click Add).
+        /// </summary>
+        internal static string StatusTextDefaultString {
+            get {
+                return ResourceManager.GetString("StatusTextDefaultString", resourceCulture);
+            }
+        }
     }
 }

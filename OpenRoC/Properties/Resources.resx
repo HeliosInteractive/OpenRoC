@@ -142,4 +142,7 @@
   <data name="SettingsRootNode" xml:space="preserve">
     <value>openroc</value>
   </data>
+  <data name="StatusTextDefaultString" xml:space="preserve">
+    <value>Ready (drag and drop executables or click Add)</value>
+  </data>
 </root>
