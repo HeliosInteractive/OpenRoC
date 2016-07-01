@@ -14,7 +14,7 @@
 
         public class Application
         {
-            public bool singleInsntace = false;
+            public bool singleInsntace = true;
             public bool startMinimized = false;
         }
 
