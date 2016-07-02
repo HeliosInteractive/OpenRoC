@@ -9,7 +9,7 @@
     using System.Xml.Serialization;
     using System.Diagnostics.CodeAnalysis;
 
-    public static class Extensions
+    internal static class Extensions
     {
         public static void SetDoubleBuffered(this Control control, bool enable)
         {
