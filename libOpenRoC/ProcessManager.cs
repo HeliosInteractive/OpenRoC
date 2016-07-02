@@ -1,4 +1,4 @@
-﻿namespace oroc
+﻿namespace liboroc
 {
     using System;
     using System.Linq;
@@ -24,15 +24,13 @@
         {
             if (string.IsNullOrWhiteSpace(opts.Path))
             {
-                Log.w("An empty process path is passed to Manager Add.");
                 return;
             }
 
             ProcessRunner proc = new ProcessRunner(opts);
             proc.PropertyChanged += OnProcessPropertyChanged;
             ProcessMap.Add(opts.Path, proc);
-
-            Log.i("Added a new process: {0}", opts.Path);
+            
             NotifyPropertyChanged("ProcessMap");
         }
 
@@ -40,7 +38,6 @@
         {
             if (string.IsNullOrWhiteSpace(path))
             {
-                Log.w("An empty process path is passed to Manager Delete.");
                 return;
             }
 
@@ -54,7 +51,6 @@
             }
             else
             {
-                Log.w("Invalid process is requested to be deleted from Manager: {0}", path);
                 return;
             }
         }
@@ -72,7 +68,6 @@
 
         public void Swap(ProcessOptions opts)
         {
-            Log.w("Manager is updating process: {0}", opts.Path);
             Get(opts.Path).ProcessOptions = opts;
             NotifyPropertyChanged("ProcessMap");
         }
@@ -89,8 +84,6 @@
 
         protected void NotifyPropertyChanged(string propertyName)
         {
-            Log.d("Manager property is changed: {0}", propertyName);
-
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
@@ -102,8 +95,6 @@
 
         protected virtual void Dispose(bool disposing)
         {
-            Log.d("Dispose is called on Manager.");
-
             if (!IsDisposed)
             {
                 if (disposing)

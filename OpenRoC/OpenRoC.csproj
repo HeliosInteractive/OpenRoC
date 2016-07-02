@@ -69,8 +69,6 @@
     </Compile>
     <Compile Include="Extensions.cs" />
     <Compile Include="Logger.cs" />
-    <Compile Include="NativeMethods.cs" />
-    <Compile Include="ProcessRunner.cs" />
     <Compile Include="ProcessDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -89,9 +87,6 @@
     <Compile Include="MainDialog.Designer.cs">
       <DependentUpon>MainDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="ProcessHelper.cs" />
-    <Compile Include="ProcessManager.cs" />
-    <Compile Include="ProcessOptions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings.cs" />
@@ -144,7 +139,12 @@
     <Content Include="phoenix.ico" />
     <None Include="Resources\OpenRoc.xml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\libOpenRoC\libOpenRoC.csproj">
+      <Project>{90c91845-e5ae-42d2-8cad-e52564c344d0}</Project>
+      <Name>libOpenRoC</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

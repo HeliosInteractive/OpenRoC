@@ -1,4 +1,4 @@
-﻿namespace oroc
+﻿namespace liboroc
 {
     using System;
     using System.ComponentModel;
