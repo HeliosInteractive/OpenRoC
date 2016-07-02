@@ -43,6 +43,11 @@
             }
         }
 
+        public string StateString
+        {
+            get { return string.Format("{0} for {1:hh\\:mm\\:ss}", State, Stopwatch.Elapsed); }
+        }
+
         public Process Process { get; private set; }
 
         public Stopwatch Stopwatch { get; private set; }

@@ -5,7 +5,7 @@
     using System.Linq;
     using System.Collections.Generic;
 
-    public static class Extensions
+    internal static class Extensions
     {
         public static bool IsDirectory(this string self)
         {
@@ -22,11 +22,6 @@
         public static bool IsExecutable(this string self)
         {
             return self.IsFile() && self.EndsWith(".exe");
-        }
-
-        public static string GetStatusString(this ProcessRunner self)
-        {
-            return string.Format("{0} for {1:hh\\:mm\\:ss}", self.State, self.Stopwatch.Elapsed);
         }
 
         public static string ToColonDelimitedString(this Dictionary<string, string> self)

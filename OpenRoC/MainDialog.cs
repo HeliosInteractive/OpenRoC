@@ -69,7 +69,7 @@
                 if (ProcessListView.Items.ContainsKey(p.ProcessPath))
                 {
                     ProcessListView.Items[p.ProcessPath].Checked = p.State != ProcessRunner.Status.Disabled;
-                    ProcessListView.Items[p.ProcessPath].SubItems[1].Text = p.GetStatusString();
+                    ProcessListView.Items[p.ProcessPath].SubItems[1].Text = p.StateString;
                 }
                 else
                 {
@@ -312,8 +312,7 @@
 
             foreach (string dragged_file in dragged_files)
             {
-                if (dragged_file.IsExecutable() &&
-                    !ProcessManager.Contains(dragged_file))
+                if (!ProcessManager.Contains(dragged_file))
                 {
                     ProcessOptions opts = new ProcessOptions();
 
