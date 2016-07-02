@@ -75,6 +75,7 @@
             doubleCheckTimer = new Timer { AutoReset = false };
             gracePeriodTimer.Elapsed += OnGracePeriodTimeElapsed;
             doubleCheckTimer.Elapsed += OnDoubleCheckTimeElapsed;
+            SetupOptions();
         }
 
         private void SwapOptions(ProcessOptions opts)
@@ -83,7 +84,22 @@
             options = opts;
             State = opts.InitialStateEnumValue;
 
+            SetupOptions();
             NotifyPropertyChanged("ProcessOptions");
+        }
+
+        private void SetupOptions()
+        {
+            if (currentState == Status.Invalid)
+            {
+                currentState = Status.Stopped;
+
+                if (previousState == Status.Stopped)
+                    previousState = Status.Invalid;
+            }
+
+            if (options.InitialStateEnumValue == Status.Running)
+                startSignal.Set();
         }
 
         public void RestoreState()
