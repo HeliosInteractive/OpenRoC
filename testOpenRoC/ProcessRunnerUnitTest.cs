@@ -133,7 +133,7 @@
         }
 
         [TestMethod]
-        public void PrcoessStateChanges()
+        public void PrcoessStateChangesAssumeCrashIfNotRunning()
         {
             ProcessOptions options = new ProcessOptions
             {
@@ -224,6 +224,134 @@
                 runner.Monitor();
                 Assert.IsNull(runner.Process);
                 Assert.AreEqual(runner.State, ProcessRunner.Status.Stopped);
+            }
+        }
+
+        [TestMethod]
+        public void PrcoessStateChangesDoNotAssumeCrashIfNotRunning()
+        {
+            ProcessOptions options = new ProcessOptions
+            {
+                CrashedIfNotRunning = false,
+                Path = TestProcessWindowedPath,
+                WorkingDirectory = TestProcessesPath
+            };
+
+            // running to stopped
+            options.InitialStateEnumValue = ProcessRunner.Status.Running;
+            using (ProcessRunner runner = new ProcessRunner(options))
+            {
+                runner.Monitor();
+                Assert.IsNotNull(runner.Process);
+                Assert.AreEqual(runner.State, ProcessRunner.Status.Running);
+
+                runner.State = ProcessRunner.Status.Stopped;
+                runner.Monitor();
+                Assert.IsNull(runner.Process);
+                Assert.AreEqual(runner.State, ProcessRunner.Status.Stopped);
+            }
+
+            // running to disabled
+            options.InitialStateEnumValue = ProcessRunner.Status.Running;
+            using (ProcessRunner runner = new ProcessRunner(options))
+            {
+                runner.Monitor();
+                Assert.IsNotNull(runner.Process);
+                Assert.AreEqual(runner.State, ProcessRunner.Status.Running);
+
+                runner.State = ProcessRunner.Status.Disabled;
+                runner.Monitor();
+                Assert.IsNull(runner.Process);
+                Assert.AreEqual(runner.State, ProcessRunner.Status.Disabled);
+            }
+
+            // stopped to running
+            options.InitialStateEnumValue = ProcessRunner.Status.Stopped;
+            using (ProcessRunner runner = new ProcessRunner(options))
+            {
+                runner.Monitor();
+                Assert.IsNull(runner.Process);
+                Assert.AreEqual(runner.State, ProcessRunner.Status.Stopped);
+
+                runner.State = ProcessRunner.Status.Running;
+                runner.Monitor();
+                Assert.IsNotNull(runner.Process);
+                Assert.AreEqual(runner.State, ProcessRunner.Status.Running);
+            }
+
+            // stopped to disabled
+            options.InitialStateEnumValue = ProcessRunner.Status.Stopped;
+            using (ProcessRunner runner = new ProcessRunner(options))
+            {
+                runner.Monitor();
+                Assert.IsNull(runner.Process);
+                Assert.AreEqual(runner.State, ProcessRunner.Status.Stopped);
+
+                runner.State = ProcessRunner.Status.Disabled;
+                runner.Monitor();
+                Assert.IsNull(runner.Process);
+                Assert.AreEqual(runner.State, ProcessRunner.Status.Disabled);
+            }
+
+            // disabled to running
+            options.InitialStateEnumValue = ProcessRunner.Status.Disabled;
+            using (ProcessRunner runner = new ProcessRunner(options))
+            {
+                runner.Monitor();
+                Assert.IsNull(runner.Process);
+                Assert.AreEqual(runner.State, ProcessRunner.Status.Disabled);
+
+                runner.State = ProcessRunner.Status.Running;
+                runner.Monitor();
+                Assert.IsNotNull(runner.Process);
+                Assert.AreEqual(runner.State, ProcessRunner.Status.Running);
+            }
+
+            // disabled to stopped
+            options.InitialStateEnumValue = ProcessRunner.Status.Disabled;
+            using (ProcessRunner runner = new ProcessRunner(options))
+            {
+                runner.Monitor();
+                Assert.IsNull(runner.Process);
+                Assert.AreEqual(runner.State, ProcessRunner.Status.Disabled);
+
+                runner.State = ProcessRunner.Status.Stopped;
+                runner.Monitor();
+                Assert.IsNull(runner.Process);
+                Assert.AreEqual(runner.State, ProcessRunner.Status.Stopped);
+            }
+        }
+
+        [TestMethod]
+        public void StoppingUnresponsiveProcess()
+        {
+            ProcessOptions options = new ProcessOptions
+            {
+                CrashedIfNotRunning = true,
+                Path = TestProcessWindowedPath,
+                WorkingDirectory = TestProcessesPath,
+                InitialStateEnumValue = ProcessRunner.Status.Running,
+                CommandLineEnabled = true,
+                CommandLine = "true"
+            };
+
+            options.CrashedIfUnresponsive = true;
+            using (ProcessRunner runner = new ProcessRunner(options))
+            {
+                runner.Monitor();
+                Assert.IsNull(runner.Process);
+            }
+
+            options.CrashedIfUnresponsive = false;
+            using (ProcessRunner runner = new ProcessRunner(options))
+            {
+                runner.Start();
+
+                runner.Monitor();
+                Assert.IsNotNull(runner.Process);
+
+                runner.Stop();
+                Assert.IsNull(runner.Process);
             }
         }
     }
