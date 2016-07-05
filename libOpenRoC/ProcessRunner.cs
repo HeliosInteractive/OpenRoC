@@ -277,7 +277,7 @@
                     Start();
             }
 
-            if (currentState != Status.Disabled && HasWindow)
+            if (currentState != Status.Disabled && HasWindow && Process != null)
             {
                 Process.Refresh();
 
@@ -309,12 +309,13 @@
                         startSignal.Set();
                     }
 
-                    if (startSignal.IsSet && currentState == Status.Stopped)
+                    if (startSignal.IsSet)
                     {
                         Stop();
                     }
                 }
-                else if (options.AlwaysOnTopEnabled)
+
+                if (options.AlwaysOnTopEnabled && Process != null && Process.Responding)
                 {
                     BringToFront(true);
                 }
