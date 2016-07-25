@@ -196,14 +196,20 @@
             Process.Disposed -= OnProcessStopped;
             Process.Exited -= OnProcessStopped;
 
+            int pid = 0;
+            var prc = string.Empty;
+
             if (!Process.HasExited)
             {
+                pid = Process.Id;
+                prc = Process.ProcessName;
+
                 Process.CloseMainWindow();
                 Process.WaitForExit(1000);
 
                 if (!Process.HasExited)
                 {
-                    Process.Kill();
+                    ProcessHelper.KillProcess(Process.ProcessName);
                 }
             }
 
@@ -211,12 +217,15 @@
             {
                 if (options.AggressiveCleanupByName)
                 {
-                    ProcessHelper.TaskKill(Path.GetFileName(ProcessPath));
+                    ProcessHelper.KillProcess(Path.GetFileName(ProcessPath));
+
+                    if (!string.IsNullOrWhiteSpace(prc))
+                        ProcessHelper.KillProcess(prc);
                 }
 
-                if (options.AggressiveCleanupByPID)
+                if (options.AggressiveCleanupByPID && pid != 0)
                 {
-                    ProcessHelper.TaskKill(Process);
+                    ProcessHelper.KillProcess(pid);
                 }
             }
 
