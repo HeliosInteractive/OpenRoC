@@ -338,7 +338,7 @@
             options.CrashedIfUnresponsive = true;
             using (ProcessRunner runner = new ProcessRunner(options))
             {
-                runner.Monitor();
+                runner.Stop();
                 Assert.IsNull(runner.Process);
             }
 
