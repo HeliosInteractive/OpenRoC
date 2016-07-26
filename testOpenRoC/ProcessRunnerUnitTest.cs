@@ -1,8 +1,12 @@
 ﻿namespace testOpenRoC
 {
     using liboroc;
+
+    using System;
     using System.IO;
+    using System.Threading;
     using System.Reflection;
+
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
@@ -339,6 +343,21 @@
             using (ProcessRunner runner = new ProcessRunner(options))
             {
                 runner.Stop();
+                Assert.IsNull(runner.Process);
+            }
+
+            options.CrashedIfUnresponsive = true;
+            using (ProcessRunner runner = new ProcessRunner(options))
+            {
+                runner.Start();
+
+                while (runner.Process.Responding)
+                {
+                    runner.Process.Refresh();
+                    Thread.Sleep(TimeSpan.FromMilliseconds(1));
+                }
+
+                runner.Monitor();
                 Assert.IsNull(runner.Process);
             }
 
