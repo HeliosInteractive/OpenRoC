@@ -388,13 +388,44 @@
             using (ProcessRunner runner = new ProcessRunner(options))
             {
                 runner.Start();
-                ProcessHelper.KillProcess(runner.Process.ProcessName);
+                ProcessQuitter.Shutdown(runner.Process.ProcessName);
                 // wait so Process API propagates the crash callback
                 Thread.Sleep(TimeSpan.FromMilliseconds(100));
                 Assert.IsNull(runner.Process);
 
                 runner.Monitor();
                 Assert.IsNotNull(runner.Process);
+            }
+        }
+
+        [TestMethod]
+        public void AggressiveCleanupByName()
+        {
+            ProcessOptions options = new ProcessOptions
+            {
+                CrashedIfNotRunning = false,
+                Path = TestProcessWindowedPath,
+                WorkingDirectory = TestProcessesPath,
+                InitialStateEnumValue = ProcessRunner.Status.Stopped,
+                AggressiveCleanupEnabled = true,
+                AggressiveCleanupByName = true
+            };
+
+            using (ProcessRunner runner1 = new ProcessRunner(options))
+            {
+                using (ProcessRunner runner2 = new ProcessRunner(options))
+                {
+                    runner1.Start();
+                    runner2.Start();
+
+                    Assert.IsNotNull(runner1.Process);
+                    Assert.IsNotNull(runner2.Process);
+
+                    runner1.Stop();
+
+                    Thread.Sleep(TimeSpan.FromMilliseconds(100));
+                    Assert.IsNull(runner2.Process);
+                }
             }
         }
     }

@@ -197,19 +197,27 @@
             Process.Exited -= OnProcessStopped;
 
             int pid = 0;
-            var prc = string.Empty;
+            var process_name = string.Empty;
+            var process_exit_timeout = (int)TimeSpan.FromSeconds(1).TotalMilliseconds;
 
             if (!Process.HasExited)
             {
                 pid = Process.Id;
-                prc = Process.ProcessName;
+                process_name = Process.ProcessName;
 
                 Process.CloseMainWindow();
-                Process.WaitForExit(1000);
+                Process.WaitForExit(process_exit_timeout);
 
                 if (!Process.HasExited)
                 {
-                    ProcessHelper.KillProcess(Process.ProcessName);
+                    Process.Kill();
+                    Process.WaitForExit(process_exit_timeout);
+                }
+
+                if (!Process.HasExited)
+                {
+                    ProcessQuitter.Shutdown(pid);
+                    Process.WaitForExit(process_exit_timeout);
                 }
             }
 
@@ -217,15 +225,17 @@
             {
                 if (options.AggressiveCleanupByName)
                 {
-                    ProcessHelper.KillProcess(Path.GetFileName(ProcessPath));
+                    string exename = Path.GetFileNameWithoutExtension(ProcessPath);
 
-                    if (!string.IsNullOrWhiteSpace(prc))
-                        ProcessHelper.KillProcess(prc);
+                    ProcessQuitter.Shutdown(exename);
+
+                    if (!string.IsNullOrWhiteSpace(process_name) && exename != process_name)
+                        ProcessQuitter.Shutdown(process_name);
                 }
 
                 if (options.AggressiveCleanupByPID && pid != 0)
                 {
-                    ProcessHelper.KillProcess(pid);
+                    ProcessQuitter.Shutdown(pid);
                 }
             }
 

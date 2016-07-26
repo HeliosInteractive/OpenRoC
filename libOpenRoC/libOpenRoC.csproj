@@ -7,7 +7,7 @@
     <ProjectGuid>{90C91845-E5AE-42D2-8CAD-E52564C344D0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>libOpenRoC</RootNamespace>
+    <RootNamespace>liboroc</RootNamespace>
     <AssemblyName>libOpenRoC</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -46,6 +46,7 @@
     <Compile Include="ProcessHelper.cs" />
     <Compile Include="ProcessManager.cs" />
     <Compile Include="ProcessOptions.cs" />
+    <Compile Include="ProcessQuitter.cs" />
     <Compile Include="ProcessRunner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
