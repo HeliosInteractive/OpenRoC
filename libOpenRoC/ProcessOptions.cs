@@ -408,6 +408,8 @@
             clone.preLaunchScriptEnabled = PreLaunchScriptEnabled;
             clone.preLaunchScriptPath = PreLaunchScriptPath;
             clone.aggressiveCleanupEnabled = AggressiveCleanupEnabled;
+            clone.aggressiveCleanupByName = AggressiveCleanupByName;
+            clone.aggressiveCleanupByPID = AggressiveCleanupByPID;
             clone.postCrashScriptEnabled = PostCrashScriptEnabled;
             clone.postCrashScriptPath = PostCrashScriptPath;
             clone.screenShotEnabled = ScreenShotEnabled;
