@@ -373,5 +373,29 @@
                 Assert.IsNull(runner.Process);
             }
         }
+
+        [TestMethod]
+        public void TestStopCallback()
+        {
+            ProcessOptions options = new ProcessOptions
+            {
+                CrashedIfNotRunning = false,
+                Path = TestProcessWindowedPath,
+                WorkingDirectory = TestProcessesPath,
+                InitialStateEnumValue = ProcessRunner.Status.Stopped
+            };
+
+            using (ProcessRunner runner = new ProcessRunner(options))
+            {
+                runner.Start();
+                ProcessHelper.KillProcess(runner.Process.ProcessName);
+                // wait so Process API propagates the crash callback
+                Thread.Sleep(TimeSpan.FromMilliseconds(100));
+                Assert.IsNull(runner.Process);
+
+                runner.Monitor();
+                Assert.IsNotNull(runner.Process);
+            }
+        }
     }
 }
