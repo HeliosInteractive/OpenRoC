@@ -428,5 +428,28 @@
                 }
             }
         }
+
+        [TestMethod]
+        public void AggressiveCleanupByPID()
+        {
+            ProcessOptions options = new ProcessOptions
+            {
+                CrashedIfNotRunning = false,
+                Path = TestProcessWindowedPath,
+                WorkingDirectory = TestProcessesPath,
+                InitialStateEnumValue = ProcessRunner.Status.Stopped,
+                AggressiveCleanupEnabled = true,
+                AggressiveCleanupByPID = true
+            };
+
+            using (ProcessRunner runner1 = new ProcessRunner(options))
+            {
+                runner1.Start();
+                runner1.Stop();
+
+                Thread.Sleep(TimeSpan.FromMilliseconds(100));
+                Assert.IsNull(runner1.Process);
+            }
+        }
     }
 }
