@@ -385,6 +385,10 @@
                     gracePeriodTimer.Start();
                 }
             }
+            else
+            {
+                startSignal.Set();
+            }
         }
 
         private void OnDoubleCheckTimeElapsed(object sender, ElapsedEventArgs e)
