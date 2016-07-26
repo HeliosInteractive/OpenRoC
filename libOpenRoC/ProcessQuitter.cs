@@ -34,13 +34,19 @@
             string query = string.Format("Select * From Win32_Process Where ParentProcessID={0}", pid);
             using (ManagementObjectSearcher processSearcher = new ManagementObjectSearcher(query))
             using (ManagementObjectCollection processCollection = processSearcher.Get())
-            using (Process proc = Process.GetProcessById(pid))
             {
-                if (!proc.HasExited)
+                try
                 {
-                    proc.Kill();
-                    proc.WaitForExit((int)TimeSpan.FromSeconds(1).TotalMilliseconds);
+                    using (Process proc = Process.GetProcessById(pid))
+                    {
+                        if (!proc.HasExited)
+                        {
+                            proc.Kill();
+                            proc.WaitForExit((int)TimeSpan.FromSeconds(1).TotalMilliseconds);
+                        }
+                    }
                 }
+                catch { /* there is nothing we can do about it */ }
 
                 if (processCollection != null)
                 {
