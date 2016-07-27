@@ -56,7 +56,7 @@
             gracePeriodDuration = 0;
             preLaunchScriptEnabled = false;
             preLaunchScriptPath = string.Empty;
-            aggressiveCleanupEnabled = false;
+            aggressiveCleanupEnabled = true;
             postCrashScriptEnabled = false;
             postCrashScriptPath = string.Empty;
             screenShotEnabled = false;
