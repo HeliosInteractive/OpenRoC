@@ -17,7 +17,7 @@
             {
                 if (instance == null)
                 {
-                    lock(mutex)
+                    lock (mutex)
                     {
                         if (instance == null)
                         {
@@ -88,17 +88,6 @@
                 ThreadPool.QueueUserWorkItem(processQuitExecutor.execute);
                 waitHandle.Wait();
             }
-        }
-
-        public void Shutdown(string name)
-        {
-            Process.GetProcessesByName(name)
-                .ToList()
-                .ForEach(proc =>
-                {
-                    Shutdown(proc.Id);
-                    proc.Dispose();
-                });
         }
     }
 }

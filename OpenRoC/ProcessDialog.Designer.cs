@@ -50,8 +50,6 @@
             this.ProcessOptionPreLaunchScriptPathControl = new System.Windows.Forms.TextBox();
             this.ProcessOptionPreLaunchScriptEnabledControl = new System.Windows.Forms.CheckBox();
             this.PostCrashGroup = new System.Windows.Forms.GroupBox();
-            this.ProcessOptionAggressiveCleanupByPIDControl = new System.Windows.Forms.CheckBox();
-            this.ProcessOptionAggressiveCleanupByNameControl = new System.Windows.Forms.CheckBox();
             this.ProcessOptionAggressiveCleanupEnabledControl = new System.Windows.Forms.CheckBox();
             this.ProcessOptionPostCrashScriptButton = new System.Windows.Forms.Button();
             this.ProcessOptionPostCrashScriptPathControl = new System.Windows.Forms.TextBox();
@@ -275,8 +273,6 @@
             // 
             // PostCrashGroup
             // 
-            this.PostCrashGroup.Controls.Add(this.ProcessOptionAggressiveCleanupByPIDControl);
-            this.PostCrashGroup.Controls.Add(this.ProcessOptionAggressiveCleanupByNameControl);
             this.PostCrashGroup.Controls.Add(this.ProcessOptionAggressiveCleanupEnabledControl);
             this.PostCrashGroup.Controls.Add(this.ProcessOptionPostCrashScriptButton);
             this.PostCrashGroup.Controls.Add(this.ProcessOptionPostCrashScriptPathControl);
@@ -288,36 +284,15 @@
             this.PostCrashGroup.TabStop = false;
             this.PostCrashGroup.Text = "After process stops (crashes or hangs)";
             // 
-            // ProcessOptionAggressiveCleanupByPIDControl
-            // 
-            this.ProcessOptionAggressiveCleanupByPIDControl.AutoSize = true;
-            this.ProcessOptionAggressiveCleanupByPIDControl.Location = new System.Drawing.Point(357, 23);
-            this.ProcessOptionAggressiveCleanupByPIDControl.Name = "ProcessOptionAggressiveCleanupByPIDControl";
-            this.ProcessOptionAggressiveCleanupByPIDControl.Size = new System.Drawing.Size(59, 17);
-            this.ProcessOptionAggressiveCleanupByPIDControl.TabIndex = 2;
-            this.ProcessOptionAggressiveCleanupByPIDControl.Text = "By PID";
-            this.ProcessOptionAggressiveCleanupByPIDControl.UseVisualStyleBackColor = true;
-            // 
-            // ProcessOptionAggressiveCleanupByNameControl
-            // 
-            this.ProcessOptionAggressiveCleanupByNameControl.AutoSize = true;
-            this.ProcessOptionAggressiveCleanupByNameControl.Location = new System.Drawing.Point(282, 23);
-            this.ProcessOptionAggressiveCleanupByNameControl.Name = "ProcessOptionAggressiveCleanupByNameControl";
-            this.ProcessOptionAggressiveCleanupByNameControl.Size = new System.Drawing.Size(69, 17);
-            this.ProcessOptionAggressiveCleanupByNameControl.TabIndex = 1;
-            this.ProcessOptionAggressiveCleanupByNameControl.Text = "By Name";
-            this.ProcessOptionAggressiveCleanupByNameControl.UseVisualStyleBackColor = true;
-            // 
             // ProcessOptionAggressiveCleanupEnabledControl
             // 
             this.ProcessOptionAggressiveCleanupEnabledControl.AutoSize = true;
             this.ProcessOptionAggressiveCleanupEnabledControl.Location = new System.Drawing.Point(10, 23);
             this.ProcessOptionAggressiveCleanupEnabledControl.Name = "ProcessOptionAggressiveCleanupEnabledControl";
-            this.ProcessOptionAggressiveCleanupEnabledControl.Size = new System.Drawing.Size(263, 17);
+            this.ProcessOptionAggressiveCleanupEnabledControl.Size = new System.Drawing.Size(406, 17);
             this.ProcessOptionAggressiveCleanupEnabledControl.TabIndex = 0;
-            this.ProcessOptionAggressiveCleanupEnabledControl.Text = "Perform a cleanup ( taskkill to close the process ) :";
+            this.ProcessOptionAggressiveCleanupEnabledControl.Text = "Perform an aggressive cleanup ( useful if process spawns another child process )";
             this.ProcessOptionAggressiveCleanupEnabledControl.UseVisualStyleBackColor = true;
-            this.ProcessOptionAggressiveCleanupEnabledControl.CheckedChanged += new System.EventHandler(this.OnProcessOptionAggressiveCleanupEnabledControlCheckedChanged);
             // 
             // ProcessOptionPostCrashScriptButton
             // 
@@ -574,8 +549,6 @@
         private System.Windows.Forms.Label EnvironmentVariableFormatLabel;
         private System.Windows.Forms.Button ProcessOptionsSaveButton;
         private System.Windows.Forms.Button ProcessOptionsCancelButton;
-        private System.Windows.Forms.CheckBox ProcessOptionAggressiveCleanupByNameControl;
-        private System.Windows.Forms.CheckBox ProcessOptionAggressiveCleanupByPIDControl;
         private System.Windows.Forms.RadioButton StartupStateDisabledControl;
         private System.Windows.Forms.RadioButton StartupStateRunningControl;
         private System.Windows.Forms.RadioButton StartupStateStoppedControl;

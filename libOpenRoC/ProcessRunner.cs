@@ -1,7 +1,6 @@
 ﻿namespace liboroc
 {
     using System;
-    using System.IO;
     using System.Timers;
     using System.Diagnostics;
     using System.ComponentModel;
@@ -208,46 +207,25 @@
             Process.Disposed -= OnProcessStopped;
             Process.Exited -= OnProcessStopped;
 
-            int pid = 0;
-            var process_name = string.Empty;
+            int process_id = 0;
             var process_exit_timeout = (int)TimeSpan.FromSeconds(1).TotalMilliseconds;
 
             if (!Process.HasExited)
             {
-                pid = Process.Id;
-                process_name = Process.ProcessName;
+                process_id = Process.Id;
 
                 Process.CloseMainWindow();
                 Process.WaitForExit(process_exit_timeout);
+
+                if (options.AggressiveCleanupEnabled)
+                {
+                    ProcessQuitter.Instance.Shutdown(process_id);
+                }
 
                 if (!Process.HasExited)
                 {
                     Process.Kill();
                     Process.WaitForExit(process_exit_timeout);
-                }
-
-                if (!Process.HasExited)
-                {
-                    ProcessQuitter.Instance.Shutdown(pid);
-                    Process.WaitForExit(process_exit_timeout);
-                }
-            }
-
-            if (options.AggressiveCleanupEnabled)
-            {
-                if (options.AggressiveCleanupByName)
-                {
-                    string exename = Path.GetFileNameWithoutExtension(ProcessPath);
-
-                    ProcessQuitter.Instance.Shutdown(exename);
-
-                    if (!string.IsNullOrWhiteSpace(process_name) && exename != process_name)
-                        ProcessQuitter.Instance.Shutdown(process_name);
-                }
-
-                if (options.AggressiveCleanupByPID && pid != 0)
-                {
-                    ProcessQuitter.Instance.Shutdown(pid);
                 }
             }
 

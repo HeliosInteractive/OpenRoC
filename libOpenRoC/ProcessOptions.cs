@@ -20,8 +20,6 @@
         private bool preLaunchScriptEnabled;
         private string preLaunchScriptPath;
         private bool aggressiveCleanupEnabled;
-        private bool aggressiveCleanupByName;
-        private bool aggressiveCleanupByPID;
         private bool postCrashScriptEnabled;
         private string postCrashScriptPath;
         private bool screenShotEnabled;
@@ -59,8 +57,6 @@
             preLaunchScriptEnabled = false;
             preLaunchScriptPath = string.Empty;
             aggressiveCleanupEnabled = false;
-            aggressiveCleanupByName = false;
-            aggressiveCleanupByPID = false;
             postCrashScriptEnabled = false;
             postCrashScriptPath = string.Empty;
             screenShotEnabled = false;
@@ -217,32 +213,6 @@
 
                 aggressiveCleanupEnabled = value;
                 NotifyPropertyChanged("AggressiveCleanupEnabled");
-            }
-        }
-
-        public bool AggressiveCleanupByName
-        {
-            get { return aggressiveCleanupByName; }
-            set
-            {
-                if (aggressiveCleanupByName == value)
-                    return;
-
-                aggressiveCleanupByName = value;
-                NotifyPropertyChanged("AggressiveCleanupByName");
-            }
-        }
-
-        public bool AggressiveCleanupByPID
-        {
-            get { return aggressiveCleanupByPID; }
-            set
-            {
-                if (aggressiveCleanupByPID == value)
-                    return;
-
-                aggressiveCleanupByPID = value;
-                NotifyPropertyChanged("AggressiveCleanupByPID");
             }
         }
 
@@ -408,8 +378,6 @@
             clone.preLaunchScriptEnabled = PreLaunchScriptEnabled;
             clone.preLaunchScriptPath = PreLaunchScriptPath;
             clone.aggressiveCleanupEnabled = AggressiveCleanupEnabled;
-            clone.aggressiveCleanupByName = AggressiveCleanupByName;
-            clone.aggressiveCleanupByPID = AggressiveCleanupByPID;
             clone.postCrashScriptEnabled = PostCrashScriptEnabled;
             clone.postCrashScriptPath = PostCrashScriptPath;
             clone.screenShotEnabled = ScreenShotEnabled;

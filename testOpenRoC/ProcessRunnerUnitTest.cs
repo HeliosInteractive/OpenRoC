@@ -388,7 +388,7 @@
             using (ProcessRunner runner = new ProcessRunner(options))
             {
                 runner.Start();
-                ProcessQuitter.Instance.Shutdown(runner.Process.ProcessName);
+                ProcessQuitter.Instance.Shutdown(runner.Process.Id);
                 // wait so Process API propagates the crash callback
                 Thread.Sleep(TimeSpan.FromMilliseconds(100));
                 Assert.IsNull(runner.Process);
@@ -399,7 +399,7 @@
         }
 
         [TestMethod]
-        public void AggressiveCleanupByName()
+        public void AggressiveCleanup()
         {
             ProcessOptions options = new ProcessOptions
             {
@@ -408,47 +408,17 @@
                 WorkingDirectory = TestProcessesPath,
                 InitialStateEnumValue = ProcessRunner.Status.Stopped,
                 AggressiveCleanupEnabled = true,
-                AggressiveCleanupByName = true
+                CommandLine = "true",
+                CommandLineEnabled = true
             };
 
-            using (ProcessRunner runner1 = new ProcessRunner(options))
+            using (ProcessRunner runner = new ProcessRunner(options))
             {
-                using (ProcessRunner runner2 = new ProcessRunner(options))
-                {
-                    runner1.Start();
-                    runner2.Start();
-
-                    Assert.IsNotNull(runner1.Process);
-                    Assert.IsNotNull(runner2.Process);
-
-                    runner1.Stop();
-
-                    Thread.Sleep(TimeSpan.FromMilliseconds(100));
-                    Assert.IsNull(runner2.Process);
-                }
-            }
-        }
-
-        [TestMethod]
-        public void AggressiveCleanupByPID()
-        {
-            ProcessOptions options = new ProcessOptions
-            {
-                CrashedIfNotRunning = false,
-                Path = TestProcessWindowedPath,
-                WorkingDirectory = TestProcessesPath,
-                InitialStateEnumValue = ProcessRunner.Status.Stopped,
-                AggressiveCleanupEnabled = true,
-                AggressiveCleanupByPID = true
-            };
-
-            using (ProcessRunner runner1 = new ProcessRunner(options))
-            {
-                runner1.Start();
-                runner1.Stop();
+                runner.Start();
+                runner.Stop();
 
                 Thread.Sleep(TimeSpan.FromMilliseconds(100));
-                Assert.IsNull(runner1.Process);
+                Assert.IsNull(runner.Process);
             }
         }
 

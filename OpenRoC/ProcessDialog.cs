@@ -49,8 +49,6 @@
             main_dialog.SetStatusBarText(ProcessOptionPreLaunchScriptPathControl, "Execute and wait for this script before starting the process.");
 
             main_dialog.SetStatusBarText(ProcessOptionAggressiveCleanupEnabledControl, "Enable aggressive cleanup after process crashes.");
-            main_dialog.SetStatusBarText(ProcessOptionAggressiveCleanupByNameControl, "Perform aggressive cleanup (taskkill.exe) by process name.");
-            main_dialog.SetStatusBarText(ProcessOptionAggressiveCleanupByPIDControl, "Perform aggressive cleanup (taskkill.exe) by process PID.");
             main_dialog.SetStatusBarText(ProcessOptionPostCrashScriptEnabledControl, "Enable after crash script execution.");
             main_dialog.SetStatusBarText(ProcessOptionPostCrashScriptPathControl, "Execute and wait for this script after process crashed.");
 
@@ -85,8 +83,6 @@
             ProcessOptionPreLaunchScriptPathControl.DataBindings.Add(new Binding("Text", Options, "PreLaunchScriptPath"));
 
             ProcessOptionAggressiveCleanupEnabledControl.DataBindings.Add(new Binding("Checked", Options, "AggressiveCleanupEnabled"));
-            ProcessOptionAggressiveCleanupByNameControl.DataBindings.Add(new Binding("Checked", Options, "AggressiveCleanupByName"));
-            ProcessOptionAggressiveCleanupByPIDControl.DataBindings.Add(new Binding("Checked", Options, "AggressiveCleanupByPID"));
             ProcessOptionPostCrashScriptEnabledControl.DataBindings.Add(new Binding("Checked", Options, "PostCrashScriptEnabled"));
             ProcessOptionPostCrashScriptPathControl.DataBindings.Add(new Binding("Text", Options, "PostCrashScriptPath"));
 
@@ -137,7 +133,6 @@
             OnProcessOptionDoubleCheckEnabledControlCheckedChanged(this, null);
             OnProcessOptionGracePeriodEnabledControlCheckedChanged(this, null);
             OnProcessOptionPreLaunchScriptEnabledControlCheckedChanged(this, null);
-            OnProcessOptionAggressiveCleanupEnabledControlCheckedChanged(this, null);
             OnProcessOptionPostCrashScriptEnabledControlCheckedChanged(this, null);
             OnProcessOptionCommandLineEnabledControlCheckedChanged(this, null);
             OnProcessOptionEnvironmentVariablesEnabledControlCheckedChanged(this, null);
@@ -168,17 +163,6 @@
 
             if (ProcessOptionPreLaunchScriptButton.Enabled != checkbox.Checked)
                 ProcessOptionPreLaunchScriptButton.Enabled = checkbox.Checked;
-        }
-
-        private void OnProcessOptionAggressiveCleanupEnabledControlCheckedChanged(object sender, EventArgs e)
-        {
-            CheckBox checkbox = ProcessOptionAggressiveCleanupEnabledControl;
-
-            if (ProcessOptionAggressiveCleanupByNameControl.Enabled != checkbox.Checked)
-                ProcessOptionAggressiveCleanupByNameControl.Enabled = checkbox.Checked;
-
-            if (ProcessOptionAggressiveCleanupByPIDControl.Enabled != checkbox.Checked)
-                ProcessOptionAggressiveCleanupByPIDControl.Enabled = checkbox.Checked;
         }
 
         private void OnProcessOptionPostCrashScriptEnabledControlCheckedChanged(object sender, EventArgs e)
