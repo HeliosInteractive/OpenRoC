@@ -69,7 +69,7 @@
                 if (ProcessListView.Items.ContainsKey(p.ProcessPath))
                 {
                     ProcessListView.Items[p.ProcessPath].Checked = p.State != ProcessRunner.Status.Disabled;
-                    ProcessListView.Items[p.ProcessPath].SubItems[1].Text = p.StateString;
+                    ProcessListView.Items[p.ProcessPath].SubItems[1].Text = p.GetStateString();
                 }
                 else
                 {

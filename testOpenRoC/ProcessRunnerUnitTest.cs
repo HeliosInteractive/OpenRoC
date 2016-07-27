@@ -27,22 +27,49 @@
             get { return Path.Combine(TestProcessesPath, "testProcessWindowed.exe"); }
         }
 
+        internal static ProcessOptions ResponsiveWindowedProcessOptions
+        {
+            get
+            {
+                return new ProcessOptions
+                {
+                    Path = TestProcessWindowedPath,
+                    WorkingDirectory = TestProcessesPath
+                };
+            }
+        }
+
+        internal static TimeSpan EpsilonTime
+        {
+            get { return TimeSpan.FromMilliseconds(100); }
+        }
+
+        internal static ProcessOptions UnresponsiveWindowedProcessOptions
+        {
+            get
+            {
+                return new ProcessOptions
+                {
+                    Path = TestProcessWindowedPath,
+                    WorkingDirectory = TestProcessesPath,
+                    CommandLineEnabled = true,
+                    CommandLine = "unresponsive"
+                };
+            }
+        }
+
         [TestMethod]
-        public void PrcoessWindowedExistence()
+        public void WindowedPrcoessExistence()
         {
             Assert.IsTrue(Directory.Exists(TestProcessesPath));
             Assert.IsTrue(File.Exists(TestProcessWindowedPath));
         }
 
         [TestMethod]
-        public void ProcessStartupStateAssumeCrashIfNotRunning()
+        public void StartupStateAssumeCrashIfNotRunning()
         {
-            ProcessOptions options = new ProcessOptions
-            {
-                CrashedIfNotRunning = true,
-                Path = TestProcessWindowedPath,
-                WorkingDirectory = TestProcessesPath
-            };
+            ProcessOptions options = ResponsiveWindowedProcessOptions;
+            options.CrashedIfNotRunning = true;
 
             options.InitialStateEnumValue = ProcessRunner.Status.Invalid;
             using (ProcessRunner runner = new ProcessRunner(options))
@@ -86,14 +113,10 @@
         }
 
         [TestMethod]
-        public void ProcessStartupStateDoNotAssumeCrashIfNotRunning()
+        public void StartupStateDoNotAssumeCrashIfNotRunning()
         {
-            ProcessOptions options = new ProcessOptions
-            {
-                CrashedIfNotRunning = false,
-                Path = TestProcessWindowedPath,
-                WorkingDirectory = TestProcessesPath
-            };
+            ProcessOptions options = ResponsiveWindowedProcessOptions;
+            options.CrashedIfNotRunning = false;
 
             options.InitialStateEnumValue = ProcessRunner.Status.Invalid;
             using (ProcessRunner runner = new ProcessRunner(options))
@@ -137,14 +160,10 @@
         }
 
         [TestMethod]
-        public void PrcoessStateChangesAssumeCrashIfNotRunning()
+        public void StateChangesAssumeCrashIfNotRunning()
         {
-            ProcessOptions options = new ProcessOptions
-            {
-                CrashedIfNotRunning = true,
-                Path = TestProcessWindowedPath,
-                WorkingDirectory = TestProcessesPath
-            };
+            ProcessOptions options = ResponsiveWindowedProcessOptions;
+            options.CrashedIfNotRunning = true;
 
             // running to stopped
             options.InitialStateEnumValue = ProcessRunner.Status.Running;
@@ -232,14 +251,10 @@
         }
 
         [TestMethod]
-        public void PrcoessStateChangesDoNotAssumeCrashIfNotRunning()
+        public void StateChangesDoNotAssumeCrashIfNotRunning()
         {
-            ProcessOptions options = new ProcessOptions
-            {
-                CrashedIfNotRunning = false,
-                Path = TestProcessWindowedPath,
-                WorkingDirectory = TestProcessesPath
-            };
+            ProcessOptions options = ResponsiveWindowedProcessOptions;
+            options.CrashedIfNotRunning = false;
 
             // running to stopped
             options.InitialStateEnumValue = ProcessRunner.Status.Running;
@@ -327,35 +342,23 @@
         }
 
         [TestMethod]
-        public void StoppingUnresponsiveProcess()
+        public void UnresponsiveProcess()
         {
-            ProcessOptions options = new ProcessOptions
-            {
-                CrashedIfNotRunning = true,
-                Path = TestProcessWindowedPath,
-                WorkingDirectory = TestProcessesPath,
-                InitialStateEnumValue = ProcessRunner.Status.Running,
-                CommandLineEnabled = true,
-                CommandLine = "true"
-            };
-
+            ProcessOptions options = UnresponsiveWindowedProcessOptions;
+            options.CrashedIfNotRunning = true;
             options.CrashedIfUnresponsive = true;
+            options.InitialStateEnumValue = ProcessRunner.Status.Running;
+
             using (ProcessRunner runner = new ProcessRunner(options))
             {
                 runner.Stop();
                 Assert.IsNull(runner.Process);
             }
 
-            options.CrashedIfUnresponsive = true;
             using (ProcessRunner runner = new ProcessRunner(options))
             {
                 runner.Start();
-
-                while (runner.Process.Responding)
-                {
-                    runner.Process.Refresh();
-                    Thread.Sleep(TimeSpan.FromMilliseconds(1));
-                }
+                runner.WaitUntilUnresponsive();
 
                 runner.Monitor();
                 Assert.IsNull(runner.Process);
@@ -377,20 +380,16 @@
         [TestMethod]
         public void StopCallback()
         {
-            ProcessOptions options = new ProcessOptions
-            {
-                CrashedIfNotRunning = false,
-                Path = TestProcessWindowedPath,
-                WorkingDirectory = TestProcessesPath,
-                InitialStateEnumValue = ProcessRunner.Status.Stopped
-            };
+            ProcessOptions options = ResponsiveWindowedProcessOptions;
+            options.CrashedIfNotRunning = false;
+            options.InitialStateEnumValue = ProcessRunner.Status.Stopped;
 
             using (ProcessRunner runner = new ProcessRunner(options))
             {
                 runner.Start();
                 ProcessQuitter.Instance.Shutdown(runner.Process.Id);
-                // wait so Process API propagates the crash callback
-                Thread.Sleep(TimeSpan.FromMilliseconds(100));
+
+                Thread.Sleep(EpsilonTime);
                 Assert.IsNull(runner.Process);
 
                 runner.Monitor();
@@ -401,16 +400,10 @@
         [TestMethod]
         public void AggressiveCleanup()
         {
-            ProcessOptions options = new ProcessOptions
-            {
-                CrashedIfNotRunning = false,
-                Path = TestProcessWindowedPath,
-                WorkingDirectory = TestProcessesPath,
-                InitialStateEnumValue = ProcessRunner.Status.Stopped,
-                AggressiveCleanupEnabled = true,
-                CommandLine = "true",
-                CommandLineEnabled = true
-            };
+            ProcessOptions options = UnresponsiveWindowedProcessOptions;
+            options.CrashedIfNotRunning = false;
+            options.AggressiveCleanupEnabled = true;
+            options.InitialStateEnumValue = ProcessRunner.Status.Stopped;
 
             using (ProcessRunner runner = new ProcessRunner(options))
             {
@@ -423,20 +416,16 @@
         }
 
         [TestMethod]
-        public void GracePeriodTest()
+        public void GracePeriod()
         {
-            int grace_period_seconds = 5;
-            int grace_period = (int)TimeSpan.FromSeconds(grace_period_seconds).TotalMilliseconds;
+            var grace_timespan = TimeSpan.FromSeconds(5);
+            var grace_timespan_half = TimeSpan.FromSeconds(grace_timespan.TotalSeconds / 2);
 
-            ProcessOptions options = new ProcessOptions
-            {
-                CrashedIfNotRunning = true,
-                Path = TestProcessWindowedPath,
-                WorkingDirectory = TestProcessesPath,
-                InitialStateEnumValue = ProcessRunner.Status.Running,
-                GracePeriodEnabled = true,
-                GracePeriodDuration = (uint)grace_period_seconds
-            };
+            ProcessOptions options = ResponsiveWindowedProcessOptions;
+            options.CrashedIfNotRunning = true;
+            options.GracePeriodEnabled = true;
+            options.GracePeriodDuration = (uint)grace_timespan.TotalSeconds;
+            options.InitialStateEnumValue = ProcessRunner.Status.Running;
 
             using (ProcessRunner runner = new ProcessRunner(options))
             {
@@ -447,34 +436,28 @@
                 runner.Monitor();
                 Assert.IsNull(runner.Process);
 
-                Thread.Sleep(grace_period / 2);
+                Thread.Sleep(grace_timespan_half);
                 runner.Monitor();
                 Assert.IsNull(runner.Process);
 
-                Thread.Sleep(grace_period / 2 + 100);
+                Thread.Sleep(grace_timespan_half + EpsilonTime);
                 runner.Monitor();
                 Assert.IsNotNull(runner.Process);
             }
         }
 
         [TestMethod]
-        public void DoubleCheckPeriodTest()
+        public void DoubleCheckPeriod()
         {
-            int grace_period_seconds = 5;
-            int grace_period = (int)TimeSpan.FromSeconds(grace_period_seconds).TotalMilliseconds;
+            var check_timespan = TimeSpan.FromSeconds(5);
+            var check_timespan_half = TimeSpan.FromSeconds(check_timespan.TotalSeconds / 2);
 
-            ProcessOptions options = new ProcessOptions
-            {
-                CrashedIfUnresponsive = true,
-                CrashedIfNotRunning = true,
-                Path = TestProcessWindowedPath,
-                WorkingDirectory = TestProcessesPath,
-                InitialStateEnumValue = ProcessRunner.Status.Running,
-                DoubleCheckEnabled = true,
-                DoubleCheckDuration = (uint)grace_period_seconds,
-                CommandLineEnabled = true,
-                CommandLine = "true"
-            };
+            ProcessOptions options = UnresponsiveWindowedProcessOptions;
+            options.CrashedIfNotRunning = true;
+            options.CrashedIfUnresponsive = true;
+            options.DoubleCheckEnabled = true;
+            options.DoubleCheckDuration = (uint)check_timespan.TotalSeconds;
+            options.InitialStateEnumValue = ProcessRunner.Status.Running;
 
             using (ProcessRunner runner = new ProcessRunner(options))
             {
@@ -487,14 +470,14 @@
                     Thread.Sleep(TimeSpan.FromMilliseconds(1));
                 }
 
-                Thread.Sleep(100);
+                Thread.Sleep(EpsilonTime);
                 runner.Monitor();
 
-                Thread.Sleep(grace_period / 2);
+                Thread.Sleep(check_timespan_half);
                 runner.Monitor();
                 Assert.IsNotNull(runner.Process);
 
-                Thread.Sleep(grace_period / 2 + 100);
+                Thread.Sleep(check_timespan_half + EpsilonTime);
                 runner.Monitor();
                 Assert.IsNull(runner.Process);
             }

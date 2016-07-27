@@ -3,9 +3,10 @@
     using System;
     using System.IO;
     using System.Linq;
+    using System.Threading;
     using System.Collections.Generic;
 
-    internal static class Extensions
+    public static class Extensions
     {
         public static bool IsDirectory(this string self)
         {
@@ -50,6 +51,20 @@
                 .ForEach(pair => self.Add(pair.First(), pair.Last()));
 
             return true;
+        }
+
+        public static string GetStateString(this ProcessRunner self)
+        {
+            return string.Format("{0} for {1:hh\\:mm\\:ss}", self.State, self.Stopwatch.Elapsed);
+        }
+
+        public static void WaitUntilUnresponsive(this ProcessRunner self)
+        {
+            while (self.Process.Responding)
+            {
+                self.Process.Refresh();
+                Thread.Sleep(TimeSpan.FromMilliseconds(1));
+            }
         }
     }
 }
