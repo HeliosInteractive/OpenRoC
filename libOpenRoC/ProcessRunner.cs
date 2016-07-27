@@ -100,6 +100,18 @@
 
             if (options.InitialStateEnumValue == Status.Running)
                 startSignal.Set();
+
+            if (options.GracePeriodEnabled)
+                gracePeriodTimer.Interval = TimeSpan.FromSeconds(options.GracePeriodDuration).TotalMilliseconds;
+
+            if (options.DoubleCheckEnabled)
+                doubleCheckTimer.Interval = TimeSpan.FromSeconds(options.DoubleCheckDuration).TotalMilliseconds;
+
+            if (gracePeriodTimer.Enabled)
+                gracePeriodTimer.Stop();
+
+            if (doubleCheckTimer.Enabled)
+                doubleCheckTimer.Stop();
         }
 
         public void RestoreState()
@@ -319,7 +331,6 @@
                         }
                         else if (!doubleCheckTimer.Enabled)
                         {
-                            doubleCheckTimer.Interval = TimeSpan.FromSeconds(options.DoubleCheckDuration).TotalMilliseconds;
                             doubleCheckTimer.Start();
                         }
                     }
@@ -391,7 +402,6 @@
             {
                 if (!gracePeriodTimer.Enabled)
                 {
-                    gracePeriodTimer.Interval = TimeSpan.FromSeconds(options.GracePeriodDuration).TotalMilliseconds;
                     gracePeriodTimer.Start();
                 }
             }
