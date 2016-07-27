@@ -451,5 +451,40 @@
                 Assert.IsNull(runner1.Process);
             }
         }
+
+        [TestMethod]
+        public void GracePeriodTest()
+        {
+            int grace_period_seconds = 5;
+            int grace_period = (int)TimeSpan.FromSeconds(grace_period_seconds).TotalMilliseconds;
+
+            ProcessOptions options = new ProcessOptions
+            {
+                CrashedIfNotRunning = true,
+                Path = TestProcessWindowedPath,
+                WorkingDirectory = TestProcessesPath,
+                InitialStateEnumValue = ProcessRunner.Status.Running,
+                GracePeriodEnabled = true,
+                GracePeriodDuration = (uint)grace_period_seconds
+            };
+
+            using (ProcessRunner runner = new ProcessRunner(options))
+            {
+                runner.Monitor();
+                Assert.IsNotNull(runner.Process);
+
+                ProcessQuitter.Shutdown(runner.Process.Id);
+                runner.Monitor();
+                Assert.IsNull(runner.Process);
+
+                Thread.Sleep(grace_period / 2);
+                runner.Monitor();
+                Assert.IsNull(runner.Process);
+
+                Thread.Sleep(grace_period / 2 + 100);
+                runner.Monitor();
+                Assert.IsNotNull(runner.Process);
+            }
+        }
     }
 }
