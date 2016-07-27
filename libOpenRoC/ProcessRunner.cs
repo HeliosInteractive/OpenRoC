@@ -71,8 +71,8 @@
             startSignal = new Signal(false);
             checkSignal = new Signal(false);
             options = opts.Clone() as ProcessOptions;
-            gracePeriodTimer = new Timer { AutoReset = false };
-            doubleCheckTimer = new Timer { AutoReset = false };
+            gracePeriodTimer = new Timer { AutoReset = false, Enabled = false };
+            doubleCheckTimer = new Timer { AutoReset = false, Enabled = false };
             gracePeriodTimer.Elapsed += OnGracePeriodTimeElapsed;
             doubleCheckTimer.Elapsed += OnDoubleCheckTimeElapsed;
             SetupOptions();
@@ -404,11 +404,13 @@
         private void OnDoubleCheckTimeElapsed(object sender, ElapsedEventArgs e)
         {
             checkSignal.Set();
+            doubleCheckTimer.Stop();
         }
 
         private void OnGracePeriodTimeElapsed(object sender, ElapsedEventArgs e)
         {
             startSignal.Set();
+            gracePeriodTimer.Stop();
         }
 
         #endregion
