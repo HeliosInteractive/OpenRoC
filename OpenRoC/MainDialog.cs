@@ -66,10 +66,10 @@
 
             ProcessManager.ProcessRunnerList.ForEach(p =>
             {
-                if (ProcessListView.Items.ContainsKey(p.ProcessPath))
+                if (ProcessListView.Items.ContainsKey(p.ProcessOptions.Path))
                 {
-                    ProcessListView.Items[p.ProcessPath].Checked = p.State != ProcessRunner.Status.Disabled;
-                    ProcessListView.Items[p.ProcessPath].SubItems[1].Text = p.GetStateString();
+                    ProcessListView.Items[p.ProcessOptions.Path].Checked = p.State != ProcessRunner.Status.Disabled;
+                    ProcessListView.Items[p.ProcessOptions.Path].SubItems[1].Text = p.GetStateString();
                 }
                 else
                 {
@@ -78,8 +78,8 @@
                     ListViewItem item = new ListViewItem();
 
                     item.Checked = p.State != ProcessRunner.Status.Disabled;
-                    item.Text = p.ProcessPath;
-                    item.Name = p.ProcessPath;
+                    item.Text = p.ProcessOptions.Path;
+                    item.Name = p.ProcessOptions.Path;
                     item.SubItems.Add(p.State.ToString());
 
                     ProcessListView.Items.Add(item);

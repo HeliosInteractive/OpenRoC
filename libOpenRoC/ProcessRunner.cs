@@ -48,8 +48,6 @@
 
         public bool HasWindow { get; private set; } = false;
 
-        public string ProcessPath { get { return options.Path; } }
-
         public ProcessOptions ProcessOptions
         {
             get { return options.Clone() as ProcessOptions; }
@@ -87,9 +85,6 @@
             if (currentState == Status.Invalid)
             {
                 currentState = Status.Stopped;
-
-                if (previousState == Status.Stopped)
-                    previousState = Status.Invalid;
             }
 
             if (options.InitialStateEnumValue == Status.Running)
@@ -101,11 +96,7 @@
             if (options.DoubleCheckEnabled)
                 doubleCheckTimer.Interval = TimeSpan.FromSeconds(options.DoubleCheckDuration).TotalMilliseconds;
 
-            if (gracePeriodTimer.Enabled)
-                gracePeriodTimer.Stop();
-
-            if (doubleCheckTimer.Enabled)
-                doubleCheckTimer.Stop();
+            ResetTimers();
         }
 
         public void RestoreState()
@@ -294,10 +285,6 @@
                             if (!Process.Responding)
                             {
                                 startSignal.Set();
-                            }
-                            else
-                            {
-                                startSignal.Reset();
                             }
 
                             checkSignal.Reset();
