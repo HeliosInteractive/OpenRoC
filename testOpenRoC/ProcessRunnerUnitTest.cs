@@ -486,5 +486,48 @@
                 Assert.IsNotNull(runner.Process);
             }
         }
+
+        [TestMethod]
+        public void DoubleCheckPeriodTest()
+        {
+            int grace_period_seconds = 5;
+            int grace_period = (int)TimeSpan.FromSeconds(grace_period_seconds).TotalMilliseconds;
+
+            ProcessOptions options = new ProcessOptions
+            {
+                CrashedIfUnresponsive = true,
+                CrashedIfNotRunning = true,
+                Path = TestProcessWindowedPath,
+                WorkingDirectory = TestProcessesPath,
+                InitialStateEnumValue = ProcessRunner.Status.Running,
+                DoubleCheckEnabled = true,
+                DoubleCheckDuration = (uint)grace_period_seconds,
+                CommandLineEnabled = true,
+                CommandLine = "true"
+            };
+
+            using (ProcessRunner runner = new ProcessRunner(options))
+            {
+                runner.Monitor();
+                Assert.IsNotNull(runner.Process);
+
+                while (runner.Process.Responding)
+                {
+                    runner.Process.Refresh();
+                    Thread.Sleep(TimeSpan.FromMilliseconds(1));
+                }
+
+                Thread.Sleep(100);
+                runner.Monitor();
+
+                Thread.Sleep(grace_period / 2);
+                runner.Monitor();
+                Assert.IsNotNull(runner.Process);
+
+                Thread.Sleep(grace_period / 2 + 100);
+                runner.Monitor();
+                Assert.IsNull(runner.Process);
+            }
+        }
     }
 }
