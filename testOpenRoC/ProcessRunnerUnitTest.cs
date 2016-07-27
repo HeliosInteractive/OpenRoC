@@ -28,7 +28,7 @@
         }
 
         [TestMethod]
-        public void TestPrcoessWindowedExists()
+        public void PrcoessWindowedExistence()
         {
             Assert.IsTrue(Directory.Exists(TestProcessesPath));
             Assert.IsTrue(File.Exists(TestProcessWindowedPath));
@@ -375,7 +375,7 @@
         }
 
         [TestMethod]
-        public void TestStopCallback()
+        public void StopCallback()
         {
             ProcessOptions options = new ProcessOptions
             {
