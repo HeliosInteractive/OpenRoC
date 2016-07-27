@@ -33,10 +33,8 @@
             this.SingleInstanceCheckBox = new System.Windows.Forms.CheckBox();
             this.StartMinimizedCheckBox = new System.Windows.Forms.CheckBox();
             this.HttpGroup = new System.Windows.Forms.GroupBox();
-            this.PortLabel = new System.Windows.Forms.Label();
-            this.HostLabel = new System.Windows.Forms.Label();
-            this.HttpPortTextBox = new System.Windows.Forms.TextBox();
-            this.HttpHostTextBox = new System.Windows.Forms.TextBox();
+            this.UrlLabel = new System.Windows.Forms.Label();
+            this.HttpUrlTextBox = new System.Windows.Forms.TextBox();
             this.HttpInterfaceEnabledCheckBox = new System.Windows.Forms.CheckBox();
             this.StartOptionsGroup.SuspendLayout();
             this.HttpGroup.SuspendLayout();
@@ -75,68 +73,48 @@
             // 
             // HttpGroup
             // 
-            this.HttpGroup.Controls.Add(this.PortLabel);
-            this.HttpGroup.Controls.Add(this.HostLabel);
-            this.HttpGroup.Controls.Add(this.HttpPortTextBox);
-            this.HttpGroup.Controls.Add(this.HttpHostTextBox);
+            this.HttpGroup.Controls.Add(this.UrlLabel);
+            this.HttpGroup.Controls.Add(this.HttpUrlTextBox);
             this.HttpGroup.Controls.Add(this.HttpInterfaceEnabledCheckBox);
             this.HttpGroup.Location = new System.Drawing.Point(12, 89);
             this.HttpGroup.Name = "HttpGroup";
-            this.HttpGroup.Size = new System.Drawing.Size(260, 100);
+            this.HttpGroup.Size = new System.Drawing.Size(260, 77);
             this.HttpGroup.TabIndex = 1;
             this.HttpGroup.TabStop = false;
             this.HttpGroup.Text = "HTTP interface";
             // 
-            // PortLabel
+            // UrlLabel
             // 
-            this.PortLabel.AutoSize = true;
-            this.PortLabel.Location = new System.Drawing.Point(7, 69);
-            this.PortLabel.Name = "PortLabel";
-            this.PortLabel.Size = new System.Drawing.Size(32, 13);
-            this.PortLabel.TabIndex = 4;
-            this.PortLabel.Text = "Port :";
+            this.UrlLabel.AutoSize = true;
+            this.UrlLabel.Location = new System.Drawing.Point(7, 47);
+            this.UrlLabel.Name = "UrlLabel";
+            this.UrlLabel.Size = new System.Drawing.Size(35, 13);
+            this.UrlLabel.TabIndex = 3;
+            this.UrlLabel.Text = "URL :";
             // 
-            // HostLabel
+            // HttpUrlTextBox
             // 
-            this.HostLabel.AutoSize = true;
-            this.HostLabel.Location = new System.Drawing.Point(7, 46);
-            this.HostLabel.Name = "HostLabel";
-            this.HostLabel.Size = new System.Drawing.Size(35, 13);
-            this.HostLabel.TabIndex = 3;
-            this.HostLabel.Text = "Host :";
-            // 
-            // HttpPortTextBox
-            // 
-            this.HttpPortTextBox.Enabled = false;
-            this.HttpPortTextBox.Location = new System.Drawing.Point(42, 67);
-            this.HttpPortTextBox.Name = "HttpPortTextBox";
-            this.HttpPortTextBox.Size = new System.Drawing.Size(208, 20);
-            this.HttpPortTextBox.TabIndex = 2;
-            // 
-            // HttpHostTextBox
-            // 
-            this.HttpHostTextBox.Enabled = false;
-            this.HttpHostTextBox.Location = new System.Drawing.Point(42, 44);
-            this.HttpHostTextBox.Name = "HttpHostTextBox";
-            this.HttpHostTextBox.Size = new System.Drawing.Size(208, 20);
-            this.HttpHostTextBox.TabIndex = 1;
+            this.HttpUrlTextBox.Location = new System.Drawing.Point(42, 44);
+            this.HttpUrlTextBox.Name = "HttpUrlTextBox";
+            this.HttpUrlTextBox.Size = new System.Drawing.Size(208, 20);
+            this.HttpUrlTextBox.TabIndex = 1;
             // 
             // HttpInterfaceEnabledCheckBox
             // 
             this.HttpInterfaceEnabledCheckBox.AutoSize = true;
-            this.HttpInterfaceEnabledCheckBox.Enabled = false;
             this.HttpInterfaceEnabledCheckBox.Location = new System.Drawing.Point(10, 23);
             this.HttpInterfaceEnabledCheckBox.Name = "HttpInterfaceEnabledCheckBox";
             this.HttpInterfaceEnabledCheckBox.Size = new System.Drawing.Size(132, 17);
             this.HttpInterfaceEnabledCheckBox.TabIndex = 0;
             this.HttpInterfaceEnabledCheckBox.Text = "Enable web interface :";
             this.HttpInterfaceEnabledCheckBox.UseVisualStyleBackColor = true;
+            this.HttpInterfaceEnabledCheckBox.CheckedChanged += new System.EventHandler(this.OnHttpInterfaceEnabledCheckBoxCheckedChanged);
             // 
             // SettingsDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 199);
+            this.ClientSize = new System.Drawing.Size(284, 175);
             this.Controls.Add(this.HttpGroup);
             this.Controls.Add(this.StartOptionsGroup);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -159,9 +137,7 @@
         private System.Windows.Forms.CheckBox SingleInstanceCheckBox;
         private System.Windows.Forms.GroupBox HttpGroup;
         private System.Windows.Forms.CheckBox HttpInterfaceEnabledCheckBox;
-        private System.Windows.Forms.TextBox HttpHostTextBox;
-        private System.Windows.Forms.TextBox HttpPortTextBox;
-        private System.Windows.Forms.Label HostLabel;
-        private System.Windows.Forms.Label PortLabel;
+        private System.Windows.Forms.TextBox HttpUrlTextBox;
+        private System.Windows.Forms.Label UrlLabel;
     }
 }

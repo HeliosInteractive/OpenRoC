@@ -28,8 +28,18 @@
 
         private void SetupDataBindings()
         {
-            StartMinimizedCheckBox.DataBindings.Add(new Binding("Checked", Settings.Instance, "IsStartMinimizedEnabled"));
-            SingleInstanceCheckBox.DataBindings.Add(new Binding("Checked", Settings.Instance, "IsSingleInsntaceEnabled"));
+            StartMinimizedCheckBox.DataBindings.Add(new Binding(nameof(StartMinimizedCheckBox.Checked), Settings.Instance, nameof(Settings.Instance.IsStartMinimizedEnabled)));
+            SingleInstanceCheckBox.DataBindings.Add(new Binding(nameof(SingleInstanceCheckBox.Checked), Settings.Instance, nameof(Settings.Instance.IsSingleInsntaceEnabled)));
+            HttpInterfaceEnabledCheckBox.DataBindings.Add(new Binding(nameof(HttpInterfaceEnabledCheckBox.Checked), Settings.Instance, nameof(Settings.Instance.IsWebInterfaceEnabled)));
+            HttpUrlTextBox.DataBindings.Add(new Binding(nameof(HttpUrlTextBox.Text), Settings.Instance, nameof(Settings.Instance.WebInterfaceAddress)));
+        }
+
+        private void OnHttpInterfaceEnabledCheckBoxCheckedChanged(object sender, System.EventArgs e)
+        {
+            CheckBox checkbox = sender as CheckBox;
+
+            if (HttpUrlTextBox.Enabled != checkbox.Checked)
+                HttpUrlTextBox.Enabled = checkbox.Checked;
         }
     }
 }
