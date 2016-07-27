@@ -25,7 +25,7 @@
             XmlWriterSettings serializer_settings = new XmlWriterSettings { Indent = true, OmitXmlDeclaration = true };
             XmlSerializer serializer = new XmlSerializer(typeof(T));
 
-            using (StringWriter string_writer = new StringWriter())
+            StringWriter string_writer = new StringWriter();
             using (XmlWriter xml_writer = XmlWriter.Create(string_writer, serializer_settings))
             {
                 serializer.Serialize(xml_writer, self, serializer_namespace);
@@ -40,8 +40,7 @@
             XmlReaderSettings serializer_settings = new XmlReaderSettings { ValidationType = ValidationType.None };
             XmlSerializer serializer = new XmlSerializer(typeof(T), new XmlRootAttribute(root));
 
-            using (StringReader string_reader = new StringReader(node))
-            using (XmlReader xml_reader = XmlReader.Create(string_reader, serializer_settings))
+            using (XmlReader xml_reader = XmlReader.Create(new StringReader(node), serializer_settings))
             {
                 return (T)serializer.Deserialize(xml_reader);
             }
