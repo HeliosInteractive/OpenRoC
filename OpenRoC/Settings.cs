@@ -6,6 +6,7 @@
 
     public sealed class Settings
     {
+        private static volatile object mutex = new object();
         private static volatile Settings instance;
         private Application application;
         private XElement openrocRoot;
@@ -50,11 +51,14 @@
             {
                 if (instance == null)
                 {
-                    if (instance == null)
+                    lock(mutex)
                     {
-                        instance = new Settings();
-                        instance.Setup();
-                        instance.Save();
+                        if (instance == null)
+                        {
+                            instance = new Settings();
+                            instance.Setup();
+                            instance.Save();
+                        }
                     }
                 }
 
