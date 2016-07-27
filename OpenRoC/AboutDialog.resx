@@ -118,13 +118,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AboutRichTextBox.Text" xml:space="preserve">
-    <value>Copyright 2015 - Helios Interactive
+    <value>Copyright 2016 - Helios Interactive
 301 8th St. Suite 250, San Francisco, CA 94103
 https://github.com/HeliosInteractive/OpenRoC
 
 OpenRoC is licensed under the MIT license (MIT). OpenRoC uses a number of third-party dependencies:
 
-OHM - http://openhardwaremonitor.org
+Nancy - http://nancyfx.org/
 Log4Net - https://logging.apache.org/log4net
 Costura.Fody - https://github.com/Fody/Costura
 
