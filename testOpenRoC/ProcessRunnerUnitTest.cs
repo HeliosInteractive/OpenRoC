@@ -27,6 +27,11 @@
             get { return Path.Combine(TestProcessesPath, "testProcessWindowed.exe"); }
         }
 
+        internal static TimeSpan EpsilonTime
+        {
+            get { return TimeSpan.FromMilliseconds(100); }
+        }
+
         internal static ProcessOptions ResponsiveWindowedProcessOptions
         {
             get
@@ -37,11 +42,6 @@
                     WorkingDirectory = TestProcessesPath
                 };
             }
-        }
-
-        internal static TimeSpan EpsilonTime
-        {
-            get { return TimeSpan.FromMilliseconds(100); }
         }
 
         internal static ProcessOptions UnresponsiveWindowedProcessOptions
@@ -449,7 +449,7 @@
         [TestMethod]
         public void DoubleCheckPeriod()
         {
-            var check_timespan = TimeSpan.FromSeconds(5);
+            var check_timespan = TimeSpan.FromSeconds(2);
             var check_timespan_half = TimeSpan.FromSeconds(check_timespan.TotalSeconds / 2);
 
             ProcessOptions options = UnresponsiveWindowedProcessOptions;
@@ -463,12 +463,7 @@
             {
                 runner.Monitor();
                 Assert.IsNotNull(runner.Process);
-
-                while (runner.Process.Responding)
-                {
-                    runner.Process.Refresh();
-                    Thread.Sleep(TimeSpan.FromMilliseconds(1));
-                }
+                runner.WaitUntilUnresponsive();
 
                 Thread.Sleep(EpsilonTime);
                 runner.Monitor();
@@ -480,6 +475,86 @@
                 Thread.Sleep(check_timespan_half + EpsilonTime);
                 runner.Monitor();
                 Assert.IsNull(runner.Process);
+            }
+
+            options.CommandLine = string.Format("{0} {1}",
+                options.CommandLine,
+                (int)check_timespan_half.TotalSeconds);
+
+            using (ProcessRunner runner = new ProcessRunner(options))
+            {
+                runner.Start();
+
+                Thread.Sleep(check_timespan_half);
+                runner.Monitor();
+                Assert.IsNotNull(runner.Process);
+
+                Thread.Sleep(check_timespan + EpsilonTime);
+                runner.Monitor();
+                Assert.IsNotNull(runner.Process);
+            }
+        }
+
+        [TestMethod]
+        public void StateRestore()
+        {
+            ProcessOptions options = ResponsiveWindowedProcessOptions;
+
+            using (ProcessRunner runner = new ProcessRunner(options))
+            {
+                runner.RestoreState();
+                Assert.AreEqual(runner.State, ProcessRunner.Status.Stopped);
+
+                runner.State = ProcessRunner.Status.Disabled;
+                runner.RestoreState();
+                Assert.AreEqual(runner.State, ProcessRunner.Status.Stopped);
+
+                runner.State = ProcessRunner.Status.Disabled;
+                
+                // this should be a no-op
+                runner.State = ProcessRunner.Status.Disabled;
+                runner.RestoreState();
+                Assert.AreEqual(runner.State, ProcessRunner.Status.Stopped);
+            }
+        }
+
+        [TestMethod]
+        public void SwappingOptions()
+        {
+            ProcessOptions options = ResponsiveWindowedProcessOptions;
+
+            using (ProcessRunner runner = new ProcessRunner(options))
+            {
+                runner.Stop();
+                Assert.IsNull(runner.Process);
+                Assert.AreEqual(runner.State, ProcessRunner.Status.Stopped);
+
+                runner.Start();
+                Assert.IsNotNull(runner.Process);
+                Assert.AreEqual(runner.State, ProcessRunner.Status.Running);
+
+                runner.ProcessOptions = options;
+                Assert.IsNull(runner.Process);
+                Assert.AreEqual(runner.State, ProcessRunner.Status.Stopped);
+
+                Assert.IsFalse(ReferenceEquals(runner.ProcessOptions, options));
+            }
+        }
+
+        [TestMethod]
+        public void DoubleStartingProcess()
+        {
+            ProcessOptions options = ResponsiveWindowedProcessOptions;
+
+            using (ProcessRunner runner = new ProcessRunner(options))
+            {
+                runner.Start();
+                var attempt1 = runner.Process;
+
+                runner.Start();
+                var attempt2 = runner.Process;
+
+                Assert.IsFalse(ReferenceEquals(attempt1, attempt2));
             }
         }
     }
