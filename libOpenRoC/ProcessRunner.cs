@@ -228,7 +228,7 @@
 
                 if (!Process.HasExited)
                 {
-                    ProcessQuitter.Shutdown(pid);
+                    ProcessQuitter.Instance.Shutdown(pid);
                     Process.WaitForExit(process_exit_timeout);
                 }
             }
@@ -239,15 +239,15 @@
                 {
                     string exename = Path.GetFileNameWithoutExtension(ProcessPath);
 
-                    ProcessQuitter.Shutdown(exename);
+                    ProcessQuitter.Instance.Shutdown(exename);
 
                     if (!string.IsNullOrWhiteSpace(process_name) && exename != process_name)
-                        ProcessQuitter.Shutdown(process_name);
+                        ProcessQuitter.Instance.Shutdown(process_name);
                 }
 
                 if (options.AggressiveCleanupByPID && pid != 0)
                 {
-                    ProcessQuitter.Shutdown(pid);
+                    ProcessQuitter.Instance.Shutdown(pid);
                 }
             }
 

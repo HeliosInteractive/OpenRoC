@@ -388,7 +388,7 @@
             using (ProcessRunner runner = new ProcessRunner(options))
             {
                 runner.Start();
-                ProcessQuitter.Shutdown(runner.Process.ProcessName);
+                ProcessQuitter.Instance.Shutdown(runner.Process.ProcessName);
                 // wait so Process API propagates the crash callback
                 Thread.Sleep(TimeSpan.FromMilliseconds(100));
                 Assert.IsNull(runner.Process);
@@ -473,7 +473,7 @@
                 runner.Monitor();
                 Assert.IsNotNull(runner.Process);
 
-                ProcessQuitter.Shutdown(runner.Process.Id);
+                ProcessQuitter.Instance.Shutdown(runner.Process.Id);
                 runner.Monitor();
                 Assert.IsNull(runner.Process);
 
