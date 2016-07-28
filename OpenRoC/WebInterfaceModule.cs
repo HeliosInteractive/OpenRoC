@@ -7,9 +7,8 @@
 
     using System.IO;
     using System.Linq;
-    using System.Windows.Forms;
 
-    public class ProcessManagerModule : NancyModule
+    public class WebInterfaceModule : NancyModule
     {
         private readonly ProcessManager processManager;
         private readonly MainDialog applicationDialog;
@@ -23,7 +22,7 @@
             Restart,
         }
 
-        public ProcessManagerModule(ProcessManager manager, MainDialog dialog)
+        public WebInterfaceModule(ProcessManager manager, MainDialog dialog)
         {
             applicationDialog = dialog;
             processManager = manager;

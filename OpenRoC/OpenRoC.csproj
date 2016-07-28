@@ -101,7 +101,8 @@
     <Compile Include="MainDialog.Designer.cs">
       <DependentUpon>MainDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="ProcessManagerModule.cs" />
+    <Compile Include="WebInterfaceBootstrapper.cs" />
+    <Compile Include="WebInterfaceModule.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings.cs" />
