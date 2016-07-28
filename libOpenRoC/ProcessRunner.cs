@@ -17,6 +17,10 @@
         Timer doubleCheckTimer;
         ProcessOptions options;
 
+        public Action StateChanged;
+        public Action OptionsChanged;
+        public Action ProcessChanged;
+
         public enum Status
         {
             Invalid,
@@ -38,7 +42,7 @@
                 currentState = value;
                 ResetTimers();
 
-                NotifyPropertyChanged("State");
+                NotifyPropertyChanged(nameof(State));
             }
         }
 
@@ -75,9 +79,9 @@
             Stop();
             options = opts;
             State = opts.InitialStateEnumValue;
-
             SetupOptions();
-            NotifyPropertyChanged("ProcessOptions");
+
+            NotifyPropertyChanged(nameof(ProcessOptions));
         }
 
         private void SetupOptions()
@@ -164,6 +168,8 @@
             {
                 State = Status.Invalid;
                 State = Status.Running;
+
+                NotifyPropertyChanged(nameof(Process));
             }
             else
             {
@@ -217,6 +223,8 @@
 
             Process.Dispose();
             Process = null;
+
+            NotifyPropertyChanged(nameof(Process));
 
             if (!IsDisposed)
             {
@@ -391,8 +399,16 @@
 
         protected void NotifyPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+            if (propertyName == nameof(State))
+                StateChanged?.Invoke();
+
+            else if (propertyName == nameof(ProcessOptions))
+                OptionsChanged?.Invoke();
+
+            else if (propertyName == nameof(Process))
+                ProcessChanged?.Invoke();
         }
 
         #endregion
