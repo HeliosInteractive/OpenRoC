@@ -12,7 +12,6 @@
     using System.Reflection;
     using System.Windows.Forms;
     using System.Xml.Serialization;
-    using System.Diagnostics.CodeAnalysis;
 
     internal static class Extensions
     {
@@ -22,8 +21,6 @@
             if (doubleBufferPropertyInfo != null) doubleBufferPropertyInfo.SetValue(control, enable, null);
         }
 
-        // http://stackoverflow.com/a/3839419/388751
-        [SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")]
         public static string ToXmlNodeString<T>(this T self)
         {
             XmlSerializerNamespaces serializer_namespace = new XmlSerializerNamespaces(new[] { XmlQualifiedName.Empty });
@@ -38,8 +35,6 @@
             }
         }
 
-        // http://stackoverflow.com/a/3839419/388751
-        [SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")]
         public static T FromXmlNodeString<T>(string node, string root)
         {
             XmlReaderSettings serializer_settings = new XmlReaderSettings { ValidationType = ValidationType.None };
