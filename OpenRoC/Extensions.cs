@@ -1,7 +1,5 @@
 ﻿namespace oroc
 {
-    using Nancy;
-
     using Newtonsoft.Json;
     using Newtonsoft.Json.Converters;
 
@@ -85,13 +83,6 @@
             settings.Converters.Add(new StringEnumConverter());
 
             return JsonConvert.SerializeObject(input, Newtonsoft.Json.Formatting.None, settings);
-        }
-
-        public static Response ToJsonResponse(this object input)
-        {
-            var response = (Response)ToJson(input);
-            response.ContentType = "application/json";
-            return response;
         }
 
         public static void SetupDataBind(this TextBox control, object instance, string prop)
