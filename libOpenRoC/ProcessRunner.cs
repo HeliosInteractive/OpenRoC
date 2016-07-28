@@ -20,6 +20,7 @@
         public Action StateChanged;
         public Action OptionsChanged;
         public Action ProcessChanged;
+        public Action ProcessCrashed;
 
         public enum Status
         {
@@ -368,6 +369,8 @@
 
         private void OnProcessStopped(object sender, EventArgs e)
         {
+            ProcessCrashed?.Invoke();
+
             Stop();
 
             if (options.GracePeriodEnabled)
