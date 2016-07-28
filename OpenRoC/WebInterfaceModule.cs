@@ -34,11 +34,13 @@
             Get["/"] = IndexPage;
             Get["/{process}"] = ProcessPage;
             Post["/{process}"] = CommandPage;
-            Get["/{invalid*}"] = _ => string.Empty;
+            Get["/{invalid*}"] = _ => Response.AsText(Properties.Resources.Teapot).WithStatusCode(HttpStatusCode.ImATeapot);
         }
 
         private Response IndexPage(dynamic input)
         {
+            Log.i("Web interface received a request for Index: {0}", Request.UserHostAddress);
+
             return Response.AsJson(
                 processManager.ProcessRunnerList
                 .Select(proc => new
@@ -52,6 +54,8 @@
 
         private Response ProcessPage(dynamic input)
         {
+            Log.i("Web interface received a request for Process: {0}", Request.UserHostAddress);
+
             string process = input["process"];
 
             return Response.AsJson(
@@ -67,9 +71,19 @@
 
         private Response CommandPage(dynamic input)
         {
-            bool executed = false;
-            Command cmd = this.Bind();
-            string process = input["process"];
+            Log.i("Web interface received a request for Command: {0}", Request.UserHostAddress);
+
+            Command cmd = Command.Stop;
+
+            try { cmd = this.Bind(); }
+            catch
+            {
+                Log.e("Failed to parse web interface command.");
+                return Response.AsJson(false).WithStatusCode(HttpStatusCode.BadRequest);
+            }
+
+            var executed = false;
+            var process = input["process"];
 
             processManager.ProcessRunnerList
                 .Where(proc => Path.GetFileName(proc.ProcessOptions.Path) == process)

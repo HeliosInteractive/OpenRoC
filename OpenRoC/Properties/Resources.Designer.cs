@@ -160,5 +160,24 @@ namespace oroc.Properties {
                 return ResourceManager.GetString("StatusTextDefaultString", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to                        (
+        ///            _           ) )
+        ///         _,(_)._        ((
+        ///    ___,(_______).        )
+        ///  ,&apos;__.   /       \    /\_
+        /// /,&apos; /  |&quot;&quot;|       \  /  /
+        ///| | |   |__|       |,&apos;  /
+        /// \`.|                  /
+        ///  `. :           :    /
+        ///    `.            :.,&apos;
+        ///      `-.________,-&apos;.
+        /// </summary>
+        internal static string Teapot {
+            get {
+                return ResourceManager.GetString("Teapot", resourceCulture);
+            }
+        }
     }
 }

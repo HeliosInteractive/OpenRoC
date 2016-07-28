@@ -148,4 +148,18 @@
   <data name="StatusTextDefaultString" xml:space="preserve">
     <value>Ready (drag and drop executables or click Add. Double click to Edit)</value>
   </data>
+  <data name="Teapot" xml:space="preserve">
+    <value>                       (
+            _           ) )
+         _,(_)._        ((
+    ___,(_______).        )
+  ,'__.   /       \    /\_
+ /,' /  |""|       \  /  /
+| | |   |__|       |,'  /
+ \`.|                  /
+  `. :           :    /
+    `.            :.,'
+      `-.________,-'</value>
+    <comment>Teapot, duh.</comment>
+  </data>
 </root>
