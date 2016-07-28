@@ -11,7 +11,7 @@
         private Application application;
         private XElement openrocRoot;
         private XElement optionsRoot;
-        private bool dirty = false;
+        private volatile bool dirty = false;
 
         public class Application
         {
@@ -79,7 +79,7 @@
             {
                 if (instance == null)
                 {
-                    lock(mutex)
+                    lock (mutex)
                     {
                         if (instance == null)
                         {
@@ -135,57 +135,67 @@
                 dirty = true;
             }
 
-            application =  Read<Application>(Properties.Resources.SettingsApplicationNode);
+            application = Read<Application>(Properties.Resources.SettingsApplicationNode);
             Write(Properties.Resources.SettingsApplicationNode, application);
 
         }
 
         public void Write<T>(string node, T value) where T : new()
         {
-            try
+            lock (this)
             {
-                if (optionsRoot.Element(node) == null)
-                    optionsRoot.Add(new XElement(node));
+                try
+                {
+                    if (optionsRoot.Element(node) == null)
+                        optionsRoot.Add(new XElement(node));
 
-                optionsRoot.Element(node).ReplaceAll(
-                    XElement.Parse(value.ToXmlNodeString()).Elements());
+                    optionsRoot.Element(node).ReplaceAll(
+                        XElement.Parse(value.ToXmlNodeString()).Elements());
 
-                dirty = true;
-            }
-            catch (Exception ex)
-            {
-                Log.e("Failed to write XML string for node: {0}. Reason: {1}", node, ex.Message);
-                dirty = false;
+                    dirty = true;
+                }
+                catch (Exception ex)
+                {
+                    Log.e("Failed to write XML string for node: {0}. Reason: {1}", node, ex.Message);
+                    dirty = false;
+                }
             }
         }
 
         public T Read<T>(string node) where T : new()
         {
-            try
+            lock (this)
             {
-                if (optionsRoot.Element(node) != null)
-                    return Extensions.FromXmlNodeString<T>(
-                        optionsRoot.Element(node).ToString(), node);
-            }
-            catch(Exception ex)
-            {
-                Log.e("Failed to read XML string from node: {0}. Reason: {1}", node, ex.Message);
-            }
+                try
+                {
+                    if (optionsRoot.Element(node) != null)
+                        return Extensions.FromXmlNodeString<T>(
+                            optionsRoot.Element(node).ToString(), node);
+                }
+                catch (Exception ex)
+                {
+                    Log.e("Failed to read XML string from node: {0}. Reason: {1}", node, ex.Message);
+                }
 
-            return new T();
+                return new T();
+            }
         }
 
         public void Save()
         {
             if (!dirty)
                 return;
-            Write(Properties.Resources.SettingsApplicationNode, application);
 
-            openrocRoot.Save(Path.Combine(
-                Program.Directory,
-                Properties.Resources.SettingsFileName));
-            
-            dirty = false;
+            lock (this)
+            {
+                Write(Properties.Resources.SettingsApplicationNode, application);
+
+                openrocRoot.Save(Path.Combine(
+                    Program.Directory,
+                    Properties.Resources.SettingsFileName));
+
+                dirty = false;
+            }
         }
     }
 }
