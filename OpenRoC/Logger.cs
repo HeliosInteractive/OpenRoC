@@ -22,7 +22,7 @@
         public static void i(string fmt, params object[] args) { Logger.Instance.InfoFormat(fmt, args); }
     }
 
-    class Logger
+    internal class Logger
     {
         public static readonly ILog Instance = LogManager.GetLogger(typeof(Logger));
 
@@ -39,15 +39,13 @@
             try { phoenix_root = XElement.Load(config_file.FullName); }
             catch (Exception ex)
             {
-                LogManager.GetLogger(typeof(Logger))
-                .ErrorFormat("Root element cannot be loaded: {0}", ex.Message);
-
+                Log.e("Root element cannot be loaded: {0}", ex.Message);
                 phoenix_root = XElement.Parse(Properties.Resources.SettingsBaseXml);
             }
 
             if (phoenix_root == null || phoenix_root.Name != Properties.Resources.SettingsRootNode)
             {
-                Instance.Warn("Phoenix node not found. It will be created.");
+                Log.w("Phoenix node not found. It will be created.");
                 phoenix_root = new XElement(Properties.Resources.SettingsRootNode);
             }
 
@@ -55,7 +53,7 @@
 
             if (log4net_root == null)
             {
-                Instance.Error("Options node not found. It will be created.");
+                Log.e("Options node not found. It will be created.");
                 log4net_root = new XElement(Properties.Resources.SettingsLog4NetNode);
                 phoenix_root.Add(log4net_root);
             }
