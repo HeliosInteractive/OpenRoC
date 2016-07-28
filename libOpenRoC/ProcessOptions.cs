@@ -82,7 +82,7 @@
                     return;
 
                 path = value;
-                NotifyPropertyChanged("Path");
+                NotifyPropertyChanged(nameof(Path));
             }
         }
 
@@ -95,7 +95,7 @@
                     return;
 
                 workingDirectory = value;
-                NotifyPropertyChanged("WorkingDirectory");
+                NotifyPropertyChanged(nameof(WorkingDirectory));
             }
         }
 
@@ -108,7 +108,7 @@
                     return;
 
                 crashedIfNotRunning = value;
-                NotifyPropertyChanged("CrashedIfNotRunning");
+                NotifyPropertyChanged(nameof(CrashedIfNotRunning));
             }
         }
 
@@ -121,7 +121,7 @@
                     return;
 
                 crashedIfUnresponsive = value;
-                NotifyPropertyChanged("CrashedIfUnresponsive");
+                NotifyPropertyChanged(nameof(CrashedIfUnresponsive));
             }
         }
 
@@ -134,7 +134,7 @@
                     return;
 
                 doubleCheckEnabled = value;
-                NotifyPropertyChanged("DoubleCheckEnabled");
+                NotifyPropertyChanged(nameof(DoubleCheckEnabled));
             }
         }
 
@@ -147,7 +147,7 @@
                     return;
 
                 doubleCheckDuration = value;
-                NotifyPropertyChanged("DoubleCheckDuration");
+                NotifyPropertyChanged(nameof(DoubleCheckDuration));
             }
         }
 
@@ -160,7 +160,7 @@
                     return;
 
                 gracePeriodEnabled = value;
-                NotifyPropertyChanged("GracePeriodEnabled");
+                NotifyPropertyChanged(nameof(GracePeriodEnabled));
             }
         }
 
@@ -173,7 +173,7 @@
                     return;
 
                 gracePeriodDuration = value;
-                NotifyPropertyChanged("GracePeriodDuration");
+                NotifyPropertyChanged(nameof(GracePeriodDuration));
             }
         }
 
@@ -186,7 +186,7 @@
                     return;
 
                 preLaunchScriptEnabled = value;
-                NotifyPropertyChanged("PreLaunchScriptEnabled");
+                NotifyPropertyChanged(nameof(PreLaunchScriptEnabled));
             }
         }
 
@@ -199,7 +199,7 @@
                     return;
 
                 preLaunchScriptPath = value;
-                NotifyPropertyChanged("PreLaunchScriptPath");
+                NotifyPropertyChanged(nameof(PreLaunchScriptPath));
             }
         }
 
@@ -212,7 +212,7 @@
                     return;
 
                 aggressiveCleanupEnabled = value;
-                NotifyPropertyChanged("AggressiveCleanupEnabled");
+                NotifyPropertyChanged(nameof(AggressiveCleanupEnabled));
             }
         }
 
@@ -225,7 +225,7 @@
                     return;
 
                 postCrashScriptEnabled = value;
-                NotifyPropertyChanged("PostCrashScriptEnabled");
+                NotifyPropertyChanged(nameof(PostCrashScriptEnabled));
             }
         }
 
@@ -238,7 +238,7 @@
                     return;
 
                 postCrashScriptPath = value;
-                NotifyPropertyChanged("PostCrashScriptPath");
+                NotifyPropertyChanged(nameof(PostCrashScriptPath));
             }
         }
 
@@ -251,7 +251,7 @@
                     return;
 
                 screenShotEnabled = value;
-                NotifyPropertyChanged("ScreenShotEnabled");
+                NotifyPropertyChanged(nameof(ScreenShotEnabled));
             }
         }
 
@@ -264,7 +264,7 @@
                     return;
 
                 alwaysOnTopEnabled = value;
-                NotifyPropertyChanged("AlwaysOnTopEnabled");
+                NotifyPropertyChanged(nameof(AlwaysOnTopEnabled));
             }
         }
 
@@ -277,7 +277,7 @@
                     return;
 
                 commandLineEnabled = value;
-                NotifyPropertyChanged("CommandLineEnabled");
+                NotifyPropertyChanged(nameof(CommandLineEnabled));
             }
         }
 
@@ -290,7 +290,7 @@
                     return;
 
                 commandLine = value;
-                NotifyPropertyChanged("CommandLine");
+                NotifyPropertyChanged(nameof(CommandLine));
             }
         }
 
@@ -303,7 +303,7 @@
                     return;
 
                 environmentVariablesEnabled = value;
-                NotifyPropertyChanged("EnvironmentVariablesEnabled");
+                NotifyPropertyChanged(nameof(EnvironmentVariablesEnabled));
             }
         }
 
@@ -313,7 +313,7 @@
             set
             {
                 if (environmentVariables.FromColonDelimitedString(value))
-                    NotifyPropertyChanged("EnvironmentVariables");
+                    NotifyPropertyChanged(nameof(EnvironmentVariables));
             }
         }
 
@@ -329,12 +329,12 @@
                         return;
 
                     initialState = status;
-                    NotifyPropertyChanged("InitialState");
+                    NotifyPropertyChanged(nameof(InitialState));
                 }
                 else
                 {
                     initialState = ProcessRunner.Status.Invalid;
-                    NotifyPropertyChanged("InitialState");
+                    NotifyPropertyChanged(nameof(InitialState));
                 }
             }
         }
@@ -349,7 +349,7 @@
                     return;
 
                 initialState = value;
-                NotifyPropertyChanged("InitialState");
+                NotifyPropertyChanged(nameof(InitialState));
             }
         }
 
@@ -398,8 +398,7 @@
 
         protected void NotifyPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #endregion
