@@ -12,9 +12,13 @@
 
     class Log
     {
+        public static void d(string msg) { Logger.Instance.Debug(msg); }
         public static void d(string fmt, params object[] args) { Logger.Instance.DebugFormat(fmt, args); }
+        public static void w(string msg) { Logger.Instance.Warn(msg); }
         public static void w(string fmt, params object[] args) { Logger.Instance.WarnFormat(fmt, args); }
+        public static void e(string msg) { Logger.Instance.Error(msg); }
         public static void e(string fmt, params object[] args) { Logger.Instance.ErrorFormat(fmt, args); }
+        public static void i(string msg) { Logger.Instance.Info(msg); }
         public static void i(string fmt, params object[] args) { Logger.Instance.InfoFormat(fmt, args); }
     }
 
