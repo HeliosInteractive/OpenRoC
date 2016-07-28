@@ -5,6 +5,7 @@
     using Newtonsoft.Json;
     using Newtonsoft.Json.Converters;
 
+    using System;
     using System.IO;
     using System.Xml;
     using System.Drawing;
@@ -106,6 +107,15 @@
         public static void SetupDataBind(this Control control, string dest, object instance, string src)
         {
             control.DataBindings.Add(new Binding(dest, instance, src));
+        }
+
+        public static void ExecuteOnMainThread(this Form form, Action task)
+        {
+            form.Invoke((MethodInvoker)delegate
+            {
+                try { task?.Invoke(); }
+                catch (Exception ex) { Log.e("Main thread execution failed: {0}", ex.Message); }
+            });
         }
     }
 }
