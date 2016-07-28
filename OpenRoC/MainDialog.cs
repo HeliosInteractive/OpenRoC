@@ -42,7 +42,15 @@
             SetupMainDialogStatusTexts();
             HandleCreated += OnHandleCreated;
             ProcessManager = new ProcessManager();
-            ProcessListView.SetDoubleBuffered(true);
+
+            if (!ProcessListView.SetDoubleBuffered(true))
+            {
+                Log.w("Unable to set DoubleBuffer on ProcessListView. This may cause flickers.");
+            }
+            else
+            {
+                Log.d("ProcessListView is DoubleBuffer enabled.");
+            }
         }
 
         private void OnHandleCreated(object sender, EventArgs e)
@@ -55,7 +63,7 @@
             Log.d("Launch options parsed. Number of launch processes: {0}", launchOptions.Count);
 
             launchOptions.ForEach((opt) => { ProcessManager.Add(opt); });
-            ProcessManager.PropertyChanged += OnProcessManagerPropertyChanged;
+            ProcessManager.ProcessesChanged += OnProcessManagerPropertyChanged;
 
             if (Settings.Instance.IsWebInterfaceEnabled)
             {
@@ -67,21 +75,24 @@
                         new HostConfiguration { RewriteLocalhost = false });
 
                     webHost.Start();
+
+                    Log.d("Web interface is available at {0}", Settings.Instance.WebInterfaceAddress);
                 }
                 catch (AutomaticUrlReservationCreationFailureException)
                 {
                     Log.e("Web interface failed to start. Are you an administrator?");
                 }
+                catch (Exception ex)
+                {
+                    Log.e("Web interface failed to start: {0}", ex.Message);
+                }
             }
         }
 
-        private void OnProcessManagerPropertyChanged(object sender, PropertyChangedEventArgs args)
+        private void OnProcessManagerPropertyChanged()
         {
-            if (args.PropertyName == "ProcessMap")
-            {
-                Settings.Instance.Write(Properties.Resources.SettingsProcessListNode, ProcessManager.ProcessOptionList);
-                Settings.Instance.Save();
-            }
+            Settings.Instance.Write(Properties.Resources.SettingsProcessListNode, ProcessManager.ProcessOptionList);
+            Settings.Instance.Save();
         }
 
         private void OnProcessListViewResize(object sender, EventArgs e)
@@ -107,8 +118,6 @@
                 }
                 else
                 {
-                    ProcessListView.ItemChecked -= OnProcessListViewItemChecked;
-
                     ListViewItem item = new ListViewItem();
 
                     item.Checked = p.State != ProcessRunner.Status.Disabled;
@@ -116,8 +125,11 @@
                     item.Name = p.ProcessOptions.Path;
                     item.SubItems.Add(p.State.ToString());
 
+                    p.StateChanged += () => { Log.i("Process {0} changed state to: {1}", p.ProcessOptions.Path, p.State); };
+                    p.OptionsChanged += () => { Log.d("Process changed options to: {0}", p.ProcessOptions.ToJson()); };
+                    p.ProcessCrashed += () => { Log.e("Process {0} crashed or stopped.", p.ProcessOptions.Path); };
+
                     ProcessListView.Items.Add(item);
-                    ProcessListView.ItemChecked += OnProcessListViewItemChecked;
                 }
             });
         }
