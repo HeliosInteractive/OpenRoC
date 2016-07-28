@@ -2,13 +2,14 @@
 {
     using System;
     using System.Linq;
-    using System.ComponentModel;
     using System.Collections.Generic;
 
-    public class ProcessManager : IDisposable, INotifyPropertyChanged
+    public class ProcessManager : IDisposable
     {
         private Dictionary<string, ProcessRunner> ProcessMap
             = new Dictionary<string, ProcessRunner>();
+
+        public Action ProcessesChanged;
 
         public List<ProcessRunner> ProcessRunnerList
         {
@@ -28,10 +29,13 @@
             }
 
             ProcessRunner proc = new ProcessRunner(opts);
-            proc.PropertyChanged += OnProcessPropertyChanged;
+
+            proc.StateChanged += OnProcessesChanged;
+            proc.OptionsChanged += OnProcessesChanged;
+
             ProcessMap.Add(opts.Path, proc);
-            
-            NotifyPropertyChanged("ProcessMap");
+
+            OnProcessesChanged();
         }
 
         public void Delete(string path)
@@ -47,7 +51,8 @@
 
                 proc.Dispose();
                 ProcessMap.Remove(path);
-                NotifyPropertyChanged("ProcessMap");
+
+                OnProcessesChanged();
             }
             else
             {
@@ -63,32 +68,21 @@
 
         public ProcessRunner Get(string path)
         {
-            return ProcessMap[path];
+            if (Contains(path))
+                return ProcessMap[path];
+            else
+                return null;
         }
 
         public void Swap(ProcessOptions opts)
         {
             Get(opts.Path).ProcessOptions = opts;
-            NotifyPropertyChanged("ProcessMap");
         }
 
-        private void OnProcessPropertyChanged(object sender, PropertyChangedEventArgs args)
+        protected void OnProcessesChanged()
         {
-            if (args.PropertyName == "State")
-                NotifyPropertyChanged("ProcessMap");
+            ProcessesChanged?.Invoke();
         }
-
-        #region INotifyPropertyChanged support
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void NotifyPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        #endregion
 
         #region IDisposable Support
         public bool IsDisposed { get; private set; } = false;
