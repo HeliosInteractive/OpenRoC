@@ -21,7 +21,7 @@
 
         private Response IndexPage(dynamic input)
         {
-            return Extensions.ToJsonResponse(processManager.ProcessRunnerList);
+            return processManager.ProcessRunnerList.ToJsonResponse();
         }
     }
 }
