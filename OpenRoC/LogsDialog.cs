@@ -1,6 +1,7 @@
 ﻿namespace oroc
 {
     using System;
+    using System.Diagnostics;
     using System.Windows.Forms;
 
     public partial class LogsDialog : Form
@@ -20,6 +21,11 @@
                 e.Cancel = true;
                 Hide();
             }
+        }
+
+        private void OnLogsDialogRichTextBoxLinkClicked(object sender, LinkClickedEventArgs e)
+        {
+            Process.Start(e.LinkText).Dispose();
         }
     }
 }
