@@ -92,5 +92,20 @@
             response.ContentType = "application/json";
             return response;
         }
+
+        public static void SetupDataBind(this TextBox control, object instance, string prop)
+        {
+            control.SetupDataBind(nameof(control.Text), instance, prop);
+        }
+
+        public static void SetupDataBind(this CheckBox control, object instance, string prop)
+        {
+            control.SetupDataBind(nameof(control.Checked), instance, prop);
+        }
+
+        public static void SetupDataBind(this Control control, string dest, object instance, string src)
+        {
+            control.DataBindings.Add(new Binding(dest, instance, src));
+        }
     }
 }
