@@ -15,6 +15,7 @@
         {
             if (disposing && (components != null))
             {
+                DisposeAddedComponents();
                 components.Dispose();
             }
             base.Dispose(disposing);
@@ -99,6 +100,7 @@
             this.SelectWorkingDirectory.TabIndex = 5;
             this.SelectWorkingDirectory.Text = "Select Working Directory";
             this.SelectWorkingDirectory.UseVisualStyleBackColor = true;
+            this.SelectWorkingDirectory.Click += new System.EventHandler(this.OnSelectWorkingDirectoryClick);
             // 
             // SelectExecutablePath
             // 
@@ -108,6 +110,7 @@
             this.SelectExecutablePath.TabIndex = 4;
             this.SelectExecutablePath.Text = "Select Executable Path";
             this.SelectExecutablePath.UseVisualStyleBackColor = true;
+            this.SelectExecutablePath.Click += new System.EventHandler(this.OnSelectExecutablePathClick);
             // 
             // ProcessWorkingDirectoryLabel
             // 

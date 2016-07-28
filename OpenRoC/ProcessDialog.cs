@@ -3,16 +3,22 @@
     using liboroc;
 
     using System;
+    using System.IO;
     using System.Windows.Forms;
 
     public partial class ProcessDialog : Form
     {
         public ProcessOptions Options;
+        private OpenFileDialog filePicker;
+        private FolderBrowserDialog folderPicker;
 
         public ProcessDialog()
         {
             InitializeComponent();
             Options = new ProcessOptions();
+
+            filePicker = new OpenFileDialog();
+            folderPicker = new FolderBrowserDialog();
 
             HandleCreated += OnProcessDialogHandleCreated;
         }
@@ -190,6 +196,37 @@
 
             if (ProcessOptionEnvironmentVariablesControl.Enabled != checkbox.Checked)
                 ProcessOptionEnvironmentVariablesControl.Enabled = checkbox.Checked;
+        }
+
+        private void OnSelectWorkingDirectoryClick(object sender, EventArgs e)
+        {
+            folderPicker.Description = "Please select a folder to continue";
+
+            if (folderPicker.ShowDialog() == DialogResult.OK)
+            {
+                Options.WorkingDirectory = folderPicker.SelectedPath;
+            }
+        }
+
+        private void OnSelectExecutablePathClick(object sender, EventArgs e)
+        {
+            filePicker.Filter = "Windows Executable (*.exe)|*.exe";
+            filePicker.Title = "Please select an executable to continue";
+
+            if (filePicker.ShowDialog() == DialogResult.OK)
+            {
+                Options.Path = filePicker.FileName;
+                Options.WorkingDirectory = Path.GetDirectoryName(Options.Path);
+            }
+        }
+
+        private void DisposeAddedComponents()
+        {
+            folderPicker?.Dispose();
+            filePicker?.Dispose();
+
+            folderPicker = null;
+            filePicker = null;
         }
     }
 }
