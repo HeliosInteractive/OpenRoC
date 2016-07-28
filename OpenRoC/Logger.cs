@@ -1,13 +1,14 @@
 ﻿namespace oroc
 {
-    using System;
     using log4net;
-    using System.IO;
     using log4net.Core;
     using log4net.Config;
+    using log4net.Appender;
+
+    using System;
+    using System.IO;
     using System.Drawing;
     using System.Xml.Linq;
-    using log4net.Appender;
     using System.Windows.Forms;
 
     class Log
