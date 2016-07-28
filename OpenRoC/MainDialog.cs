@@ -5,7 +5,7 @@
     using System;
     using System.IO;
     using System.Windows.Forms;
-    using System.ComponentModel;
+    using System.Drawing.Imaging;
     using System.Collections.Generic;
 
     using Nancy;
@@ -26,12 +26,33 @@
 
         internal class WebInterfaceBootstrapper : DefaultNancyBootstrapper
         {
-            public ProcessManager Manager;
+            private readonly ProcessManager manager;
+            private readonly MainDialog mainDialog;
+            private readonly byte[] favIcon;
+
+            public WebInterfaceBootstrapper(ProcessManager pmanager, MainDialog dialog)
+            {
+                manager = pmanager;
+                mainDialog = dialog;
+
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    Properties.Resources.phoenix.ToBitmap().Save(ms, ImageFormat.Bmp);
+                    favIcon = ms.ToArray();
+                }
+            }
 
             protected override void ApplicationStartup(TinyIoCContainer container, IPipelines pipelines)
             {
-                container.Register(Manager);
+                container.Register(manager);
+                container.Register(mainDialog);
+
                 Log.d("TinyIoC dependencies registered.");
+            }
+
+            protected override byte[] FavIcon
+            {
+                get { return favIcon; }
             }
         }
 
@@ -71,7 +92,7 @@
                 {
                     webHost = new NancyHost(
                         new Uri(Settings.Instance.WebInterfaceAddress),
-                        new WebInterfaceBootstrapper { Manager = ProcessManager },
+                        new WebInterfaceBootstrapper(ProcessManager, this),
                         new HostConfiguration { RewriteLocalhost = false });
 
                     webHost.Start();
