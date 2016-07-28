@@ -69,29 +69,29 @@
 
         private void SetupDataBindings()
         {
-            ProcessOptionPathControl.DataBindings.Add(new Binding("Text", Options, "Path"));
-            ProcessOptionWorkingDirectoryControl.DataBindings.Add(new Binding("Text", Options, "WorkingDirectory"));
+            ProcessOptionPathControl.SetupDataBind(Options, nameof(Options.Path));
+            ProcessOptionWorkingDirectoryControl.SetupDataBind(Options, nameof(Options.WorkingDirectory));
 
-            ProcessOptionCrashedIfNotRunningControl.DataBindings.Add(new Binding("Checked", Options, "CrashedIfNotRunning"));
-            ProcessOptionCrashedIfUnresponsiveControl.DataBindings.Add(new Binding("Checked", Options, "CrashedIfUnresponsive"));
-            ProcessOptionDoubleCheckEnabledControl.DataBindings.Add(new Binding("Checked", Options, "DoubleCheckEnabled"));
-            ProcessOptionDoubleCheckDurationControl.DataBindings.Add(new Binding("Text", Options, "DoubleCheckDuration"));
-            ProcessOptionGracePeriodEnabledControl.DataBindings.Add(new Binding("Checked", Options, "GracePeriodEnabled"));
-            ProcessOptionGracePeriodDurationControl.DataBindings.Add(new Binding("Text", Options, "GracePeriodDuration"));
+            ProcessOptionCrashedIfNotRunningControl.SetupDataBind(Options, nameof(Options.CrashedIfNotRunning));
+            ProcessOptionCrashedIfUnresponsiveControl.SetupDataBind(Options, nameof(Options.CrashedIfUnresponsive));
+            ProcessOptionDoubleCheckEnabledControl.SetupDataBind(Options, nameof(Options.DoubleCheckEnabled));
+            ProcessOptionDoubleCheckDurationControl.SetupDataBind(Options, nameof(Options.DoubleCheckDuration));
+            ProcessOptionGracePeriodEnabledControl.SetupDataBind(Options, nameof(Options.GracePeriodEnabled));
+            ProcessOptionGracePeriodDurationControl.SetupDataBind(Options, nameof(Options.GracePeriodDuration));
 
-            ProcessOptionPreLaunchScriptEnabledControl.DataBindings.Add(new Binding("Checked", Options, "PreLaunchScriptEnabled"));
-            ProcessOptionPreLaunchScriptPathControl.DataBindings.Add(new Binding("Text", Options, "PreLaunchScriptPath"));
+            ProcessOptionPreLaunchScriptEnabledControl.SetupDataBind(Options, nameof(Options.PreLaunchScriptEnabled));
+            ProcessOptionPreLaunchScriptPathControl.SetupDataBind(Options, nameof(Options.PreLaunchScriptPath));
 
-            ProcessOptionAggressiveCleanupEnabledControl.DataBindings.Add(new Binding("Checked", Options, "AggressiveCleanupEnabled"));
-            ProcessOptionPostCrashScriptEnabledControl.DataBindings.Add(new Binding("Checked", Options, "PostCrashScriptEnabled"));
-            ProcessOptionPostCrashScriptPathControl.DataBindings.Add(new Binding("Text", Options, "PostCrashScriptPath"));
+            ProcessOptionAggressiveCleanupEnabledControl.SetupDataBind(Options, nameof(Options.AggressiveCleanupEnabled));
+            ProcessOptionPostCrashScriptEnabledControl.SetupDataBind(Options, nameof(Options.PostCrashScriptEnabled));
+            ProcessOptionPostCrashScriptPathControl.SetupDataBind(Options, nameof(Options.PostCrashScriptPath));
 
-            ProcessOptionScreenshotEnabledControl.DataBindings.Add(new Binding("Checked", Options, "ScreenShotEnabled"));
-            ProcessOptionAlwaysOnTopEnabledControl.DataBindings.Add(new Binding("Checked", Options, "AlwaysOnTopEnabled"));
-            ProcessOptionCommandLineEnabledControl.DataBindings.Add(new Binding("Checked", Options, "CommandLineEnabled"));
-            ProcessOptionCommandLineControl.DataBindings.Add(new Binding("Text", Options, "CommandLine"));
-            ProcessOptionEnvironmentVariablesEnabledControl.DataBindings.Add(new Binding("Checked", Options, "EnvironmentVariablesEnabled"));
-            ProcessOptionEnvironmentVariablesControl.DataBindings.Add(new Binding("Text", Options, "EnvironmentVariables"));
+            ProcessOptionScreenshotEnabledControl.SetupDataBind(Options, nameof(Options.ScreenShotEnabled));
+            ProcessOptionAlwaysOnTopEnabledControl.SetupDataBind(Options, nameof(Options.AlwaysOnTopEnabled));
+            ProcessOptionCommandLineEnabledControl.SetupDataBind(Options, nameof(Options.CommandLineEnabled));
+            ProcessOptionCommandLineControl.SetupDataBind(Options, nameof(Options.CommandLine));
+            ProcessOptionEnvironmentVariablesEnabledControl.SetupDataBind(Options, nameof(Options.EnvironmentVariablesEnabled));
+            ProcessOptionEnvironmentVariablesControl.SetupDataBind(Options, nameof(Options.EnvironmentVariables));
         }
 
         private void OnProcessOptionsSaveButtonClick(object sender, EventArgs e)
