@@ -386,26 +386,13 @@
 
         private void DisposeAddedComponents()
         {
-            if (ProcessManager != null)
-                ProcessManager.Dispose();
-
-            if (EditProcessForm != null)
-                EditProcessForm.Dispose();
-
-            if (AddProcessForm != null)
-                AddProcessForm.Dispose();
-
-            if (SettingsForm != null)
-                SettingsForm.Dispose();
-
-            if (AboutForm != null)
-                AboutForm.Dispose();
-
-            if (LogsForm != null)
-                LogsForm.Dispose();
-
-            if (webHost != null)
-                webHost.Dispose();
+            ProcessManager?.Dispose();
+            EditProcessForm?.Dispose();
+            AddProcessForm?.Dispose();
+            SettingsForm?.Dispose();
+            AboutForm?.Dispose();
+            LogsForm?.Dispose();
+            webHost?.Dispose();
 
             ProcessManager = null;
             EditProcessForm = null;
