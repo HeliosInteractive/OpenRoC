@@ -8,6 +8,11 @@
     using System.ComponentModel;
     using System.Collections.Generic;
 
+    using Nancy;
+    using Nancy.TinyIoc;
+    using Nancy.Bootstrapper;
+    using Nancy.Hosting.Self;
+
     public partial class MainDialog : Form
     {
         private ProcessDialog EditProcessForm;
@@ -15,8 +20,20 @@
         private SettingsDialog SettingsForm;
         private AboutDialog AboutForm;
         private LogsDialog LogsForm;
-        private bool inhibitAutoCheck;
+        private NancyHost webHost;
         public ProcessManager ProcessManager { get; private set; }
+        private bool inhibitAutoCheck;
+
+        internal class WebInterfaceBootstrapper : DefaultNancyBootstrapper
+        {
+            public ProcessManager Manager;
+
+            protected override void ApplicationStartup(TinyIoCContainer container, IPipelines pipelines)
+            {
+                container.Register(Manager);
+                Log.d("TinyIoC dependencies registered.");
+            }
+        }
 
         public MainDialog()
         {
@@ -39,6 +56,23 @@
 
             launchOptions.ForEach((opt) => { ProcessManager.Add(opt); });
             ProcessManager.PropertyChanged += OnProcessManagerPropertyChanged;
+
+            if (Settings.Instance.IsWebInterfaceEnabled)
+            {
+                try
+                {
+                    webHost = new NancyHost(
+                        new Uri(Settings.Instance.WebInterfaceAddress),
+                        new WebInterfaceBootstrapper { Manager = ProcessManager },
+                        new HostConfiguration { RewriteLocalhost = false });
+
+                    webHost.Start();
+                }
+                catch (AutomaticUrlReservationCreationFailureException)
+                {
+                    Log.e("Web interface failed to start. Are you an administrator?");
+                }
+            }
         }
 
         private void OnProcessManagerPropertyChanged(object sender, PropertyChangedEventArgs args)
@@ -373,12 +407,16 @@
             if (LogsForm != null)
                 LogsForm.Dispose();
 
+            if (webHost != null)
+                webHost.Dispose();
+
             ProcessManager = null;
             EditProcessForm = null;
             AddProcessForm = null;
             SettingsForm = null;
             AboutForm = null;
             LogsForm = null;
+            webHost = null;
         }
     }
 }
