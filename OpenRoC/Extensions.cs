@@ -15,10 +15,23 @@
 
     internal static class Extensions
     {
-        public static void SetDoubleBuffered(this Control control, bool enable)
+        public static bool SetDoubleBuffered(this Control control, bool enable)
         {
-            PropertyInfo doubleBufferPropertyInfo = control.GetType().GetProperty("DoubleBuffered", BindingFlags.Instance | BindingFlags.NonPublic);
-            if (doubleBufferPropertyInfo != null) doubleBufferPropertyInfo.SetValue(control, enable, null);
+            PropertyInfo doubleBufferPropertyInfo = control.GetType().GetProperty(
+                "DoubleBuffered", BindingFlags.Instance | BindingFlags.NonPublic);
+
+            if (doubleBufferPropertyInfo != null)
+            {
+                bool current = (bool)doubleBufferPropertyInfo.GetValue(control);
+
+                if (current != enable)
+                {
+                    doubleBufferPropertyInfo.SetValue(control, enable, null);
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public static string ToXmlNodeString<T>(this T self)
@@ -63,7 +76,7 @@
             box.SelectionColor = box.ForeColor;
         }
 
-        public static string ToJson(object input)
+        public static string ToJson(this object input)
         {
             var settings = new JsonSerializerSettings();
 
@@ -73,7 +86,7 @@
             return JsonConvert.SerializeObject(input, Newtonsoft.Json.Formatting.None, settings);
         }
 
-        public static Response ToJsonResponse(object input)
+        public static Response ToJsonResponse(this object input)
         {
             var response = (Response)ToJson(input);
             response.ContentType = "application/json";
