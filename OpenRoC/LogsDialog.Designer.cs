@@ -42,6 +42,7 @@
             this.LogTextBox.Size = new System.Drawing.Size(499, 261);
             this.LogTextBox.TabIndex = 0;
             this.LogTextBox.Text = "";
+            this.LogTextBox.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.OnLogsDialogRichTextBoxLinkClicked);
             // 
             // LogsDialog
             // 

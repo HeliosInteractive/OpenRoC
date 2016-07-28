@@ -47,7 +47,7 @@
                 {
                     name = Path.GetFileName(proc.ProcessOptions.Path),
                     time = proc.Stopwatch.ElapsedMilliseconds,
-                    stat = proc.State
+                    stat = proc.State.ToString()
                 })
                 .ToArray());
         }
@@ -64,7 +64,7 @@
                 .Select(proc => new
                 {
                     time = proc.Stopwatch.ElapsedMilliseconds,
-                    stat = proc.State
+                    stat = proc.State.ToString()
                 })
                 .ToArray());
         }
