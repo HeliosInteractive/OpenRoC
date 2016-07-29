@@ -112,7 +112,13 @@
 
                     p.StateChanged += () => { Log.i("Process {0} changed state to: {1}", p.ProcessOptions.Path, p.State); };
                     p.OptionsChanged += () => { Log.d("Process changed options to: {0}", p.ProcessOptions.ToJson()); };
-                    p.ProcessCrashed += () => { Log.e("Process {0} crashed or stopped.", p.ProcessOptions.Path); };
+                    p.ProcessCrashed += () =>
+                    {
+                        Log.e("Process {0} crashed or stopped.", p.ProcessOptions.Path);
+
+                        if (p.ProcessOptions.ScreenShotEnabled)
+                            TakeScreenShot();
+                    };
 
                     ProcessListView.Items.Add(item);
                 }
@@ -380,6 +386,25 @@
         {
             if (inhibitAutoCheck)
                 e.NewValue = e.CurrentValue;
+        }
+
+        #endregion
+
+        #region ScreenShot support
+
+        private void TakeScreenShot()
+        {
+            if (!Directory.Exists(Program.ScreenShotDirectory))
+                Directory.CreateDirectory(Program.ScreenShotDirectory);
+
+            using (var picture = Pranas.ScreenshotCapture.TakeScreenshot())
+            {
+                string name = Path.Combine(
+                    Program.ScreenShotDirectory,
+                    string.Format("{0}.png", DateTime.Now.ToFileTime()));
+
+                picture.Save(name);
+            }
         }
 
         #endregion

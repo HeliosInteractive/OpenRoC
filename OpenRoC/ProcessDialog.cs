@@ -4,6 +4,7 @@
 
     using System;
     using System.IO;
+    using System.Diagnostics;
     using System.Windows.Forms;
 
     public partial class ProcessDialog : Form
@@ -218,6 +219,14 @@
                 Options.Path = filePicker.FileName;
                 Options.WorkingDirectory = Path.GetDirectoryName(Options.Path);
             }
+        }
+
+        private void OnOpenScreenshotDirectoryButtonClick(object sender, EventArgs e)
+        {
+            if (!Directory.Exists(Program.ScreenShotDirectory))
+                Directory.CreateDirectory(Program.ScreenShotDirectory);
+
+            using (Process.Start(Program.ScreenShotDirectory)) { /* no-op */ }
         }
 
         private void DisposeAddedComponents()

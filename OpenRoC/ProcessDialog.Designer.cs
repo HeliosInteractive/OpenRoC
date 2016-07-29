@@ -427,6 +427,7 @@
             this.OpenScreenshotDirectoryButton.TabIndex = 1;
             this.OpenScreenshotDirectoryButton.Text = "Open Screenshot Directory";
             this.OpenScreenshotDirectoryButton.UseVisualStyleBackColor = true;
+            this.OpenScreenshotDirectoryButton.Click += new System.EventHandler(this.OnOpenScreenshotDirectoryButtonClick);
             // 
             // ProcessOptionEnvironmentVariablesControl
             // 

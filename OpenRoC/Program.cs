@@ -52,5 +52,10 @@
         {
             get { return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location); }
         }
+
+        public static string ScreenShotDirectory
+        {
+            get { return Path.Combine(Directory, ".ScreenShots"); }
+        }
     }
 }
