@@ -471,9 +471,10 @@
             this.ProcessOptionAlwaysOnTopEnabledControl.AutoSize = true;
             this.ProcessOptionAlwaysOnTopEnabledControl.Location = new System.Drawing.Point(10, 46);
             this.ProcessOptionAlwaysOnTopEnabledControl.Name = "ProcessOptionAlwaysOnTopEnabledControl";
-            this.ProcessOptionAlwaysOnTopEnabledControl.Size = new System.Drawing.Size(407, 17);
+            this.ProcessOptionAlwaysOnTopEnabledControl.Size = new System.Drawing.Size(440, 17);
             this.ProcessOptionAlwaysOnTopEnabledControl.TabIndex = 2;
-            this.ProcessOptionAlwaysOnTopEnabledControl.Text = "Keep process always on top (causes conflict with other always-on-top processes)";
+            this.ProcessOptionAlwaysOnTopEnabledControl.Text = "Keep process always on top (experimental, conflicts with other always-on-top proc" +
+    "esses)";
             this.ProcessOptionAlwaysOnTopEnabledControl.UseVisualStyleBackColor = true;
             // 
             // ProcessOptionScreenshotEnabledControl
