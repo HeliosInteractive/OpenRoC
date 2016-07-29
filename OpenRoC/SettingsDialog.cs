@@ -24,6 +24,8 @@
 
             main_dialog.SetStatusBarText(SingleInstanceCheckBox, "Allow only one instance of OpenRoC to run on this computer.");
             main_dialog.SetStatusBarText(StartMinimizedCheckBox, "Start OpenRoC minimized, in task-bar next time it launches.");
+
+            SyncCheckedStates();
         }
 
         private void SetupDataBindings()
@@ -36,10 +38,13 @@
 
         private void OnHttpInterfaceEnabledCheckBoxCheckedChanged(object sender, System.EventArgs e)
         {
-            CheckBox checkbox = sender as CheckBox;
+            if (HttpUrlTextBox.Enabled != HttpInterfaceEnabledCheckBox.Checked)
+                HttpUrlTextBox.Enabled = HttpInterfaceEnabledCheckBox.Checked;
+        }
 
-            if (HttpUrlTextBox.Enabled != checkbox.Checked)
-                HttpUrlTextBox.Enabled = checkbox.Checked;
+        private void SyncCheckedStates()
+        {
+            OnHttpInterfaceEnabledCheckBoxCheckedChanged(this, null);
         }
     }
 }
