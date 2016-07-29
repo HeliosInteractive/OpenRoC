@@ -392,7 +392,7 @@
 
         #region ScreenShot support
 
-        private void TakeScreenShot()
+        public void TakeScreenShot()
         {
             if (!Directory.Exists(Program.ScreenShotDirectory))
                 Directory.CreateDirectory(Program.ScreenShotDirectory);

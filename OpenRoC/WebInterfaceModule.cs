@@ -20,6 +20,7 @@
             Disable,
             Restore,
             Restart,
+            Capture,
         }
 
         public WebInterfaceModule(ProcessManager manager, MainDialog dialog)
@@ -113,6 +114,11 @@
                     else if (cmd == Command.Disable)
                     {
                         applicationDialog.ExecuteOnMainThread(() => { proc.State = ProcessRunner.Status.Disabled; });
+                        executed = true;
+                    }
+                    else if (cmd == Command.Capture)
+                    {
+                        applicationDialog.ExecuteOnMainThread(() => { applicationDialog.TakeScreenShot(); });
                         executed = true;
                     }
                 });
