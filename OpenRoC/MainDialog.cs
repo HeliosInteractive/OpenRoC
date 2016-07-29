@@ -417,7 +417,7 @@
             SettingsForm?.Dispose();
             AboutForm?.Dispose();
             LogsForm?.Dispose();
-            webHost?.Dispose();
+            webHost.Dispose();
 
             ProcessManager = null;
             EditProcessForm = null;
