@@ -14,20 +14,16 @@
         private FolderBrowserDialog folderPicker;
 
         public ProcessDialog()
-        {
-            InitializeComponent();
-            Options = new ProcessOptions();
-
-            filePicker = new OpenFileDialog();
-            folderPicker = new FolderBrowserDialog();
-
-            HandleCreated += OnProcessDialogHandleCreated;
-        }
+            : this(new ProcessOptions())
+        { /* no-op */ }
 
         public ProcessDialog(ProcessOptions opts)
         {
             InitializeComponent();
+
             Options = opts;
+            filePicker = new OpenFileDialog();
+            folderPicker = new FolderBrowserDialog();
 
             HandleCreated += OnProcessDialogHandleCreated;
         }
