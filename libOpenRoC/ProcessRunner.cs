@@ -445,12 +445,12 @@
                     ResetTimers();
                     Stop();
 
-                    gracePeriodTimer.Dispose();
-                    doubleCheckTimer.Dispose();
-                    crashSignal.Dispose();
-                    startSignal.Dispose();
-                    checkSignal.Dispose();
-                    resetTimer.Dispose();
+                    gracePeriodTimer?.Dispose();
+                    doubleCheckTimer?.Dispose();
+                    crashSignal?.Dispose();
+                    startSignal?.Dispose();
+                    checkSignal?.Dispose();
+                    resetTimer?.Dispose();
                 }
 
                 gracePeriodTimer = null;
