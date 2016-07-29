@@ -10,6 +10,7 @@
     {
         Status currentState;
         Status previousState;
+        Signal crashSignal;
         Signal startSignal;
         Signal checkSignal;
         Signal resetTimer;
@@ -67,6 +68,7 @@
             resetTimer = new Signal(true);
             startSignal = new Signal(false);
             checkSignal = new Signal(false);
+            crashSignal = new Signal(false);
             options = opts.Clone() as ProcessOptions;
             gracePeriodTimer = new Timer { AutoReset = false, Enabled = false };
             doubleCheckTimer = new Timer { AutoReset = false, Enabled = false };
@@ -241,6 +243,27 @@
 
         public void Monitor()
         {
+            if (crashSignal.IsSet)
+            {
+                ProcessCrashed?.Invoke();
+
+                Stop();
+
+                if (options.GracePeriodEnabled)
+                {
+                    if (!gracePeriodTimer.Enabled)
+                    {
+                        gracePeriodTimer.Start();
+                    }
+                }
+                else
+                {
+                    startSignal.Set();
+                }
+
+                crashSignal.Reset();
+            }
+
             if (resetTimer.IsSet)
             {
                 Stopwatch.Restart();
@@ -369,21 +392,8 @@
 
         private void OnProcessStopped(object sender, EventArgs e)
         {
-            ProcessCrashed?.Invoke();
-
-            Stop();
-
-            if (options.GracePeriodEnabled)
-            {
-                if (!gracePeriodTimer.Enabled)
-                {
-                    gracePeriodTimer.Start();
-                }
-            }
-            else
-            {
-                startSignal.Set();
-            }
+            crashSignal.Set();
+            gracePeriodTimer.Stop();
         }
 
         private void OnDoubleCheckTimeElapsed(object sender, ElapsedEventArgs e)
