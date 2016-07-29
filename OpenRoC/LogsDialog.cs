@@ -25,7 +25,7 @@
 
         private void OnLogsDialogRichTextBoxLinkClicked(object sender, LinkClickedEventArgs e)
         {
-            Process.Start(e.LinkText).Dispose();
+            using (Process.Start(e.LinkText)) { /* no-op */ }
         }
     }
 }
