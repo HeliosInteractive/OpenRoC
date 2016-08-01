@@ -387,7 +387,7 @@
             using (ProcessRunner runner = new ProcessRunner(options))
             {
                 runner.Start();
-                ProcessQuitter.Instance.Shutdown(runner.Process.Id);
+                ProcessHelper.Shutdown(runner.Process.Id);
 
                 Thread.Sleep(EpsilonTime);
                 Assert.IsNotNull(runner.Process);
@@ -432,7 +432,7 @@
                 runner.Monitor();
                 Assert.IsNotNull(runner.Process);
 
-                ProcessQuitter.Instance.Shutdown(runner.Process.Id);
+                ProcessHelper.Shutdown(runner.Process.Id);
                 Thread.Sleep(EpsilonTime);
                 runner.Monitor();
                 Assert.IsNull(runner.Process);

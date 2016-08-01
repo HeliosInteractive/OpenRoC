@@ -214,7 +214,7 @@
 
                 if (options.AggressiveCleanupEnabled)
                 {
-                    ProcessQuitter.Instance.Shutdown(process_id);
+                    ProcessHelper.Shutdown(process_id);
                 }
 
                 if (!Process.HasExited)
@@ -346,30 +346,10 @@
 
         public void BringToFront(bool aggressive = false)
         {
-            if (Process == null || !HasWindow)
+            if (Process == null)
                 return;
 
-            Process.Refresh();
-
-            if (Process.HasExited || !Process.Responding)
-                return;
-
-            if (NativeMethods.GetForegroundWindow() != Process.MainWindowHandle)
-            {
-                NativeMethods.SwitchToThisWindow(Process.MainWindowHandle, true);
-                NativeMethods.SetForegroundWindow(Process.MainWindowHandle);
-
-                if (aggressive)
-                {
-                    NativeMethods.SetWindowPos(
-                        Process.MainWindowHandle,
-                        NativeMethods.HWND_TOPMOST,
-                        0, 0, 0, 0,
-                        NativeMethods.SetWindowPosFlags.SWP_NOSIZE |
-                        NativeMethods.SetWindowPosFlags.SWP_NOMOVE |
-                        NativeMethods.SetWindowPosFlags.SWP_SHOWWINDOW);
-                }
-            }
+            ProcessHelper.BringToFront(Process.Id, aggressive);
         }
 
         private void ResetTimers()
@@ -459,7 +439,6 @@
                 startSignal = null;
                 checkSignal = null;
                 resetTimer = null;
-                Process = null;
             }
         }
 

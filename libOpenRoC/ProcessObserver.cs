@@ -1,17 +1,21 @@
 ﻿namespace liboroc
 {
     using System;
-    using System.Linq;
     using System.Threading;
     using System.Management;
     using System.Diagnostics;
 
-    public class ProcessQuitter
+    public class ProcessObserver
     {
-        private static object mutex = new object();
-        private static ProcessQuitter instance;
+        public interface IVisitor
+        {
+            void Visit(Process process);
+        }
 
-        public static ProcessQuitter Instance
+        private static object mutex = new object();
+        private static ProcessObserver instance;
+
+        public static ProcessObserver Instance
         {
             get
             {
@@ -21,7 +25,7 @@
                     {
                         if (instance == null)
                         {
-                            instance = new ProcessQuitter();
+                            instance = new ProcessObserver();
                         }
                     }
                 }
@@ -30,14 +34,15 @@
             }
         }
 
-        private class QuitTask
+        private class VisitTask
         {
             public ManualResetEventSlim WaitHandle;
-            public int ShutdownPendingProcessId;
+            public IVisitor Visitor;
+            public int Pid;
 
             public void execute(object threadContext)
             {
-                execute(ShutdownPendingProcessId);
+                execute(Pid);
                 WaitHandle.Set();
             }
 
@@ -51,11 +56,7 @@
                     {
                         using (Process proc = Process.GetProcessById(pid))
                         {
-                            if (!proc.HasExited)
-                            {
-                                proc.Kill();
-                                proc.WaitForExit((int)TimeSpan.FromSeconds(1).TotalMilliseconds);
-                            }
+                            Visitor.Visit(proc);
                         }
                     }
                     catch { /* there is nothing we can do about it */ }
@@ -71,21 +72,18 @@
             }
         }
 
-        public void Shutdown(int pid)
+        public void Accept(IVisitor visitor, int pid)
         {
-            // take a look at: http://referencesource.microsoft.com/#System.Management/managementbaseobject.cs,233
-            // and also the case that is described here: http://stackoverflow.com/a/11896367/388751
-            // thread is necessary otherwise WMI objects in ManagementObjectSearcher leak!
-
             using (ManualResetEventSlim waitHandle = new ManualResetEventSlim(false))
             {
-                QuitTask processQuitExecutor = new QuitTask
+                VisitTask processVisitTask = new VisitTask
                 {
                     WaitHandle = waitHandle,
-                    ShutdownPendingProcessId = pid
+                    Visitor = visitor,
+                    Pid = pid
                 };
 
-                ThreadPool.QueueUserWorkItem(processQuitExecutor.execute);
+                ThreadPool.QueueUserWorkItem(processVisitTask.execute);
                 waitHandle.Wait();
             }
         }

@@ -46,7 +46,7 @@
     <Compile Include="ProcessHelper.cs" />
     <Compile Include="ProcessManager.cs" />
     <Compile Include="ProcessOptions.cs" />
-    <Compile Include="ProcessQuitter.cs" />
+    <Compile Include="ProcessObserver.cs" />
     <Compile Include="ProcessRunner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
