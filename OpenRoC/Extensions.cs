@@ -108,5 +108,12 @@
                 catch (Exception ex) { Log.e("Main thread execution failed: {0}", ex.Message); }
             });
         }
+
+        public static void ShiftLeft(this double[] array, double last_value = default(double))
+        {
+            int last_index = array.Length - 1;
+            Array.Copy(array, 1, array, 0, last_index);
+            array[last_index] = last_value;
+        }
     }
 }

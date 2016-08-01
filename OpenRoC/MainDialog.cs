@@ -6,27 +6,35 @@
     using System.IO;
     using System.Windows.Forms;
     using System.Collections.Generic;
+    using System.Windows.Forms.DataVisualization.Charting;
 
     using Nancy.Hosting.Self;
 
     public partial class MainDialog : Form
     {
-        private ProcessDialog EditProcessForm;
-        private ProcessDialog AddProcessForm;
-        private SettingsDialog SettingsForm;
-        private AboutDialog AboutForm;
-        private LogsDialog LogsForm;
+        private Metrics.Manager metricsManager;
+        private ProcessDialog editProcessForm;
+        private ProcessDialog addProcessForm;
+        private SettingsDialog settingsForm;
+        private AboutDialog aboutForm;
+        private LogsDialog logsForm;
         private NancyHost webHost;
+
+        private Series CpuChart;
+        private Series GpuChart;
+        private Series RamChart;
+
         public ProcessManager ProcessManager { get; private set; }
-        private bool inhibitAutoCheck;
+        private bool inhibitAutoCheck = false;
 
         public MainDialog()
         {
             InitializeComponent();
-            LogsForm = new LogsDialog();
+            logsForm = new LogsDialog();
             SetupMainDialogStatusTexts();
             HandleCreated += OnHandleCreated;
             ProcessManager = new ProcessManager();
+            metricsManager = new Metrics.Manager();
 
             if (!ProcessListView.SetDoubleBuffered(true))
             {
@@ -72,6 +80,10 @@
                     Log.e("Web interface failed to start: {0}", ex.Message);
                 }
             }
+
+            CpuChart = metricsChart.Series[nameof(CpuChart)];
+            GpuChart = metricsChart.Series[nameof(GpuChart)];
+            RamChart = metricsChart.Series[nameof(RamChart)];
         }
 
         private void OnProcessManagerPropertyChanged()
@@ -127,22 +139,22 @@
 
         private void OnSettingsButtonClick(object sender, EventArgs e)
         {
-            HandleDialogRequest(ref SettingsForm);
+            HandleDialogRequest(ref settingsForm);
         }
 
         private void OnAddButtonClick(object sender, EventArgs e)
         {
-            HandleDialogRequest(ref AddProcessForm);
+            HandleDialogRequest(ref addProcessForm);
         }
 
         private void OnAboutButtonClick(object sender, EventArgs e)
         {
-            HandleDialogRequest(ref AboutForm);
+            HandleDialogRequest(ref aboutForm);
         }
 
         private void OnLogButtonClick(object sender, EventArgs e)
         {
-            HandleDialogRequest(ref LogsForm);
+            HandleDialogRequest(ref logsForm);
         }
 
         private void HandleDialogRequest<T>(ref T host) where T : Form, new()
@@ -190,7 +202,12 @@
         private void OnMainDialogUpdateTimerTick(object sender, EventArgs e)
         {
             ProcessManager.ProcessRunnerList.ForEach(p => p.Monitor());
+            metricsManager.Update();
             UpdateProcessList();
+
+            CpuChart?.Points.DataBindY(metricsManager.CpuSamples);
+            GpuChart?.Points.DataBindY(metricsManager.GpuSamples);
+            RamChart?.Points.DataBindY(metricsManager.RamSamples);
         }
 
         #region StatusBar text feature
@@ -280,16 +297,16 @@
 
             ProcessRunner process = ProcessManager.Get(ProcessListView.FocusedItem.Text);
 
-            if (EditProcessForm == null || EditProcessForm.IsDisposed)
+            if (editProcessForm == null || editProcessForm.IsDisposed)
             {
-                EditProcessForm = new ProcessDialog(process.ProcessOptions);
-                EditProcessForm.Owner = this;
+                editProcessForm = new ProcessDialog(process.ProcessOptions);
+                editProcessForm.Owner = this;
             }
 
-            if (!EditProcessForm.Visible)
-                EditProcessForm.Show();
+            if (!editProcessForm.Visible)
+                editProcessForm.Show();
             else
-                EditProcessForm.Focus();
+                editProcessForm.Focus();
         }
 
         private void OnContextMenuDeleteButtonClick(object sender, EventArgs e)
@@ -411,20 +428,22 @@
 
         private void DisposeAddedComponents()
         {
+            metricsManager?.Dispose();
             ProcessManager?.Dispose();
-            EditProcessForm?.Dispose();
-            AddProcessForm?.Dispose();
-            SettingsForm?.Dispose();
-            AboutForm?.Dispose();
-            LogsForm?.Dispose();
+            editProcessForm?.Dispose();
+            addProcessForm?.Dispose();
+            settingsForm?.Dispose();
+            aboutForm?.Dispose();
+            logsForm?.Dispose();
             webHost?.Dispose();
 
+            metricsManager = null;
             ProcessManager = null;
-            EditProcessForm = null;
-            AddProcessForm = null;
-            SettingsForm = null;
-            AboutForm = null;
-            LogsForm = null;
+            editProcessForm = null;
+            addProcessForm = null;
+            settingsForm = null;
+            aboutForm = null;
+            logsForm = null;
             webHost = null;
         }
     }

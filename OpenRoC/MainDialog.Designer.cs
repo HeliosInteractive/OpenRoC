@@ -31,6 +31,11 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainDialog));
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.StatusStrip = new System.Windows.Forms.StatusStrip();
             this.StatusText = new System.Windows.Forms.ToolStripStatusLabel();
             this.MenuStrip = new System.Windows.Forms.ToolStrip();
@@ -58,10 +63,12 @@
             this.TaskbarContextMenuToggleViewButton = new System.Windows.Forms.ToolStripMenuItem();
             this.TaskbarContextMenuSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.TaskbarContextMenuExitButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.metricsChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.StatusStrip.SuspendLayout();
             this.MenuStrip.SuspendLayout();
             this.RightClickContextMenuStrip.SuspendLayout();
             this.TaskbarContextMenuStrip.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.metricsChart)).BeginInit();
             this.SuspendLayout();
             // 
             // StatusStrip
@@ -152,19 +159,21 @@
             // ProcessListView
             // 
             this.ProcessListView.AllowDrop = true;
+            this.ProcessListView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.ProcessListView.CheckBoxes = true;
             this.ProcessListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.Process,
             this.Status});
             this.ProcessListView.ContextMenuStrip = this.RightClickContextMenuStrip;
-            this.ProcessListView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ProcessListView.FullRowSelect = true;
             this.ProcessListView.GridLines = true;
             this.ProcessListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.ProcessListView.Location = new System.Drawing.Point(0, 22);
             this.ProcessListView.Name = "ProcessListView";
             this.ProcessListView.ShowGroups = false;
-            this.ProcessListView.Size = new System.Drawing.Size(499, 355);
+            this.ProcessListView.Size = new System.Drawing.Size(499, 227);
             this.ProcessListView.TabIndex = 2;
             this.ProcessListView.UseCompatibleStateImageBehavior = false;
             this.ProcessListView.View = System.Windows.Forms.View.Details;
@@ -305,11 +314,71 @@
             this.TaskbarContextMenuExitButton.Text = "Exit";
             this.TaskbarContextMenuExitButton.Click += new System.EventHandler(this.OnTaskbarContextMenuExitButtonClick);
             // 
+            // metricsChart
+            // 
+            this.metricsChart.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.metricsChart.BorderlineWidth = 0;
+            chartArea1.AxisX.ArrowStyle = System.Windows.Forms.DataVisualization.Charting.AxisArrowStyle.Triangle;
+            chartArea1.AxisX.IsMarginVisible = false;
+            chartArea1.AxisX.LineColor = System.Drawing.Color.Silver;
+            chartArea1.AxisX.LineWidth = 0;
+            chartArea1.AxisX.MajorGrid.Enabled = false;
+            chartArea1.AxisY.IsMarginVisible = false;
+            chartArea1.AxisY.LineColor = System.Drawing.Color.Silver;
+            chartArea1.AxisY.LineWidth = 0;
+            chartArea1.AxisY.MajorGrid.LineColor = System.Drawing.Color.Gainsboro;
+            chartArea1.AxisY.Maximum = 1D;
+            chartArea1.AxisY.Minimum = 0D;
+            chartArea1.BackColor = System.Drawing.Color.Snow;
+            chartArea1.BorderColor = System.Drawing.Color.DarkGray;
+            chartArea1.BorderDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Solid;
+            chartArea1.InnerPlotPosition.Auto = false;
+            chartArea1.InnerPlotPosition.Height = 100F;
+            chartArea1.InnerPlotPosition.Width = 100F;
+            chartArea1.Name = "metricsChartArea";
+            chartArea1.Position.Auto = false;
+            chartArea1.Position.Height = 100F;
+            chartArea1.Position.Width = 100F;
+            this.metricsChart.ChartAreas.Add(chartArea1);
+            legend1.DockedToChartArea = "metricsChartArea";
+            legend1.IsTextAutoFit = false;
+            legend1.Name = "metricsLegend";
+            this.metricsChart.Legends.Add(legend1);
+            this.metricsChart.Location = new System.Drawing.Point(0, 248);
+            this.metricsChart.Name = "metricsChart";
+            series1.ChartArea = "metricsChartArea";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series1.IsXValueIndexed = true;
+            series1.Legend = "metricsLegend";
+            series1.LegendText = "% cpu usage";
+            series1.Name = "CpuChart";
+            series2.ChartArea = "metricsChartArea";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series2.IsXValueIndexed = true;
+            series2.Legend = "metricsLegend";
+            series2.LegendText = "% ram usage";
+            series2.Name = "RamChart";
+            series3.ChartArea = "metricsChartArea";
+            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series3.IsXValueIndexed = true;
+            series3.Legend = "metricsLegend";
+            series3.LegendText = "% gpu usage";
+            series3.Name = "GpuChart";
+            this.metricsChart.Series.Add(series1);
+            this.metricsChart.Series.Add(series2);
+            this.metricsChart.Series.Add(series3);
+            this.metricsChart.Size = new System.Drawing.Size(499, 129);
+            this.metricsChart.TabIndex = 0;
+            this.metricsChart.TabStop = false;
+            this.metricsChart.Text = "Machine Metrics";
+            // 
             // MainDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(499, 399);
+            this.Controls.Add(this.metricsChart);
             this.Controls.Add(this.ProcessListView);
             this.Controls.Add(this.MenuStrip);
             this.Controls.Add(this.StatusStrip);
@@ -322,6 +391,7 @@
             this.MenuStrip.PerformLayout();
             this.RightClickContextMenuStrip.ResumeLayout(false);
             this.TaskbarContextMenuStrip.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.metricsChart)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -356,6 +426,7 @@
         private System.Windows.Forms.ToolStripMenuItem TaskbarContextMenuToggleViewButton;
         private System.Windows.Forms.ToolStripSeparator TaskbarContextMenuSeparator;
         private System.Windows.Forms.ToolStripMenuItem TaskbarContextMenuExitButton;
+        private System.Windows.Forms.DataVisualization.Charting.Chart metricsChart;
     }
 }
 
