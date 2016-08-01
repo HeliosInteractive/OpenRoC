@@ -34,6 +34,9 @@
             SingleInstanceCheckBox.SetupDataBind(Settings.Instance, nameof(Settings.Instance.IsSingleInsntaceEnabled));
             HttpInterfaceEnabledCheckBox.SetupDataBind(Settings.Instance, nameof(Settings.Instance.IsWebInterfaceEnabled));
             HttpUrlTextBox.SetupDataBind(Settings.Instance, nameof(Settings.Instance.WebInterfaceAddress));
+            SensuInterfaceEnabledCheckBox.SetupDataBind(Settings.Instance, nameof(Settings.Instance.IsSensuInterfaceEnabled));
+            SensuHostTextBox.SetupDataBind(Settings.Instance, nameof(Settings.Instance.SensuInterfaceHost));
+            SensuPortTextBox.SetupDataBind(Settings.Instance, nameof(Settings.Instance.SensuInterfacePort));
         }
 
         private void OnHttpInterfaceEnabledCheckBoxCheckedChanged(object sender, System.EventArgs e)
@@ -42,9 +45,19 @@
                 HttpUrlTextBox.Enabled = HttpInterfaceEnabledCheckBox.Checked;
         }
 
+        private void OnSensuInterfaceEnabledCheckBoxCheckedChanged(object sender, System.EventArgs e)
+        {
+            if (SensuHostTextBox.Enabled != SensuInterfaceEnabledCheckBox.Checked)
+                SensuHostTextBox.Enabled = SensuInterfaceEnabledCheckBox.Checked;
+
+            if (SensuPortTextBox.Enabled != SensuInterfaceEnabledCheckBox.Checked)
+                SensuPortTextBox.Enabled = SensuInterfaceEnabledCheckBox.Checked;
+        }
+
         private void SyncCheckedStates()
         {
             OnHttpInterfaceEnabledCheckBoxCheckedChanged(this, null);
+            OnSensuInterfaceEnabledCheckBoxCheckedChanged(this, null);
         }
     }
 }

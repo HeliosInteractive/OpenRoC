@@ -19,6 +19,9 @@
             public bool startMinimized = false;
             public bool webInterfaceEnabled = true;
             public string webInterfaceAddress = "http://localhost:2198";
+            public bool sensuInterfaceEnabled = false;
+            public string sensuInterfaceHost = "127.0.0.1";
+            public uint sensuInterfacePort = 3030;
         }
 
         public bool IsSingleInsntaceEnabled
@@ -69,6 +72,45 @@
                     return;
 
                 application.webInterfaceAddress = value;
+                dirty = true;
+            }
+        }
+
+        public bool IsSensuInterfaceEnabled
+        {
+            get { return application.sensuInterfaceEnabled; }
+            set
+            {
+                if (value == application.sensuInterfaceEnabled)
+                    return;
+
+                application.sensuInterfaceEnabled = value;
+                dirty = true;
+            }
+        }
+
+        public string SensuInterfaceHost
+        {
+            get { return application.sensuInterfaceHost; }
+            set
+            {
+                if (value == application.sensuInterfaceHost)
+                    return;
+
+                application.sensuInterfaceHost = value;
+                dirty = true;
+            }
+        }
+
+        public uint SensuInterfacePort
+        {
+            get { return application.sensuInterfacePort; }
+            set
+            {
+                if (value == application.sensuInterfacePort)
+                    return;
+
+                application.sensuInterfacePort = value;
                 dirty = true;
             }
         }

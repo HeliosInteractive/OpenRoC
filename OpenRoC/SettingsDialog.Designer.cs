@@ -36,8 +36,15 @@
             this.UrlLabel = new System.Windows.Forms.Label();
             this.HttpUrlTextBox = new System.Windows.Forms.TextBox();
             this.HttpInterfaceEnabledCheckBox = new System.Windows.Forms.CheckBox();
+            this.SensuGroup = new System.Windows.Forms.GroupBox();
+            this.SensuInterfaceEnabledCheckBox = new System.Windows.Forms.CheckBox();
+            this.HostLabel = new System.Windows.Forms.Label();
+            this.SensuHostTextBox = new System.Windows.Forms.TextBox();
+            this.PortLabel = new System.Windows.Forms.Label();
+            this.SensuPortTextBox = new System.Windows.Forms.TextBox();
             this.StartOptionsGroup.SuspendLayout();
             this.HttpGroup.SuspendLayout();
+            this.SensuGroup.SuspendLayout();
             this.SuspendLayout();
             // 
             // StartOptionsGroup
@@ -110,11 +117,69 @@
             this.HttpInterfaceEnabledCheckBox.UseVisualStyleBackColor = true;
             this.HttpInterfaceEnabledCheckBox.CheckedChanged += new System.EventHandler(this.OnHttpInterfaceEnabledCheckBoxCheckedChanged);
             // 
+            // SensuGroup
+            // 
+            this.SensuGroup.Controls.Add(this.SensuPortTextBox);
+            this.SensuGroup.Controls.Add(this.PortLabel);
+            this.SensuGroup.Controls.Add(this.SensuHostTextBox);
+            this.SensuGroup.Controls.Add(this.HostLabel);
+            this.SensuGroup.Controls.Add(this.SensuInterfaceEnabledCheckBox);
+            this.SensuGroup.Location = new System.Drawing.Point(12, 173);
+            this.SensuGroup.Name = "SensuGroup";
+            this.SensuGroup.Size = new System.Drawing.Size(260, 77);
+            this.SensuGroup.TabIndex = 2;
+            this.SensuGroup.TabStop = false;
+            this.SensuGroup.Text = "Sensu interface";
+            // 
+            // SensuInterfaceEnabledCheckBox
+            // 
+            this.SensuInterfaceEnabledCheckBox.AutoSize = true;
+            this.SensuInterfaceEnabledCheckBox.Location = new System.Drawing.Point(10, 23);
+            this.SensuInterfaceEnabledCheckBox.Name = "SensuInterfaceEnabledCheckBox";
+            this.SensuInterfaceEnabledCheckBox.Size = new System.Drawing.Size(142, 17);
+            this.SensuInterfaceEnabledCheckBox.TabIndex = 0;
+            this.SensuInterfaceEnabledCheckBox.Text = "Enable Sensu interface :";
+            this.SensuInterfaceEnabledCheckBox.UseVisualStyleBackColor = true;
+            this.SensuInterfaceEnabledCheckBox.CheckedChanged += new System.EventHandler(this.OnSensuInterfaceEnabledCheckBoxCheckedChanged);
+            // 
+            // HostLabel
+            // 
+            this.HostLabel.AutoSize = true;
+            this.HostLabel.Location = new System.Drawing.Point(7, 47);
+            this.HostLabel.Name = "HostLabel";
+            this.HostLabel.Size = new System.Drawing.Size(35, 13);
+            this.HostLabel.TabIndex = 1;
+            this.HostLabel.Text = "Host :";
+            // 
+            // SensuHostTextBox
+            // 
+            this.SensuHostTextBox.Location = new System.Drawing.Point(42, 44);
+            this.SensuHostTextBox.Name = "SensuHostTextBox";
+            this.SensuHostTextBox.Size = new System.Drawing.Size(123, 20);
+            this.SensuHostTextBox.TabIndex = 2;
+            // 
+            // PortLabel
+            // 
+            this.PortLabel.AutoSize = true;
+            this.PortLabel.Location = new System.Drawing.Point(170, 47);
+            this.PortLabel.Name = "PortLabel";
+            this.PortLabel.Size = new System.Drawing.Size(32, 13);
+            this.PortLabel.TabIndex = 3;
+            this.PortLabel.Text = "Port :";
+            // 
+            // SensuPortTextBox
+            // 
+            this.SensuPortTextBox.Location = new System.Drawing.Point(205, 44);
+            this.SensuPortTextBox.Name = "SensuPortTextBox";
+            this.SensuPortTextBox.Size = new System.Drawing.Size(45, 20);
+            this.SensuPortTextBox.TabIndex = 4;
+            // 
             // SettingsDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 175);
+            this.ClientSize = new System.Drawing.Size(284, 261);
+            this.Controls.Add(this.SensuGroup);
             this.Controls.Add(this.HttpGroup);
             this.Controls.Add(this.StartOptionsGroup);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -126,6 +191,8 @@
             this.StartOptionsGroup.PerformLayout();
             this.HttpGroup.ResumeLayout(false);
             this.HttpGroup.PerformLayout();
+            this.SensuGroup.ResumeLayout(false);
+            this.SensuGroup.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -139,5 +206,11 @@
         private System.Windows.Forms.CheckBox HttpInterfaceEnabledCheckBox;
         private System.Windows.Forms.TextBox HttpUrlTextBox;
         private System.Windows.Forms.Label UrlLabel;
+        private System.Windows.Forms.GroupBox SensuGroup;
+        private System.Windows.Forms.CheckBox SensuInterfaceEnabledCheckBox;
+        private System.Windows.Forms.TextBox SensuPortTextBox;
+        private System.Windows.Forms.Label PortLabel;
+        private System.Windows.Forms.TextBox SensuHostTextBox;
+        private System.Windows.Forms.Label HostLabel;
     }
 }
