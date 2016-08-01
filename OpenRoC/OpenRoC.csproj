@@ -115,6 +115,7 @@
     <Compile Include="MainDialog.Designer.cs">
       <DependentUpon>MainDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="SensuInterface.cs" />
     <Compile Include="WebInterfaceBootstrapper.cs" />
     <Compile Include="WebInterfaceModule.cs" />
     <Compile Include="Program.cs" />

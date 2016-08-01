@@ -6,11 +6,14 @@
     using System;
     using System.IO;
     using System.Xml;
+    using System.Text;
     using System.Drawing;
     using System.Xml.Linq;
     using System.Reflection;
     using System.Windows.Forms;
     using System.Xml.Serialization;
+
+    using liboroc;
 
     internal static class Extensions
     {
@@ -114,6 +117,16 @@
             int last_index = array.Length - 1;
             Array.Copy(array, 1, array, 0, last_index);
             array[last_index] = last_value;
+        }
+
+        public static byte[] ToSensuCheck(this ProcessRunner runner)
+        {
+            return Encoding.Default.GetBytes(ToJson(new
+            {
+                name = Path.GetFileName(runner.ProcessOptions.Path),
+                output = runner.GetStateString(),
+                status = (int)runner.State
+            }));
         }
     }
 }

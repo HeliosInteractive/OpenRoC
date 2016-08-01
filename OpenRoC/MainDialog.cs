@@ -13,6 +13,7 @@
     public partial class MainDialog : Form
     {
         private Metrics.Manager metricsManager;
+        private SensuInterface sensuInterface;
         private ProcessDialog editProcessForm;
         private ProcessDialog addProcessForm;
         private SettingsDialog settingsForm;
@@ -57,6 +58,11 @@
 
             launchOptions.ForEach((opt) => { ProcessManager.Add(opt); });
             ProcessManager.ProcessesChanged += OnProcessManagerPropertyChanged;
+
+            if (Settings.Instance.IsSensuInterfaceEnabled)
+            {
+                sensuInterface = new SensuInterface(ProcessManager);
+            }
 
             if (Settings.Instance.IsWebInterfaceEnabled)
             {
@@ -202,6 +208,7 @@
         private void OnMainDialogUpdateTimerTick(object sender, EventArgs e)
         {
             ProcessManager.ProcessRunnerList.ForEach(p => p.Monitor());
+            sensuInterface?.SendChecks();
             metricsManager.Update();
             UpdateProcessList();
 
@@ -430,6 +437,7 @@
         {
             metricsManager?.Dispose();
             ProcessManager?.Dispose();
+            sensuInterface?.Dispose();
             editProcessForm?.Dispose();
             addProcessForm?.Dispose();
             settingsForm?.Dispose();
@@ -439,6 +447,7 @@
 
             metricsManager = null;
             ProcessManager = null;
+            sensuInterface = null;
             editProcessForm = null;
             addProcessForm = null;
             settingsForm = null;
