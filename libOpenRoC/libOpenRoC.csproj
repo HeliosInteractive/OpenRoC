@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExecutorService.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="ProcessHelper.cs" />
