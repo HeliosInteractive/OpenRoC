@@ -53,13 +53,17 @@
 
             Log.d("Launch options parsed. Number of launch processes: {0}", launchOptions.Count);
 
-            launchOptions.ForEach((opt) => { ProcessManager.Add(opt); });
-            ProcessManager.ProcessesChanged += OnProcessManagerPropertyChanged;
-
             if (Settings.Instance.IsSensuInterfaceEnabled)
             {
-                sensuInterface = new SensuInterface(ProcessManager);
+                sensuInterface = new SensuInterface(
+                    ProcessManager,
+                    metricsManager,
+                    Settings.Instance.SensuInterfaceHost,
+                    Settings.Instance.SensuInterfacePort);
             }
+
+            launchOptions.ForEach((opt) => { ProcessManager.Add(opt); });
+            ProcessManager.ProcessesChanged += OnProcessManagerPropertyChanged;
 
             CpuChart = MetricsChart.Series[nameof(CpuChart)];
             GpuChart = MetricsChart.Series[nameof(GpuChart)];

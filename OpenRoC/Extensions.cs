@@ -119,14 +119,14 @@
             array[last_index] = last_value;
         }
 
-        public static byte[] ToSensuCheck(this ProcessRunner runner)
+        public static object ToSensuCheckResult(this ProcessRunner runner)
         {
-            return Encoding.Default.GetBytes(ToJson(new
+            return new
             {
                 name = Path.GetFileName(runner.ProcessOptions.Path),
                 output = runner.GetStateString(),
                 status = (int)runner.State
-            }));
+            };
         }
     }
 }

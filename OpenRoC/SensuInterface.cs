@@ -4,22 +4,40 @@
 
     using System;
     using System.Text;
+    using System.Linq;
+    using System.Reflection;
     using System.Net.Sockets;
+    using System.Diagnostics;
 
     public class SensuInterface : IDisposable
     {
         private readonly ProcessManager Manager;
+        private readonly Metrics.Manager Metric;
         private UdpClient sensuClientSocket;
+        private ExecutorService udpService;
+        private PerformanceCounter uptime;
 
-        public SensuInterface(ProcessManager manager)
+        public SensuInterface(ProcessManager manager, Metrics.Manager metrics, string host, uint port)
         {
             Manager = manager;
+            Metric = metrics;
 
             try
             {
-                sensuClientSocket = new UdpClient(
-                    Settings.Instance.SensuInterfaceHost,
-                    (int)Settings.Instance.SensuInterfacePort);
+                sensuClientSocket = new UdpClient(host, (int)port);
+
+                udpService = new ExecutorService();
+                udpService.ExceptionReceived += ex => Log.e("UDP service: {0}", ex.Message);
+
+                uptime = new PerformanceCounter("System", "System Up Time");
+
+                manager.RunnerAdded += (runner) =>
+                {
+                    runner.StateChanged += () =>
+                    {
+                        SendChecks();
+                    };
+                };
             }
             catch(Exception ex)
             {
@@ -30,26 +48,33 @@
 
         public void SendChecks()
         {
-            if (sensuClientSocket == null)
-                return;
-
-            byte[] data = null;
-
             Manager.ProcessRunnerList.ForEach(runner =>
             {
-                data = runner.ToSensuCheck();
-                sensuClientSocket.Send(data, data.Length);
+                QueueUdpCheck(runner.ToSensuCheckResult());
             });
 
-            data = Encoding.Default.GetBytes(new
+            QueueUdpCheck(new
             {
-                name = string.Format("{0}", Environment.MachineName),
-                output = string.Format("Uptime: {0}", TimeSpan.FromTicks(Environment.TickCount)),
-                status = 1
-            }
-            .ToJson());
+                name = Environment.MachineName,
+                uptime = TimeSpan.FromSeconds(uptime.NextValue()).ToString(@"hh\:mm\:ss"),
+                output = Assembly.GetEntryAssembly().GetName().Name,
+                status = 0,
+                metrics = new
+                {
+                    cpu = Metric.CpuSamples.Last(),
+                    ram = Metric.RamSamples.Last(),
+                    gpu = Metric.GpuSamples.Last()
+                }
+            });
+        }
 
-            sensuClientSocket.Send(data, data.Length);
+        private void QueueUdpCheck(object data)
+        {
+            udpService?.Accept(() =>
+            {
+                byte[] packet = Encoding.Default.GetBytes(data.ToJson());
+                sensuClientSocket?.Send(packet, packet.Length);
+            });
         }
 
         #region IDisposable Support
@@ -64,9 +89,13 @@
                 if (disposing)
                 {
                     sensuClientSocket?.Close();
+                    udpService?.Dispose();
+                    uptime?.Dispose();
                 }
 
                 sensuClientSocket = null;
+                udpService = null;
+                uptime = null;
             }
         }
 
