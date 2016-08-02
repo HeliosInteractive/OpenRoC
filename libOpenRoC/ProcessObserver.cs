@@ -1,7 +1,6 @@
 ﻿namespace liboroc
 {
     using System;
-    using System.Threading;
     using System.Management;
     using System.Diagnostics;
 
@@ -34,57 +33,36 @@
             }
         }
 
-        private class VisitTask
+        public void Accept(Action<Process> visitor, int pid)
         {
-            public ManualResetEventSlim WaitHandle;
-            public IVisitor Visitor;
-            public int Pid;
-
-            public void execute(object threadContext)
+            using (ExecutorService service = new ExecutorService())
             {
-                execute(Pid);
-                WaitHandle.Set();
-            }
-
-            private void execute(int pid)
-            {
-                string query = string.Format("Select * From Win32_Process Where ParentProcessID={0}", pid);
-                using (ManagementObjectSearcher processSearcher = new ManagementObjectSearcher(query))
-                using (ManagementObjectCollection processCollection = processSearcher.Get())
-                {
-                    try
-                    {
-                        using (Process proc = Process.GetProcessById(pid))
-                        {
-                            Visitor.Visit(proc);
-                        }
-                    }
-                    catch { /* there is nothing we can do about it */ }
-
-                    if (processCollection != null)
-                    {
-                        foreach (ManagementObject mo in processCollection)
-                        {
-                            execute(Convert.ToInt32(mo["ProcessID"]));
-                        }
-                    }
-                }
+                service.Accept(() => { execute(visitor, pid); });
             }
         }
 
-        public void Accept(IVisitor visitor, int pid)
+        private void execute(Action<Process> visitor, int pid)
         {
-            using (ManualResetEventSlim waitHandle = new ManualResetEventSlim(false))
+            string query = string.Format("Select * From Win32_Process Where ParentProcessID={0}", pid);
+            using (ManagementObjectSearcher processSearcher = new ManagementObjectSearcher(query))
+            using (ManagementObjectCollection processCollection = processSearcher.Get())
             {
-                VisitTask processVisitTask = new VisitTask
+                try
                 {
-                    WaitHandle = waitHandle,
-                    Visitor = visitor,
-                    Pid = pid
-                };
+                    using (Process proc = Process.GetProcessById(pid))
+                    {
+                        visitor?.Invoke(proc);
+                    }
+                }
+                catch { /* there is nothing we can do about it */ }
 
-                ThreadPool.QueueUserWorkItem(processVisitTask.execute);
-                waitHandle.Wait();
+                if (processCollection != null)
+                {
+                    foreach (ManagementObject mo in processCollection)
+                    {
+                        execute(visitor, Convert.ToInt32(mo["ProcessID"]));
+                    }
+                }
             }
         }
     }
