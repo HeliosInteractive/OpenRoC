@@ -1,18 +1,20 @@
 ﻿namespace oroc.Metrics
 {
+    using liboroc;
+
     using System;
     using System.Linq;
-    using System.Threading.Tasks;
 
     using OpenHardwareMonitor.Hardware;
 
     public class Manager : IDisposable
     {
-        private Task setupTask;
         private Computer computer;
         private ICollector cpuCollector;
         private ICollector gpuCollector;
         private ICollector ramCollector;
+        private ExecutorService setupService;
+        private volatile bool setupFinished;
 
         public double[] CpuSamples { get; private set; }
 
@@ -22,6 +24,9 @@
 
         public Manager()
         {
+            setupService = new ExecutorService();
+            setupFinished = false;
+
             var initial_sensor_value = 0.0d;
             var initial_sensor_count = 50;
 
@@ -34,7 +39,7 @@
             RamSamples = new double[initial_sensor_count];
             RamSamples = Enumerable.Repeat(initial_sensor_value, initial_sensor_count).ToArray();
 
-            setupTask = Task.Run(() =>
+            setupService.Accept(() =>
             {
                 computer = new Computer
                 {
@@ -48,12 +53,14 @@
                 cpuCollector = new CpuCollector(computer);
                 gpuCollector = new GpuCollector(computer);
                 ramCollector = new RamCollector(computer);
+
+                setupFinished = true;
             });
         }
 
         public void Update()
         {
-            if (setupTask.Status != TaskStatus.RanToCompletion)
+            if (!setupFinished)
                 return;
 
             cpuCollector.Update();
@@ -76,12 +83,11 @@
 
                 if (disposing)
                 {
-                    if (!setupTask.IsCompleted)
-                        setupTask.Wait();
-
+                    setupService?.Dispose();
                     computer?.Close();
                 }
 
+                setupService = null;
                 computer = null;
             }
         }
