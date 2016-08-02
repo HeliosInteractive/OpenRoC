@@ -3,6 +3,7 @@
     using liboroc;
 
     using System;
+    using System.Text;
     using System.Net.Sockets;
 
     public class SensuInterface : IDisposable
@@ -32,11 +33,23 @@
             if (sensuClientSocket == null)
                 return;
 
+            byte[] data = null;
+
             Manager.ProcessRunnerList.ForEach(runner =>
             {
-                byte[] data = runner.ToSensuCheck();
+                data = runner.ToSensuCheck();
                 sensuClientSocket.Send(data, data.Length);
             });
+
+            data = Encoding.Default.GetBytes(new
+            {
+                name = string.Format("{0}", Environment.MachineName),
+                output = string.Format("Uptime: {0}", TimeSpan.FromTicks(Environment.TickCount)),
+                status = 1
+            }
+            .ToJson());
+
+            sensuClientSocket.Send(data, data.Length);
         }
 
         #region IDisposable Support
