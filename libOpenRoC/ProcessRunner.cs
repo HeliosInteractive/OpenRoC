@@ -25,10 +25,10 @@
 
         public enum Status
         {
-            Invalid,
-            Stopped = 1,
-            Running = 3,
-            Disabled = 2
+            Running = 0,
+            Disabled = 1,
+            Stopped = 2,
+            Invalid = 3
         }
 
         public Status State
