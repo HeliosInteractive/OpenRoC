@@ -70,5 +70,23 @@
 
             Assert.IsTrue(ReferenceEquals(ex1, ex2));
         }
+
+        [TestMethod]
+        public void DiposedAccess()
+        {
+            bool flag1 = false;
+            bool flag2 = false;
+
+            using (ExecutorService service = new ExecutorService())
+            {
+                service.Dispose();
+                service.Accept(() => { Thread.Sleep(TimeSpan.FromSeconds(1)); flag1 = true; });
+                service.Accept(() => { Thread.Sleep(TimeSpan.FromSeconds(1)); flag2 = true; });
+                service.Wait();
+            }
+
+            Assert.IsFalse(flag1);
+            Assert.IsFalse(flag2);
+        }
     }
 }
