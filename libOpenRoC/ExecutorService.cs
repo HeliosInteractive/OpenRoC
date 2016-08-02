@@ -21,7 +21,7 @@
 
             lock (this)
             {
-                pending?.Add(Task.Run(() =>
+                pending.Add(Task.Run(() =>
                 {
                     try { action(); }
                     catch (Exception ex)
@@ -37,19 +37,7 @@
 
             lock (this)
             {
-                try
-                {
-                    Task.WaitAll(pending.ToArray());
-                }
-                catch (ObjectDisposedException ex)
-                {
-                    ExceptionReceived?.Invoke(ex);
-                }
-                catch (AggregateException ex)
-                {
-                    ExceptionReceived?.Invoke(ex);
-                }
-
+                Task.WaitAll(pending.ToArray());
                 pending.ForEach(task => task.Dispose());
                 pending.Clear();
             }
