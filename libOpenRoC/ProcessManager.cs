@@ -10,6 +10,7 @@
             = new Dictionary<string, ProcessRunner>();
 
         public Action ProcessesChanged;
+        public Action<ProcessRunner> RunnerAdded;
 
         public List<ProcessRunner> ProcessRunnerList
         {
@@ -36,6 +37,8 @@
             ProcessMap.Add(opts.Path, proc);
 
             OnProcessesChanged();
+
+            RunnerAdded?.Invoke(proc);
         }
 
         public void Delete(string path)
