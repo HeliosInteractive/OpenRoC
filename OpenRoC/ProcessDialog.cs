@@ -205,15 +205,38 @@
             }
         }
 
-        private void OnSelectExecutablePathClick(object sender, EventArgs e)
+        private void OnFileDialogRequested(object sender, EventArgs e)
         {
-            filePicker.Filter = "Windows Executable (*.exe)|*.exe";
-            filePicker.Title = "Please select an executable to continue";
-
-            if (filePicker.ShowDialog() == DialogResult.OK)
+            if (ReferenceEquals(sender, SelectExecutablePath))
             {
-                Options.Path = filePicker.FileName;
-                Options.WorkingDirectory = Path.GetDirectoryName(Options.Path);
+                filePicker.Filter = "Windows Executable (*.exe)|*.exe";
+                filePicker.Title = "Please select an executable to continue";
+
+                if (filePicker.ShowDialog() == DialogResult.OK)
+                {
+                    Options.Path = filePicker.FileName;
+                    Options.WorkingDirectory = Path.GetDirectoryName(Options.Path);
+                }
+            }
+            else if (ReferenceEquals(sender, ProcessOptionPreLaunchScriptButton))
+            {
+                filePicker.Filter = "Shell Executable File (*.*)|*.*";
+                filePicker.Title = "Please select a script to continue";
+
+                if (filePicker.ShowDialog() == DialogResult.OK)
+                {
+                    Options.PreLaunchScriptPath = filePicker.FileName;
+                }
+            }
+            else if (ReferenceEquals(sender, ProcessOptionPostCrashScriptButton))
+            {
+                filePicker.Filter = "Shell Executable File (*.*)|*.*";
+                filePicker.Title = "Please select a script to continue";
+
+                if (filePicker.ShowDialog() == DialogResult.OK)
+                {
+                    Options.PostCrashScriptPath = filePicker.FileName;
+                }
             }
         }
 

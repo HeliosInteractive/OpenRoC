@@ -110,7 +110,7 @@
             this.SelectExecutablePath.TabIndex = 4;
             this.SelectExecutablePath.Text = "Select Executable Path";
             this.SelectExecutablePath.UseVisualStyleBackColor = true;
-            this.SelectExecutablePath.Click += new System.EventHandler(this.OnSelectExecutablePathClick);
+            this.SelectExecutablePath.Click += new System.EventHandler(this.OnFileDialogRequested);
             // 
             // ProcessWorkingDirectoryLabel
             // 
@@ -255,6 +255,7 @@
             this.ProcessOptionPreLaunchScriptButton.TabIndex = 2;
             this.ProcessOptionPreLaunchScriptButton.Text = "...";
             this.ProcessOptionPreLaunchScriptButton.UseVisualStyleBackColor = true;
+            this.ProcessOptionPreLaunchScriptButton.Click += new System.EventHandler(this.OnFileDialogRequested);
             // 
             // ProcessOptionPreLaunchScriptPathControl
             // 
@@ -305,6 +306,7 @@
             this.ProcessOptionPostCrashScriptButton.TabIndex = 5;
             this.ProcessOptionPostCrashScriptButton.Text = "...";
             this.ProcessOptionPostCrashScriptButton.UseVisualStyleBackColor = true;
+            this.ProcessOptionPostCrashScriptButton.Click += new System.EventHandler(this.OnFileDialogRequested);
             // 
             // ProcessOptionPostCrashScriptPathControl
             // 
