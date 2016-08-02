@@ -87,9 +87,9 @@
                 }
             }
 
-            CpuChart = metricsChart.Series[nameof(CpuChart)];
-            GpuChart = metricsChart.Series[nameof(GpuChart)];
-            RamChart = metricsChart.Series[nameof(RamChart)];
+            CpuChart = MetricsChart.Series[nameof(CpuChart)];
+            GpuChart = MetricsChart.Series[nameof(GpuChart)];
+            RamChart = MetricsChart.Series[nameof(RamChart)];
         }
 
         private void OnProcessManagerPropertyChanged()
@@ -251,6 +251,7 @@
             SetStatusBarText(ContextMenuStart, "Run selected processes if they are stopped.");
             SetStatusBarText(ContextMenuStop, "Stop selected processes if they are running.");
             SetStatusBarText(ContextMenuShow, "Attempt to bring the main Window of the selected processes to top.");
+            SetStatusBarText(MetricsChart, "Overall performance graph of this machine over past few seconds.");
         }
 
         #endregion

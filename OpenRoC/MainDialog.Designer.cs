@@ -63,12 +63,12 @@
             this.TaskbarContextMenuToggleViewButton = new System.Windows.Forms.ToolStripMenuItem();
             this.TaskbarContextMenuSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.TaskbarContextMenuExitButton = new System.Windows.Forms.ToolStripMenuItem();
-            this.metricsChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.MetricsChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.StatusStrip.SuspendLayout();
             this.MenuStrip.SuspendLayout();
             this.RightClickContextMenuStrip.SuspendLayout();
             this.TaskbarContextMenuStrip.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.metricsChart)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.MetricsChart)).BeginInit();
             this.SuspendLayout();
             // 
             // StatusStrip
@@ -314,11 +314,11 @@
             this.TaskbarContextMenuExitButton.Text = "Exit";
             this.TaskbarContextMenuExitButton.Click += new System.EventHandler(this.OnTaskbarContextMenuExitButtonClick);
             // 
-            // metricsChart
+            // MetricsChart
             // 
-            this.metricsChart.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.MetricsChart.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.metricsChart.BorderlineWidth = 0;
+            this.MetricsChart.BorderlineWidth = 0;
             chartArea1.AxisX.ArrowStyle = System.Windows.Forms.DataVisualization.Charting.AxisArrowStyle.Triangle;
             chartArea1.AxisX.IsMarginVisible = false;
             chartArea1.AxisX.LineColor = System.Drawing.Color.Silver;
@@ -340,15 +340,15 @@
             chartArea1.Position.Auto = false;
             chartArea1.Position.Height = 100F;
             chartArea1.Position.Width = 100F;
-            this.metricsChart.ChartAreas.Add(chartArea1);
+            this.MetricsChart.ChartAreas.Add(chartArea1);
             legend1.DockedToChartArea = "metricsChartArea";
             legend1.IsTextAutoFit = false;
             legend1.Name = "metricsLegend";
-            this.metricsChart.Legends.Add(legend1);
-            this.metricsChart.Location = new System.Drawing.Point(0, 248);
-            this.metricsChart.Name = "metricsChart";
-            this.metricsChart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.None;
-            this.metricsChart.PaletteCustomColors = new System.Drawing.Color[] {
+            this.MetricsChart.Legends.Add(legend1);
+            this.MetricsChart.Location = new System.Drawing.Point(0, 248);
+            this.MetricsChart.Name = "MetricsChart";
+            this.MetricsChart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.None;
+            this.MetricsChart.PaletteCustomColors = new System.Drawing.Color[] {
         System.Drawing.Color.Red,
         System.Drawing.Color.Blue,
         System.Drawing.Color.DarkSeaGreen};
@@ -373,20 +373,20 @@
             series3.Legend = "metricsLegend";
             series3.LegendText = "% gpu usage";
             series3.Name = "GpuChart";
-            this.metricsChart.Series.Add(series1);
-            this.metricsChart.Series.Add(series2);
-            this.metricsChart.Series.Add(series3);
-            this.metricsChart.Size = new System.Drawing.Size(499, 129);
-            this.metricsChart.TabIndex = 0;
-            this.metricsChart.TabStop = false;
-            this.metricsChart.Text = "Machine Metrics";
+            this.MetricsChart.Series.Add(series1);
+            this.MetricsChart.Series.Add(series2);
+            this.MetricsChart.Series.Add(series3);
+            this.MetricsChart.Size = new System.Drawing.Size(499, 129);
+            this.MetricsChart.TabIndex = 0;
+            this.MetricsChart.TabStop = false;
+            this.MetricsChart.Text = "Machine Metrics";
             // 
             // MainDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(499, 399);
-            this.Controls.Add(this.metricsChart);
+            this.Controls.Add(this.MetricsChart);
             this.Controls.Add(this.ProcessListView);
             this.Controls.Add(this.MenuStrip);
             this.Controls.Add(this.StatusStrip);
@@ -399,7 +399,7 @@
             this.MenuStrip.PerformLayout();
             this.RightClickContextMenuStrip.ResumeLayout(false);
             this.TaskbarContextMenuStrip.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.metricsChart)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.MetricsChart)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -434,7 +434,7 @@
         private System.Windows.Forms.ToolStripMenuItem TaskbarContextMenuToggleViewButton;
         private System.Windows.Forms.ToolStripSeparator TaskbarContextMenuSeparator;
         private System.Windows.Forms.ToolStripMenuItem TaskbarContextMenuExitButton;
-        private System.Windows.Forms.DataVisualization.Charting.Chart metricsChart;
+        private System.Windows.Forms.DataVisualization.Charting.Chart MetricsChart;
     }
 }
 
