@@ -26,9 +26,9 @@
             }
         }
 
-        private class QuitVisitor : ProcessObserver.IVisitor
+        public static void Shutdown(int pid)
         {
-            public void Visit(Process process)
+            ProcessObserver.Instance.Accept((process) =>
             {
                 if (!process.HasExited)
                 {
@@ -36,18 +36,12 @@
                     process.WaitForExit((int)TimeSpan.FromSeconds(1).TotalMilliseconds);
                 }
             }
+            , pid);
         }
 
-        public static void Shutdown(int pid)
+        public static void BringToFront(int pid, bool aggressive)
         {
-            ProcessObserver.Instance.Accept(new QuitVisitor(), pid);
-        }
-
-        private class BringToFrontVisitor : ProcessObserver.IVisitor
-        {
-            public bool Aggressive = false;
-
-            public void Visit(Process process)
+            ProcessObserver.Instance.Accept((process) =>
             {
                 if (!process.HasExited && process.MainWindowHandle != IntPtr.Zero)
                 {
@@ -56,7 +50,7 @@
                         NativeMethods.SwitchToThisWindow(process.MainWindowHandle, true);
                         NativeMethods.SetForegroundWindow(process.MainWindowHandle);
 
-                        if (Aggressive)
+                        if (aggressive)
                         {
                             NativeMethods.SetWindowPos(
                                 process.MainWindowHandle,
@@ -69,11 +63,7 @@
                     }
                 }
             }
-        }
-
-        public static void BringToFront(int pid, bool aggressive)
-        {
-            ProcessObserver.Instance.Accept(new BringToFrontVisitor { Aggressive = aggressive }, pid);
+            , pid);
         }
     }
 }
