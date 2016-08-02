@@ -32,17 +32,9 @@
         {
             StartMinimizedCheckBox.SetupDataBind(Settings.Instance, nameof(Settings.Instance.IsStartMinimizedEnabled));
             SingleInstanceCheckBox.SetupDataBind(Settings.Instance, nameof(Settings.Instance.IsSingleInsntaceEnabled));
-            HttpInterfaceEnabledCheckBox.SetupDataBind(Settings.Instance, nameof(Settings.Instance.IsWebInterfaceEnabled));
-            HttpUrlTextBox.SetupDataBind(Settings.Instance, nameof(Settings.Instance.WebInterfaceAddress));
             SensuInterfaceEnabledCheckBox.SetupDataBind(Settings.Instance, nameof(Settings.Instance.IsSensuInterfaceEnabled));
             SensuHostTextBox.SetupDataBind(Settings.Instance, nameof(Settings.Instance.SensuInterfaceHost));
             SensuPortTextBox.SetupDataBind(Settings.Instance, nameof(Settings.Instance.SensuInterfacePort));
-        }
-
-        private void OnHttpInterfaceEnabledCheckBoxCheckedChanged(object sender, System.EventArgs e)
-        {
-            if (HttpUrlTextBox.Enabled != HttpInterfaceEnabledCheckBox.Checked)
-                HttpUrlTextBox.Enabled = HttpInterfaceEnabledCheckBox.Checked;
         }
 
         private void OnSensuInterfaceEnabledCheckBoxCheckedChanged(object sender, System.EventArgs e)
@@ -56,7 +48,6 @@
 
         private void SyncCheckedStates()
         {
-            OnHttpInterfaceEnabledCheckBoxCheckedChanged(this, null);
             OnSensuInterfaceEnabledCheckBoxCheckedChanged(this, null);
         }
     }

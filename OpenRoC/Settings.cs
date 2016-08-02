@@ -17,8 +17,6 @@
         {
             public bool singleInsntace = true;
             public bool startMinimized = false;
-            public bool webInterfaceEnabled = true;
-            public string webInterfaceAddress = "http://localhost:2198";
             public bool sensuInterfaceEnabled = false;
             public string sensuInterfaceHost = "127.0.0.1";
             public uint sensuInterfacePort = 3030;
@@ -46,32 +44,6 @@
                     return;
 
                 application.startMinimized = value;
-                dirty = true;
-            }
-        }
-
-        public bool IsWebInterfaceEnabled
-        {
-            get { return application.webInterfaceEnabled; }
-            set
-            {
-                if (value == application.webInterfaceEnabled)
-                    return;
-
-                application.webInterfaceEnabled = value;
-                dirty = true;
-            }
-        }
-
-        public string WebInterfaceAddress
-        {
-            get { return application.webInterfaceAddress; }
-            set
-            {
-                if (value == application.webInterfaceAddress || !Uri.IsWellFormedUriString(value, UriKind.Absolute))
-                    return;
-
-                application.webInterfaceAddress = value;
                 dirty = true;
             }
         }

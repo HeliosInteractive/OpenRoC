@@ -8,8 +8,6 @@
     using System.Collections.Generic;
     using System.Windows.Forms.DataVisualization.Charting;
 
-    using Nancy.Hosting.Self;
-
     public partial class MainDialog : Form
     {
         private Metrics.Manager metricsManager;
@@ -19,7 +17,6 @@
         private SettingsDialog settingsForm;
         private AboutDialog aboutForm;
         private LogsDialog logsForm;
-        private NancyHost webHost;
 
         private Series CpuChart;
         private Series GpuChart;
@@ -62,29 +59,6 @@
             if (Settings.Instance.IsSensuInterfaceEnabled)
             {
                 sensuInterface = new SensuInterface(ProcessManager);
-            }
-
-            if (Settings.Instance.IsWebInterfaceEnabled)
-            {
-                try
-                {
-                    webHost = new NancyHost(
-                        new Uri(Settings.Instance.WebInterfaceAddress),
-                        new WebInterfaceBootstrapper(ProcessManager, this),
-                        new HostConfiguration { RewriteLocalhost = false });
-
-                    webHost.Start();
-
-                    Log.d("Web interface is available at {0}", Settings.Instance.WebInterfaceAddress);
-                }
-                catch (AutomaticUrlReservationCreationFailureException)
-                {
-                    Log.e("Web interface failed to start. Are you an administrator?");
-                }
-                catch (Exception ex)
-                {
-                    Log.e("Web interface failed to start: {0}", ex.Message);
-                }
             }
 
             CpuChart = MetricsChart.Series[nameof(CpuChart)];
@@ -444,7 +418,6 @@
             settingsForm?.Dispose();
             aboutForm?.Dispose();
             logsForm?.Dispose();
-            webHost?.Dispose();
 
             metricsManager = null;
             ProcessManager = null;
@@ -454,7 +427,6 @@
             settingsForm = null;
             aboutForm = null;
             logsForm = null;
-            webHost = null;
         }
     }
 }
