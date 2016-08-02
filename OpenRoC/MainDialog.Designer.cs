@@ -347,18 +347,26 @@
             this.metricsChart.Legends.Add(legend1);
             this.metricsChart.Location = new System.Drawing.Point(0, 248);
             this.metricsChart.Name = "metricsChart";
+            this.metricsChart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.None;
+            this.metricsChart.PaletteCustomColors = new System.Drawing.Color[] {
+        System.Drawing.Color.Red,
+        System.Drawing.Color.Blue,
+        System.Drawing.Color.DarkSeaGreen};
+            series1.BorderWidth = 2;
             series1.ChartArea = "metricsChartArea";
             series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
             series1.IsXValueIndexed = true;
             series1.Legend = "metricsLegend";
             series1.LegendText = "% cpu usage";
             series1.Name = "CpuChart";
+            series2.BorderWidth = 2;
             series2.ChartArea = "metricsChartArea";
             series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
             series2.IsXValueIndexed = true;
             series2.Legend = "metricsLegend";
             series2.LegendText = "% ram usage";
             series2.Name = "RamChart";
+            series3.BorderWidth = 2;
             series3.ChartArea = "metricsChartArea";
             series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
             series3.IsXValueIndexed = true;
