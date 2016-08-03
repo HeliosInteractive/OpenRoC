@@ -271,11 +271,16 @@
 
         private void OnContextMenuEditButtonClick(object sender, EventArgs e)
         {
-            if (ProcessListView.FocusedItem == null)
-                return;
+            if (ProcessListView.FocusedItem == null || ProcessListView.SelectedItems.Count == 0)
+            {
+                MessageBox.Show(
+                    "Please select a Process to edit.",
+                    "No Process selected",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
 
-            if (!ProcessManager.Contains(ProcessListView.FocusedItem.Text))
                 return;
+            }
 
             ProcessRunner process = ProcessManager.Get(ProcessListView.FocusedItem.Text);
 
@@ -293,46 +298,88 @@
 
         private void OnContextMenuDeleteButtonClick(object sender, EventArgs e)
         {
-            if (ProcessListView.FocusedItem == null)
-                return;
+            if (ProcessListView.SelectedItems.Count == 0)
+            {
+                MessageBox.Show(
+                    "Please select Processes to delete.",
+                    "No Processes selected",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
 
-            ProcessManager.Remove(ProcessListView.FocusedItem.Text);
+                return;
+            }
+
+            foreach (ListViewItem item in ProcessListView.SelectedItems)
+                ProcessManager.Remove(item.Text);
+
             UpdateProcessList();
         }
 
         private void OnContextMenuDisableButtonClick(object sender, EventArgs e)
         {
-            if (ProcessListView.FocusedItem == null)
-                return;
+            if (ProcessListView.SelectedItems.Count == 0)
+            {
+                MessageBox.Show(
+                    "Please select Processes to disable.",
+                    "No Processes selected",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
 
-            ProcessManager.Get(ProcessListView.FocusedItem.Text).State = ProcessRunner.Status.Disabled;
+                return;
+            }
+
+            foreach (ListViewItem item in ProcessListView.SelectedItems)
+                ProcessManager.Get(item.Text).State = ProcessRunner.Status.Disabled;
         }
 
         private void OnContextMenuShowClick(object sender, EventArgs e)
         {
-            if (ProcessListView.FocusedItem == null)
+            if (ProcessListView.FocusedItem == null || ProcessListView.SelectedItems.Count == 0)
+            {
+                MessageBox.Show(
+                    "Please select a Process to show.",
+                    "No Process selected",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
                 return;
+            }
 
             ProcessManager.Get(ProcessListView.FocusedItem.Text).BringToFront();
         }
 
         private void OnContextMenuStopClick(object sender, EventArgs e)
         {
-            if (ProcessListView.FocusedItem == null)
-                return;
+            if (ProcessListView.SelectedItems.Count == 0)
+            {
+                MessageBox.Show(
+                    "Please select Processes to stop.",
+                    "No Processes selected",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
 
-            ProcessManager.Get(ProcessListView.FocusedItem.Text).Stop();
+                return;
+            }
+
+            foreach (ListViewItem item in ProcessListView.SelectedItems)
+                ProcessManager.Get(item.Text).Stop();
         }
 
         private void OnContextMenuStartClick(object sender, EventArgs e)
         {
-            if (ProcessListView.FocusedItem == null)
+            if (ProcessListView.SelectedItems.Count == 0)
+            {
+                MessageBox.Show(
+                    "Please select Processes to start.",
+                    "No Processes selected",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
                 return;
+            }
 
-            ProcessRunner process = ProcessManager.Get(ProcessListView.FocusedItem.Text);
-
-            if (process.State != ProcessRunner.Status.Running)
-                process.Start();
+            foreach (ListViewItem item in ProcessListView.SelectedItems)
+                ProcessManager.Get(item.Text).Start();
         }
 
         #endregion
