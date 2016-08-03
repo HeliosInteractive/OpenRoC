@@ -175,9 +175,9 @@
             this.PostCrashCheckEnabledLabel.AutoSize = true;
             this.PostCrashCheckEnabledLabel.Location = new System.Drawing.Point(138, 70);
             this.PostCrashCheckEnabledLabel.Name = "PostCrashCheckEnabledLabel";
-            this.PostCrashCheckEnabledLabel.Size = new System.Drawing.Size(224, 13);
+            this.PostCrashCheckEnabledLabel.Size = new System.Drawing.Size(210, 13);
             this.PostCrashCheckEnabledLabel.TabIndex = 6;
-            this.PostCrashCheckEnabledLabel.Text = "seconds and double check if crashed or hung";
+            this.PostCrashCheckEnabledLabel.Text = "seconds and double check if unresponsive";
             // 
             // ProcessOptionGracePeriodDurationControl
             // 
