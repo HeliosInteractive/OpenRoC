@@ -558,5 +558,42 @@
                 Assert.IsFalse(ReferenceEquals(attempt1, attempt2));
             }
         }
+
+        [TestMethod]
+        public void BringToFront()
+        {
+            ProcessOptions options = ResponsiveWindowedProcessOptions;
+
+            using (ProcessRunner runner1 = new ProcessRunner(options))
+            using (ProcessRunner runner2 = new ProcessRunner(options))
+            {
+                runner1.Start();
+                runner2.Start();
+
+                runner1.Monitor();
+                runner2.Monitor();
+
+                bool passed = false;
+                uint passes = 10;
+
+                for (uint i = 0; i < passes && !passed; ++i)
+                {
+                    runner1.BringToFront(true);
+                    passed |= (ProcessHelper.GetForegroundWindow() == runner1.Process.MainWindowHandle);
+                }
+
+                Assert.IsTrue(passed);
+
+                passed = false;
+
+                for (uint i = 0; i < passes && !passed; ++i)
+                {
+                    runner2.BringToFront(true);
+                    passed |= (ProcessHelper.GetForegroundWindow() == runner2.Process.MainWindowHandle);
+                }
+
+                Assert.IsTrue(passed);
+            }
+        }
     }
 }
