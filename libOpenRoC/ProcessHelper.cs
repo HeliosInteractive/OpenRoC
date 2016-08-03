@@ -54,7 +54,7 @@
                         {
                             NativeMethods.SetWindowPos(
                                 process.MainWindowHandle,
-                                NativeMethods.HWND_TOPMOST,
+                                new IntPtr(-1), //HWND_TOPMOST
                                 0, 0, 0, 0,
                                 NativeMethods.SetWindowPosFlags.SWP_NOSIZE |
                                 NativeMethods.SetWindowPosFlags.SWP_NOMOVE |
