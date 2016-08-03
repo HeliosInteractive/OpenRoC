@@ -121,18 +121,24 @@
 
         private void OnStartupStateRadioGroupCheckedChanged(object sender, EventArgs e)
         {
-            SyncCheckedStates();
-        }
-
-        private void SyncCheckedStates()
-        {
             if (StartupStateStoppedControl.Checked)
                 Options.InitialStateEnumValue = ProcessRunner.Status.Stopped;
             else if (StartupStateRunningControl.Checked)
                 Options.InitialStateEnumValue = ProcessRunner.Status.Running;
             else if (StartupStateDisabledControl.Checked)
                 Options.InitialStateEnumValue = ProcessRunner.Status.Disabled;
+        }
 
+        private void SyncCheckedStates()
+        {
+            if (Options.InitialStateEnumValue == ProcessRunner.Status.Stopped)
+                StartupStateStoppedControl.Checked = true;
+            else if (Options.InitialStateEnumValue == ProcessRunner.Status.Running)
+                StartupStateRunningControl.Checked = true;
+            else if (Options.InitialStateEnumValue == ProcessRunner.Status.Disabled)
+                StartupStateDisabledControl.Checked = true;
+
+            OnStartupStateRadioGroupCheckedChanged(this, null);
             OnProcessOptionDoubleCheckEnabledControlCheckedChanged(this, null);
             OnProcessOptionGracePeriodEnabledControlCheckedChanged(this, null);
             OnProcessOptionPreLaunchScriptEnabledControlCheckedChanged(this, null);
