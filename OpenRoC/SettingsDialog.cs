@@ -35,6 +35,7 @@
             SensuInterfaceEnabledCheckBox.SetupDataBind(Settings.Instance, nameof(Settings.Instance.IsSensuInterfaceEnabled));
             SensuHostTextBox.SetupDataBind(Settings.Instance, nameof(Settings.Instance.SensuInterfaceHost));
             SensuPortTextBox.SetupDataBind(Settings.Instance, nameof(Settings.Instance.SensuInterfacePort));
+            SensuTTLTextBox.SetupDataBind(Settings.Instance, nameof(Settings.Instance.SensuInterfaceTTL));
         }
 
         private void OnSensuInterfaceEnabledCheckBoxCheckedChanged(object sender, System.EventArgs e)
@@ -44,6 +45,9 @@
 
             if (SensuPortTextBox.Enabled != SensuInterfaceEnabledCheckBox.Checked)
                 SensuPortTextBox.Enabled = SensuInterfaceEnabledCheckBox.Checked;
+
+            if (SensuTTLTextBox.Enabled != SensuInterfaceEnabledCheckBox.Checked)
+                SensuTTLTextBox.Enabled = SensuInterfaceEnabledCheckBox.Checked;
         }
 
         private void SyncCheckedStates()

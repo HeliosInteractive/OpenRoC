@@ -20,6 +20,7 @@
             public bool sensuInterfaceEnabled = false;
             public string sensuInterfaceHost = "127.0.0.1";
             public uint sensuInterfacePort = 3030;
+            public uint sensuInterfaceTTL = 30;
         }
 
         public bool IsSingleInsntaceEnabled
@@ -83,6 +84,23 @@
                     return;
 
                 application.sensuInterfacePort = value;
+                dirty = true;
+            }
+        }
+
+        public uint SensuInterfaceTTL
+        {
+            get { return application.sensuInterfaceTTL; }
+            set
+            {
+                if (value == application.sensuInterfaceTTL)
+                    return;
+
+                application.sensuInterfaceTTL = value;
+
+                if (application.sensuInterfaceTTL < 2)
+                    application.sensuInterfaceTTL = 2;
+
                 dirty = true;
             }
         }

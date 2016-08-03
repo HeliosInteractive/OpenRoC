@@ -38,6 +38,8 @@
             this.SensuHostTextBox = new System.Windows.Forms.TextBox();
             this.HostLabel = new System.Windows.Forms.Label();
             this.SensuInterfaceEnabledCheckBox = new System.Windows.Forms.CheckBox();
+            this.SensuTTLTextBox = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.StartOptionsGroup.SuspendLayout();
             this.SensuGroup.SuspendLayout();
             this.SuspendLayout();
@@ -75,6 +77,8 @@
             // 
             // SensuGroup
             // 
+            this.SensuGroup.Controls.Add(this.label1);
+            this.SensuGroup.Controls.Add(this.SensuTTLTextBox);
             this.SensuGroup.Controls.Add(this.SensuPortTextBox);
             this.SensuGroup.Controls.Add(this.PortLabel);
             this.SensuGroup.Controls.Add(this.SensuHostTextBox);
@@ -92,7 +96,7 @@
             this.SensuPortTextBox.Location = new System.Drawing.Point(205, 44);
             this.SensuPortTextBox.Name = "SensuPortTextBox";
             this.SensuPortTextBox.Size = new System.Drawing.Size(45, 20);
-            this.SensuPortTextBox.TabIndex = 4;
+            this.SensuPortTextBox.TabIndex = 3;
             // 
             // PortLabel
             // 
@@ -130,6 +134,22 @@
             this.SensuInterfaceEnabledCheckBox.UseVisualStyleBackColor = true;
             this.SensuInterfaceEnabledCheckBox.CheckedChanged += new System.EventHandler(this.OnSensuInterfaceEnabledCheckBoxCheckedChanged);
             // 
+            // SensuTTLTextBox
+            // 
+            this.SensuTTLTextBox.Location = new System.Drawing.Point(205, 20);
+            this.SensuTTLTextBox.Name = "SensuTTLTextBox";
+            this.SensuTTLTextBox.Size = new System.Drawing.Size(45, 20);
+            this.SensuTTLTextBox.TabIndex = 1;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(170, 23);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(33, 13);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "TTL :";
+            // 
             // SettingsDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -161,5 +181,7 @@
         private System.Windows.Forms.Label PortLabel;
         private System.Windows.Forms.TextBox SensuHostTextBox;
         private System.Windows.Forms.Label HostLabel;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox SensuTTLTextBox;
     }
 }

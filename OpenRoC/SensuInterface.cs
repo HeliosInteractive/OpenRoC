@@ -3,24 +3,21 @@
     using liboroc;
 
     using System;
+    using System.IO;
     using System.Text;
-    using System.Linq;
-    using System.Reflection;
     using System.Net.Sockets;
-    using System.Diagnostics;
 
     public class SensuInterface : IDisposable
     {
         private readonly ProcessManager Manager;
-        private readonly Metrics.Manager Metric;
         private UdpClient sensuClientSocket;
         private ExecutorService udpService;
-        private PerformanceCounter uptime;
+        private uint checksTtl;
 
-        public SensuInterface(ProcessManager manager, Metrics.Manager metrics, string host, uint port)
+        public SensuInterface(ProcessManager manager, string host, uint port, uint ttl)
         {
             Manager = manager;
-            Metric = metrics;
+            checksTtl = ttl;
 
             try
             {
@@ -29,13 +26,12 @@
                 udpService = new ExecutorService();
                 udpService.ExceptionReceived += ex => Log.e("UDP service: {0}", ex.Message);
 
-                uptime = new PerformanceCounter("System", "System Up Time");
-
                 manager.RunnerAdded += (runner) =>
                 {
                     runner.StateChanged += () =>
                     {
-                        SendChecks();
+                        if (runner.State != ProcessRunner.Status.Invalid)
+                            SendChecks();
                     };
                 };
             }
@@ -50,25 +46,17 @@
         {
             Manager.Runners.ForEach(runner =>
             {
-                QueueUdpCheck(runner.ToSensuCheckResult());
-            });
-
-            QueueUdpCheck(new
-            {
-                name = Environment.MachineName,
-                uptime = TimeSpan.FromSeconds(uptime.NextValue()).ToString(@"hh\:mm\:ss"),
-                output = Assembly.GetEntryAssembly().GetName().Name,
-                status = 0,
-                metrics = new
+                QueueUdpPacket(new
                 {
-                    cpu = Metric.CpuSamples.Last(),
-                    ram = Metric.RamSamples.Last(),
-                    gpu = Metric.GpuSamples.Last()
-                }
+                    name = Path.GetFileName(runner.ProcessOptions.Path),
+                    output = runner.GetStateString(),
+                    status = (int)runner.State,
+                    ttl = checksTtl
+                });
             });
         }
 
-        private void QueueUdpCheck(object data)
+        private void QueueUdpPacket(object data)
         {
             udpService?.Accept(() =>
             {
@@ -90,12 +78,10 @@
                 {
                     sensuClientSocket?.Close();
                     udpService?.Dispose();
-                    uptime?.Dispose();
                 }
 
                 sensuClientSocket = null;
                 udpService = null;
-                uptime = null;
             }
         }
 

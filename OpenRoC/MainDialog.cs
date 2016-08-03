@@ -51,11 +51,17 @@
 
             if (Settings.Instance.IsSensuInterfaceEnabled)
             {
+                SensuInterfaceUpdateTimer.Enabled = true;
+                SensuInterfaceUpdateTimer.Interval = (int)TimeSpan
+                    .FromSeconds(Settings.Instance.SensuInterfaceTTL * 0.8)
+                    .TotalMilliseconds;
+                SensuInterfaceUpdateTimer.Tick += OnSensuInterfaceUpdateTimerTick;
+
                 sensuInterface = new SensuInterface(
                     ProcessManager,
-                    metricsManager,
                     Settings.Instance.SensuInterfaceHost,
-                    Settings.Instance.SensuInterfacePort);
+                    Settings.Instance.SensuInterfacePort,
+                    Settings.Instance.SensuInterfaceTTL);
             }
 
             launchOptions.ForEach((opt) => { ProcessManager.Add(opt); });
@@ -64,6 +70,12 @@
             CpuChart = MetricsChart.Series[nameof(CpuChart)];
             GpuChart = MetricsChart.Series[nameof(GpuChart)];
             RamChart = MetricsChart.Series[nameof(RamChart)];
+        }
+
+        private void OnSensuInterfaceUpdateTimerTick(object sender, EventArgs e)
+        {
+            Log.d("Sending Sensu checks.");
+            sensuInterface.SendChecks();
         }
 
         private void OnProcessManagerPropertyChanged()
@@ -174,7 +186,6 @@
         private void OnMainDialogUpdateTimerTick(object sender, EventArgs e)
         {
             ProcessManager.Runners.ForEach(p => p.Monitor());
-            sensuInterface?.SendChecks();
             metricsManager.Update();
             UpdateProcessList();
 

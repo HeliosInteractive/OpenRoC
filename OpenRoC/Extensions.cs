@@ -12,8 +12,6 @@
     using System.Windows.Forms;
     using System.Xml.Serialization;
 
-    using liboroc;
-
     internal static class Extensions
     {
         public static bool SetDoubleBuffered(this Control control, bool enable)
@@ -116,16 +114,6 @@
             int last_index = array.Length - 1;
             Array.Copy(array, 1, array, 0, last_index);
             array[last_index] = last_value;
-        }
-
-        public static object ToSensuCheckResult(this ProcessRunner runner)
-        {
-            return new
-            {
-                name = Path.GetFileName(runner.ProcessOptions.Path),
-                output = runner.GetStateString(),
-                status = (int)runner.State
-            };
         }
     }
 }

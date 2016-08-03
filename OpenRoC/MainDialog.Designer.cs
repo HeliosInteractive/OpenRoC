@@ -31,11 +31,11 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainDialog));
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.StatusStrip = new System.Windows.Forms.StatusStrip();
             this.StatusText = new System.Windows.Forms.ToolStripStatusLabel();
             this.MenuStrip = new System.Windows.Forms.ToolStrip();
@@ -49,9 +49,9 @@
             this.Status = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.RightClickContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.ContextMenuAddButton = new System.Windows.Forms.ToolStripMenuItem();
-            this.ContextMenuDeleteButton = new System.Windows.Forms.ToolStripMenuItem();
-            this.ContextMenuSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.ContextMenuEditButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.ContextMenuSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.ContextMenuDeleteButton = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextMenuDisableButton = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextMenuSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.ContextMenuStart = new System.Windows.Forms.ToolStripMenuItem();
@@ -64,6 +64,7 @@
             this.TaskbarContextMenuSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.TaskbarContextMenuExitButton = new System.Windows.Forms.ToolStripMenuItem();
             this.MetricsChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.SensuInterfaceUpdateTimer = new System.Windows.Forms.Timer(this.components);
             this.StatusStrip.SuspendLayout();
             this.MenuStrip.SuspendLayout();
             this.RightClickContextMenuStrip.SuspendLayout();
@@ -210,57 +211,57 @@
             this.ContextMenuShow});
             this.RightClickContextMenuStrip.Name = "ContextMenuStrip";
             this.RightClickContextMenuStrip.ShowImageMargin = false;
-            this.RightClickContextMenuStrip.Size = new System.Drawing.Size(139, 192);
+            this.RightClickContextMenuStrip.Size = new System.Drawing.Size(139, 170);
             // 
             // ContextMenuAddButton
             // 
             this.ContextMenuAddButton.Name = "ContextMenuAddButton";
-            this.ContextMenuAddButton.Size = new System.Drawing.Size(135, 22);
+            this.ContextMenuAddButton.Size = new System.Drawing.Size(138, 22);
             this.ContextMenuAddButton.Text = "Add";
             this.ContextMenuAddButton.Click += new System.EventHandler(this.OnAddButtonClick);
-            // 
-            // ContextMenuDeleteButton
-            // 
-            this.ContextMenuDeleteButton.Name = "ContextMenuDeleteButton";
-            this.ContextMenuDeleteButton.Size = new System.Drawing.Size(135, 22);
-            this.ContextMenuDeleteButton.Text = "Delete";
-            this.ContextMenuDeleteButton.Click += new System.EventHandler(this.OnContextMenuDeleteButtonClick);
-            // 
-            // ContextMenuSeparator1
-            // 
-            this.ContextMenuSeparator1.Name = "ContextMenuSeparator1";
-            this.ContextMenuSeparator1.Size = new System.Drawing.Size(132, 6);
             // 
             // ContextMenuEditButton
             // 
             this.ContextMenuEditButton.Name = "ContextMenuEditButton";
-            this.ContextMenuEditButton.Size = new System.Drawing.Size(135, 22);
+            this.ContextMenuEditButton.Size = new System.Drawing.Size(138, 22);
             this.ContextMenuEditButton.Text = "Edit";
             this.ContextMenuEditButton.Click += new System.EventHandler(this.OnContextMenuEditButtonClick);
+            // 
+            // ContextMenuSeparator1
+            // 
+            this.ContextMenuSeparator1.Name = "ContextMenuSeparator1";
+            this.ContextMenuSeparator1.Size = new System.Drawing.Size(135, 6);
+            // 
+            // ContextMenuDeleteButton
+            // 
+            this.ContextMenuDeleteButton.Name = "ContextMenuDeleteButton";
+            this.ContextMenuDeleteButton.Size = new System.Drawing.Size(138, 22);
+            this.ContextMenuDeleteButton.Text = "Delete";
+            this.ContextMenuDeleteButton.Click += new System.EventHandler(this.OnContextMenuDeleteButtonClick);
             // 
             // ContextMenuDisableButton
             // 
             this.ContextMenuDisableButton.Name = "ContextMenuDisableButton";
-            this.ContextMenuDisableButton.Size = new System.Drawing.Size(135, 22);
+            this.ContextMenuDisableButton.Size = new System.Drawing.Size(138, 22);
             this.ContextMenuDisableButton.Text = "Disable";
             this.ContextMenuDisableButton.Click += new System.EventHandler(this.OnContextMenuDisableButtonClick);
             // 
             // ContextMenuSeparator2
             // 
             this.ContextMenuSeparator2.Name = "ContextMenuSeparator2";
-            this.ContextMenuSeparator2.Size = new System.Drawing.Size(132, 6);
+            this.ContextMenuSeparator2.Size = new System.Drawing.Size(135, 6);
             // 
             // ContextMenuStart
             // 
             this.ContextMenuStart.Name = "ContextMenuStart";
-            this.ContextMenuStart.Size = new System.Drawing.Size(135, 22);
+            this.ContextMenuStart.Size = new System.Drawing.Size(138, 22);
             this.ContextMenuStart.Text = "Start Process(es)";
             this.ContextMenuStart.Click += new System.EventHandler(this.OnContextMenuStartClick);
             // 
             // ContextMenuStop
             // 
             this.ContextMenuStop.Name = "ContextMenuStop";
-            this.ContextMenuStop.Size = new System.Drawing.Size(135, 22);
+            this.ContextMenuStop.Size = new System.Drawing.Size(138, 22);
             this.ContextMenuStop.Text = "Stop Process(es)";
             this.ContextMenuStop.Click += new System.EventHandler(this.OnContextMenuStopClick);
             // 
@@ -319,32 +320,32 @@
             this.MetricsChart.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.MetricsChart.BorderlineWidth = 0;
-            chartArea2.AxisX.ArrowStyle = System.Windows.Forms.DataVisualization.Charting.AxisArrowStyle.Triangle;
-            chartArea2.AxisX.IsMarginVisible = false;
-            chartArea2.AxisX.LineColor = System.Drawing.Color.Silver;
-            chartArea2.AxisX.LineWidth = 0;
-            chartArea2.AxisX.MajorGrid.Enabled = false;
-            chartArea2.AxisY.IsMarginVisible = false;
-            chartArea2.AxisY.LineColor = System.Drawing.Color.Silver;
-            chartArea2.AxisY.LineWidth = 0;
-            chartArea2.AxisY.MajorGrid.LineColor = System.Drawing.Color.Gainsboro;
-            chartArea2.AxisY.Maximum = 1D;
-            chartArea2.AxisY.Minimum = 0D;
-            chartArea2.BackColor = System.Drawing.Color.Snow;
-            chartArea2.BorderColor = System.Drawing.Color.DarkGray;
-            chartArea2.BorderDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Solid;
-            chartArea2.InnerPlotPosition.Auto = false;
-            chartArea2.InnerPlotPosition.Height = 100F;
-            chartArea2.InnerPlotPosition.Width = 100F;
-            chartArea2.Name = "metricsChartArea";
-            chartArea2.Position.Auto = false;
-            chartArea2.Position.Height = 100F;
-            chartArea2.Position.Width = 100F;
-            this.MetricsChart.ChartAreas.Add(chartArea2);
-            legend2.DockedToChartArea = "metricsChartArea";
-            legend2.IsTextAutoFit = false;
-            legend2.Name = "metricsLegend";
-            this.MetricsChart.Legends.Add(legend2);
+            chartArea1.AxisX.ArrowStyle = System.Windows.Forms.DataVisualization.Charting.AxisArrowStyle.Triangle;
+            chartArea1.AxisX.IsMarginVisible = false;
+            chartArea1.AxisX.LineColor = System.Drawing.Color.Silver;
+            chartArea1.AxisX.LineWidth = 0;
+            chartArea1.AxisX.MajorGrid.Enabled = false;
+            chartArea1.AxisY.IsMarginVisible = false;
+            chartArea1.AxisY.LineColor = System.Drawing.Color.Silver;
+            chartArea1.AxisY.LineWidth = 0;
+            chartArea1.AxisY.MajorGrid.LineColor = System.Drawing.Color.Gainsboro;
+            chartArea1.AxisY.Maximum = 1D;
+            chartArea1.AxisY.Minimum = 0D;
+            chartArea1.BackColor = System.Drawing.Color.Snow;
+            chartArea1.BorderColor = System.Drawing.Color.DarkGray;
+            chartArea1.BorderDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Solid;
+            chartArea1.InnerPlotPosition.Auto = false;
+            chartArea1.InnerPlotPosition.Height = 100F;
+            chartArea1.InnerPlotPosition.Width = 100F;
+            chartArea1.Name = "metricsChartArea";
+            chartArea1.Position.Auto = false;
+            chartArea1.Position.Height = 100F;
+            chartArea1.Position.Width = 100F;
+            this.MetricsChart.ChartAreas.Add(chartArea1);
+            legend1.DockedToChartArea = "metricsChartArea";
+            legend1.IsTextAutoFit = false;
+            legend1.Name = "metricsLegend";
+            this.MetricsChart.Legends.Add(legend1);
             this.MetricsChart.Location = new System.Drawing.Point(0, 251);
             this.MetricsChart.Name = "MetricsChart";
             this.MetricsChart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.None;
@@ -352,30 +353,30 @@
         System.Drawing.Color.Red,
         System.Drawing.Color.Blue,
         System.Drawing.Color.DarkSeaGreen};
-            series4.BorderWidth = 2;
-            series4.ChartArea = "metricsChartArea";
-            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            series4.IsXValueIndexed = true;
-            series4.Legend = "metricsLegend";
-            series4.LegendText = "% cpu usage";
-            series4.Name = "CpuChart";
-            series5.BorderWidth = 2;
-            series5.ChartArea = "metricsChartArea";
-            series5.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            series5.IsXValueIndexed = true;
-            series5.Legend = "metricsLegend";
-            series5.LegendText = "% ram usage";
-            series5.Name = "RamChart";
-            series6.BorderWidth = 2;
-            series6.ChartArea = "metricsChartArea";
-            series6.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            series6.IsXValueIndexed = true;
-            series6.Legend = "metricsLegend";
-            series6.LegendText = "% gpu usage";
-            series6.Name = "GpuChart";
-            this.MetricsChart.Series.Add(series4);
-            this.MetricsChart.Series.Add(series5);
-            this.MetricsChart.Series.Add(series6);
+            series1.BorderWidth = 2;
+            series1.ChartArea = "metricsChartArea";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series1.IsXValueIndexed = true;
+            series1.Legend = "metricsLegend";
+            series1.LegendText = "% cpu usage";
+            series1.Name = "CpuChart";
+            series2.BorderWidth = 2;
+            series2.ChartArea = "metricsChartArea";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series2.IsXValueIndexed = true;
+            series2.Legend = "metricsLegend";
+            series2.LegendText = "% ram usage";
+            series2.Name = "RamChart";
+            series3.BorderWidth = 2;
+            series3.ChartArea = "metricsChartArea";
+            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series3.IsXValueIndexed = true;
+            series3.Legend = "metricsLegend";
+            series3.LegendText = "% gpu usage";
+            series3.Name = "GpuChart";
+            this.MetricsChart.Series.Add(series1);
+            this.MetricsChart.Series.Add(series2);
+            this.MetricsChart.Series.Add(series3);
             this.MetricsChart.Size = new System.Drawing.Size(499, 126);
             this.MetricsChart.TabIndex = 0;
             this.MetricsChart.TabStop = false;
@@ -435,6 +436,7 @@
         private System.Windows.Forms.ToolStripSeparator TaskbarContextMenuSeparator;
         private System.Windows.Forms.ToolStripMenuItem TaskbarContextMenuExitButton;
         private System.Windows.Forms.DataVisualization.Charting.Chart MetricsChart;
+        private System.Windows.Forms.Timer SensuInterfaceUpdateTimer;
     }
 }
 
