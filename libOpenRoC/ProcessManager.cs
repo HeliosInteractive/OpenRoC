@@ -6,80 +6,71 @@
 
     public class ProcessManager : IDisposable
     {
-        private Dictionary<string, ProcessRunner> ProcessMap
+        private Dictionary<string, ProcessRunner> processMap
             = new Dictionary<string, ProcessRunner>();
 
         public Action ProcessesChanged;
         public Action<ProcessRunner> RunnerAdded;
+        public Action<ProcessRunner> RunnerRemoved;
 
-        public List<ProcessRunner> ProcessRunnerList
+        public List<ProcessRunner> Runners
         {
-            get { return ProcessMap.Values.ToList(); }
+            get { return processMap.Values.ToList(); }
         }
 
-        public List<ProcessOptions> ProcessOptionList
+        public List<ProcessOptions> Options
         {
-            get { return ProcessRunnerList.Select(x => x.ProcessOptions).ToList(); }
+            get { return Runners.Select(x => x.ProcessOptions).ToList(); }
         }
 
         public void Add(ProcessOptions opts)
         {
-            if (string.IsNullOrWhiteSpace(opts.Path))
+            if (!Contains(opts.Path))
             {
-                return;
-            }
+                ProcessRunner proc = new ProcessRunner(opts);
 
-            ProcessRunner proc = new ProcessRunner(opts);
+                proc.StateChanged += OnProcessesChanged;
+                proc.OptionsChanged += OnProcessesChanged;
 
-            proc.StateChanged += OnProcessesChanged;
-            proc.OptionsChanged += OnProcessesChanged;
-
-            ProcessMap.Add(opts.Path, proc);
-
-            OnProcessesChanged();
-
-            RunnerAdded?.Invoke(proc);
-        }
-
-        public void Delete(string path)
-        {
-            if (string.IsNullOrWhiteSpace(path))
-            {
-                return;
-            }
-
-            if (ProcessMap.ContainsKey(path))
-            {
-                ProcessRunner proc = ProcessMap[path];
-
-                proc.Dispose();
-                ProcessMap.Remove(path);
+                processMap.Add(opts.Path, proc);
+                RunnerAdded?.Invoke(proc);
 
                 OnProcessesChanged();
             }
-            else
+        }
+
+        public void Remove(string path)
+        {
+            if (Contains(path))
             {
-                return;
+                using (ProcessRunner proc = processMap[path])
+                {
+                    processMap.Remove(path);
+                    RunnerRemoved?.Invoke(proc);
+                }
+
+                OnProcessesChanged();
             }
         }
 
         public bool Contains(string path)
         {
             return !string.IsNullOrWhiteSpace(path) &&
-                ProcessMap.ContainsKey(path);
+                processMap.ContainsKey(path);
         }
 
         public ProcessRunner Get(string path)
         {
             if (Contains(path))
-                return ProcessMap[path];
+                return processMap[path];
             else
                 return null;
         }
 
         public void Swap(ProcessOptions opts)
         {
-            Get(opts.Path).ProcessOptions = opts;
+            if (Contains(opts.Path))
+                Get(opts.Path).ProcessOptions = opts;
         }
 
         protected void OnProcessesChanged()
@@ -96,7 +87,7 @@
             {
                 if (disposing)
                 {
-                    foreach (var pair in ProcessMap)
+                    foreach (var pair in processMap)
                         pair.Value.Dispose();
                 }
 

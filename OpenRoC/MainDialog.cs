@@ -72,7 +72,7 @@
 
         private void OnProcessManagerPropertyChanged()
         {
-            Settings.Instance.Write(Properties.Resources.SettingsProcessListNode, ProcessManager.ProcessOptionList);
+            Settings.Instance.Write(Properties.Resources.SettingsProcessListNode, ProcessManager.Options);
             Settings.Instance.Save();
         }
 
@@ -90,7 +90,7 @@
                 if (!ProcessManager.Contains(item.Text))
                     item.Remove();
 
-            ProcessManager.ProcessRunnerList.ForEach(p =>
+            ProcessManager.Runners.ForEach(p =>
             {
                 if (ProcessListView.Items.ContainsKey(p.ProcessOptions.Path))
                 {
@@ -167,7 +167,7 @@
         private void OnDeleteButtonClick(object sender, EventArgs e)
         {
             foreach (ListViewItem item in ProcessListView.SelectedItems)
-                ProcessManager.Delete(item.Text);
+                ProcessManager.Remove(item.Text);
 
             UpdateProcessList();
         }
@@ -185,7 +185,7 @@
 
         private void OnMainDialogUpdateTimerTick(object sender, EventArgs e)
         {
-            ProcessManager.ProcessRunnerList.ForEach(p => p.Monitor());
+            ProcessManager.Runners.ForEach(p => p.Monitor());
             sensuInterface?.SendChecks();
             metricsManager.Update();
             UpdateProcessList();
@@ -300,7 +300,7 @@
             if (ProcessListView.FocusedItem == null)
                 return;
 
-            ProcessManager.Delete(ProcessListView.FocusedItem.Text);
+            ProcessManager.Remove(ProcessListView.FocusedItem.Text);
             UpdateProcessList();
         }
 

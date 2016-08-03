@@ -48,7 +48,7 @@
 
         public void SendChecks()
         {
-            Manager.ProcessRunnerList.ForEach(runner =>
+            Manager.Runners.ForEach(runner =>
             {
                 QueueUdpCheck(runner.ToSensuCheckResult());
             });
