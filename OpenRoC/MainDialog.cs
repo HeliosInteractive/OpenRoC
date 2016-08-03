@@ -10,6 +10,7 @@
 
     public partial class MainDialog : Form
     {
+        private ExecutorService screenshotService;
         private Metrics.Manager metricsManager;
         private SensuInterface sensuInterface;
         private ProcessDialog editProcessForm;
@@ -33,15 +34,10 @@
             HandleCreated += OnHandleCreated;
             ProcessManager = new ProcessManager();
             metricsManager = new Metrics.Manager();
+            screenshotService = new ExecutorService();
 
-            if (!ProcessListView.SetDoubleBuffered(true))
-            {
-                Log.w("Unable to set DoubleBuffer on ProcessListView. This may cause flickers.");
-            }
-            else
-            {
-                Log.d("ProcessListView is DoubleBuffer enabled.");
-            }
+            ProcessListView.SetDoubleBuffered(true);
+            MetricsChart.SetDoubleBuffered(true);
         }
 
         private void OnHandleCreated(object sender, EventArgs e)
@@ -400,20 +396,30 @@
             if (!Directory.Exists(Program.ScreenShotDirectory))
                 Directory.CreateDirectory(Program.ScreenShotDirectory);
 
-            using (var picture = Pranas.ScreenshotCapture.TakeScreenshot())
-            {
-                string name = Path.Combine(
-                    Program.ScreenShotDirectory,
-                    string.Format("{0}.png", DateTime.Now.ToFileTime()));
+            Log.i("ScreenShot queued for execution.");
 
-                picture.Save(name);
-            }
+            screenshotService.Accept(() =>
+            {
+                Log.i("ScreenShot is being taken...");
+
+                using (var picture = Pranas.ScreenshotCapture.TakeScreenshot())
+                {
+                    string name = Path.Combine(
+                        Program.ScreenShotDirectory,
+                        string.Format("{0}.png", DateTime.Now.ToFileTime()));
+
+                    picture.Save(name);
+
+                    Log.i("ScreenShot is saved to: {0}", name);
+                }
+            });
         }
 
         #endregion
 
         private void DisposeAddedComponents()
         {
+            screenshotService?.Dispose();
             metricsManager?.Dispose();
             ProcessManager?.Dispose();
             sensuInterface?.Dispose();
@@ -423,6 +429,7 @@
             aboutForm?.Dispose();
             logsForm?.Dispose();
 
+            screenshotService = null;
             metricsManager = null;
             ProcessManager = null;
             sensuInterface = null;
