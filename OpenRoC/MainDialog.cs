@@ -326,18 +326,19 @@
 
         private void OnContextMenuShowClick(object sender, EventArgs e)
         {
-            if (ProcessListView.FocusedItem == null || ProcessListView.SelectedItems.Count == 0)
+            if (ProcessListView.SelectedItems.Count == 0)
             {
                 MessageBox.Show(
-                    "Please select a Process to show.",
-                    "No Process selected",
+                    "Please select a Processes to show.",
+                    "No Processes selected",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
 
                 return;
             }
 
-            ProcessManager.Get(ProcessListView.FocusedItem.Text).BringToFront();
+            foreach (ListViewItem item in ProcessListView.SelectedItems)
+                ProcessManager.Get(item.Text).BringToFront();
         }
 
         private void OnContextMenuStopClick(object sender, EventArgs e)
