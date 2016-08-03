@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace testOpenRoC
+﻿namespace testOpenRoC
 {
     using liboroc;
+
+    using System.Linq;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -27,6 +23,8 @@ namespace testOpenRoC
                 manager.Add(ProcessRunnerUnitTest.ResponsiveWindowedProcessOptions);
 
                 Assert.IsTrue(manager.Contains(ProcessRunnerUnitTest.TestProcessWindowedPath));
+                Assert.IsTrue(manager.Runners.Contains(manager.Get(ProcessRunnerUnitTest.TestProcessWindowedPath)));
+                Assert.IsTrue(manager.Options.Select(opt => opt.Path).Contains(ProcessRunnerUnitTest.TestProcessWindowedPath));
                 Assert.IsTrue(addedEventCalled);
                 Assert.IsTrue(changeEventCalled);
 
@@ -57,6 +55,19 @@ namespace testOpenRoC
 
                 manager.Remove(ProcessRunnerUnitTest.TestProcessWindowedPath);
                 Assert.AreEqual(removedCount, 1);
+            }
+        }
+
+        [TestMethod]
+        public void DisposingRemovedRunners()
+        {
+            using (var manager = new ProcessManager())
+            {
+                manager.Add(ProcessRunnerUnitTest.ResponsiveWindowedProcessOptions);
+                var runner = manager.Get(ProcessRunnerUnitTest.TestProcessWindowedPath);
+                manager.Remove(ProcessRunnerUnitTest.TestProcessWindowedPath);
+
+                Assert.IsTrue(runner.IsDisposed);
             }
         }
 
