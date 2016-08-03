@@ -52,10 +52,8 @@
             if (Settings.Instance.IsSensuInterfaceEnabled)
             {
                 SensuInterfaceUpdateTimer.Enabled = true;
-                SensuInterfaceUpdateTimer.Interval = (int)TimeSpan
-                    .FromSeconds(Settings.Instance.SensuInterfaceTTL * 0.8)
-                    .TotalMilliseconds;
                 SensuInterfaceUpdateTimer.Tick += OnSensuInterfaceUpdateTimerTick;
+                SetSensuInterfaceUpdateTimerInterval(Settings.Instance.SensuInterfaceTTL);
 
                 sensuInterface = new SensuInterface(
                     ProcessManager,
@@ -70,6 +68,22 @@
             CpuChart = MetricsChart.Series[nameof(CpuChart)];
             GpuChart = MetricsChart.Series[nameof(GpuChart)];
             RamChart = MetricsChart.Series[nameof(RamChart)];
+        }
+
+        public void SetSensuInterfaceUpdateTimerInterval(uint seconds)
+        {
+            int interval = (int)TimeSpan
+                .FromSeconds(seconds * 0.8)
+                .TotalMilliseconds;
+
+            if (SensuInterfaceUpdateTimer.Interval == interval)
+                return;
+
+            Log.i("Sensu checks TTL and timeout is: {0} seconds.", seconds);
+            Log.i("Sensu checks interval is: {0} miliseconds.", interval);
+
+            SensuInterfaceUpdateTimer.Interval = interval;
+            sensuInterface?.SetTTL(seconds);
         }
 
         private void OnSensuInterfaceUpdateTimerTick(object sender, EventArgs e)

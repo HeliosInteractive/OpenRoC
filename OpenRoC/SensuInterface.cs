@@ -42,6 +42,14 @@
             }
         }
 
+        public void SetTTL(uint ttl)
+        {
+            if (checksTtl == ttl)
+                return;
+
+            checksTtl = ttl;
+        }
+
         public void SendChecks()
         {
             Manager.Runners.ForEach(runner =>
@@ -51,6 +59,7 @@
                     name = Path.GetFileName(runner.ProcessOptions.Path),
                     output = runner.GetStateString(),
                     status = (int)runner.State,
+                    timeout = checksTtl,
                     ttl = checksTtl
                 });
             });

@@ -1,6 +1,7 @@
 ﻿namespace oroc
 {
     using System.Windows.Forms;
+    using System.ComponentModel;
 
     public partial class SettingsDialog : Form
     {
@@ -14,16 +15,14 @@
 
         private void OnSettingsDialogHandleCreated(object sender, System.EventArgs e)
         {
-            if (!(Owner is MainDialog))
-            {
-                Log.e("Owner of Settings Window is not the right type.");
-                return;
-            }
-
             MainDialog main_dialog = Owner as MainDialog;
 
             main_dialog.SetStatusBarText(SingleInstanceCheckBox, "Allow only one instance of OpenRoC to run on this computer.");
             main_dialog.SetStatusBarText(StartMinimizedCheckBox, "Start OpenRoC minimized, in task-bar next time it launches.");
+            main_dialog.SetStatusBarText(SensuInterfaceEnabledCheckBox, "Enable Sensu 'client socket' support (applicable next time OpenRoC launches).");
+            main_dialog.SetStatusBarText(SensuHostTextBox, "Sensu UDP 'client' host (applicable next time OpenRoC launches).");
+            main_dialog.SetStatusBarText(SensuPortTextBox, "Sensu UDP 'client' port (applicable next time OpenRoC launches).");
+            main_dialog.SetStatusBarText(SensuTTLTextBox, "Sensu checks TTL in seconds. Interval is 80% of TTL and timeout is equal to TTL.");
 
             SyncCheckedStates();
         }
@@ -36,6 +35,14 @@
             SensuHostTextBox.SetupDataBind(Settings.Instance, nameof(Settings.Instance.SensuInterfaceHost));
             SensuPortTextBox.SetupDataBind(Settings.Instance, nameof(Settings.Instance.SensuInterfacePort));
             SensuTTLTextBox.SetupDataBind(Settings.Instance, nameof(Settings.Instance.SensuInterfaceTTL));
+
+            Settings.Instance.PropertyChanged += OnSettingsInstancePropertyChanged;
+        }
+
+        private void OnSettingsInstancePropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(Settings.Instance.SensuInterfaceTTL))
+                (Owner as MainDialog).SetSensuInterfaceUpdateTimerInterval(Settings.Instance.SensuInterfaceTTL);
         }
 
         private void OnSensuInterfaceEnabledCheckBoxCheckedChanged(object sender, System.EventArgs e)
