@@ -160,14 +160,6 @@
             }
         }
 
-        private void OnDeleteButtonClick(object sender, EventArgs e)
-        {
-            foreach (ListViewItem item in ProcessListView.SelectedItems)
-                ProcessManager.Remove(item.Text);
-
-            UpdateProcessList();
-        }
-
         private void OnProcessListViewItemChecked(object sender, ItemCheckedEventArgs e)
         {
             if (e.Item.Checked == (ProcessManager.Get(e.Item.Text).State != ProcessRunner.Status.Disabled))

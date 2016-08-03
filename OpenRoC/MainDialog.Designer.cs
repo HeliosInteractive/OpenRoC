@@ -121,7 +121,7 @@
             this.DeleteButton.Name = "DeleteButton";
             this.DeleteButton.Size = new System.Drawing.Size(44, 19);
             this.DeleteButton.Text = "Delete";
-            this.DeleteButton.Click += new System.EventHandler(this.OnDeleteButtonClick);
+            this.DeleteButton.Click += new System.EventHandler(this.OnContextMenuDeleteButtonClick);
             // 
             // SettingsButton
             // 
