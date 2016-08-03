@@ -3,8 +3,9 @@
     using System;
     using System.IO;
     using System.Xml.Linq;
+    using System.ComponentModel;
 
-    public sealed class Settings
+    public sealed class Settings : INotifyPropertyChanged
     {
         private static volatile object mutex = new object();
         private static volatile Settings instance;
@@ -12,6 +13,8 @@
         private XElement openrocRoot;
         private XElement optionsRoot;
         private volatile bool dirty = false;
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public class Application
         {
@@ -33,6 +36,8 @@
 
                 application.singleInsntace = value;
                 dirty = true;
+
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsSingleInsntaceEnabled)));
             }
         }
 
@@ -46,6 +51,8 @@
 
                 application.startMinimized = value;
                 dirty = true;
+
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsStartMinimizedEnabled)));
             }
         }
 
@@ -59,6 +66,8 @@
 
                 application.sensuInterfaceEnabled = value;
                 dirty = true;
+
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsSensuInterfaceEnabled)));
             }
         }
 
@@ -72,6 +81,8 @@
 
                 application.sensuInterfaceHost = value;
                 dirty = true;
+
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SensuInterfaceHost)));
             }
         }
 
@@ -85,6 +96,8 @@
 
                 application.sensuInterfacePort = value;
                 dirty = true;
+
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SensuInterfacePort)));
             }
         }
 
@@ -102,6 +115,8 @@
                     application.sensuInterfaceTTL = 2;
 
                 dirty = true;
+
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SensuInterfaceTTL)));
             }
         }
 
@@ -185,6 +200,8 @@
                         XElement.Parse(value.ToXmlNodeString()).Elements());
 
                     dirty = true;
+
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(node));
                 }
                 catch (Exception ex)
                 {
