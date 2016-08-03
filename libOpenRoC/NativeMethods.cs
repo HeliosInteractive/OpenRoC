@@ -21,10 +21,13 @@
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool SetForegroundWindow(IntPtr hWnd);
 
-        [DllImport("user32.dll")]
-        public static extern IntPtr GetForegroundWindow();
+        [DllImport("user32.dll", SetLastError = false)]
+        public static extern IntPtr GetDesktopWindow();
 
         [DllImport("user32.dll", SetLastError = true)]
         public static extern void SwitchToThisWindow(IntPtr hWnd, bool fAltTab);
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr GetForegroundWindow();
     }
 }

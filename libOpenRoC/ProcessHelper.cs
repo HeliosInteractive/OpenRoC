@@ -45,7 +45,7 @@
             {
                 if (!process.HasExited && process.MainWindowHandle != IntPtr.Zero)
                 {
-                    if (NativeMethods.GetForegroundWindow() != process.MainWindowHandle)
+                    if (GetForegroundWindow() != process.MainWindowHandle)
                     {
                         NativeMethods.SwitchToThisWindow(process.MainWindowHandle, true);
                         NativeMethods.SetForegroundWindow(process.MainWindowHandle);
@@ -64,6 +64,16 @@
                 }
             }
             , pid);
+        }
+
+        public static IntPtr GetForegroundWindow()
+        {
+            IntPtr foreground = NativeMethods.GetForegroundWindow();
+
+            if (foreground == IntPtr.Zero)
+                return NativeMethods.GetDesktopWindow();
+            else
+                return foreground;
         }
     }
 }
