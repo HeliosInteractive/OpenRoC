@@ -104,7 +104,7 @@
             if (main != null)
             {
                 if (main.ProcessManager.Contains(Options.Path))
-                    main.ProcessManager.Swap(Options);
+                    main.ProcessManager.Get(Options.Path).ProcessOptions = Options;
                 else
                     main.ProcessManager.Add(Options);
 

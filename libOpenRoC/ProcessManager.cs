@@ -67,12 +67,6 @@
                 return null;
         }
 
-        public void Swap(ProcessOptions opts)
-        {
-            if (Contains(opts.Path))
-                Get(opts.Path).ProcessOptions = opts;
-        }
-
         protected void OnProcessesChanged()
         {
             ProcessesChanged?.Invoke();
