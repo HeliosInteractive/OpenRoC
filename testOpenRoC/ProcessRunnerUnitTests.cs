@@ -10,7 +10,7 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
-    public class ProcessRunnerUnitTest
+    public class ProcessRunnerUnitTests
     {
         internal static string AssemblyPath
         {

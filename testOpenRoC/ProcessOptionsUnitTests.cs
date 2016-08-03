@@ -4,7 +4,7 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
-    public class ProcessOptionsUnitTest
+    public class ProcessOptionsUnitTests
     {
         [TestMethod]
         public void EnvironmentVariableValidFormat()

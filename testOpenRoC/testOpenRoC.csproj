@@ -52,8 +52,8 @@
   <ItemGroup>
     <Compile Include="ExecutorServiceUnitTests.cs" />
     <Compile Include="ProcessManagerUnitTests.cs" />
-    <Compile Include="ProcessOptionsUnitTest.cs" />
-    <Compile Include="ProcessRunnerUnitTest.cs" />
+    <Compile Include="ProcessOptionsUnitTests.cs" />
+    <Compile Include="ProcessRunnerUnitTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
