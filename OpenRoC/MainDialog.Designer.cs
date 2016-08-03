@@ -173,7 +173,7 @@
             this.ProcessListView.Location = new System.Drawing.Point(0, 22);
             this.ProcessListView.Name = "ProcessListView";
             this.ProcessListView.ShowGroups = false;
-            this.ProcessListView.Size = new System.Drawing.Size(499, 227);
+            this.ProcessListView.Size = new System.Drawing.Size(499, 230);
             this.ProcessListView.TabIndex = 2;
             this.ProcessListView.UseCompatibleStateImageBehavior = false;
             this.ProcessListView.View = System.Windows.Forms.View.Details;
@@ -345,7 +345,7 @@
             legend1.IsTextAutoFit = false;
             legend1.Name = "metricsLegend";
             this.MetricsChart.Legends.Add(legend1);
-            this.MetricsChart.Location = new System.Drawing.Point(0, 248);
+            this.MetricsChart.Location = new System.Drawing.Point(0, 251);
             this.MetricsChart.Name = "MetricsChart";
             this.MetricsChart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.None;
             this.MetricsChart.PaletteCustomColors = new System.Drawing.Color[] {
@@ -376,7 +376,7 @@
             this.MetricsChart.Series.Add(series1);
             this.MetricsChart.Series.Add(series2);
             this.MetricsChart.Series.Add(series3);
-            this.MetricsChart.Size = new System.Drawing.Size(499, 129);
+            this.MetricsChart.Size = new System.Drawing.Size(499, 126);
             this.MetricsChart.TabIndex = 0;
             this.MetricsChart.TabStop = false;
             this.MetricsChart.Text = "Machine Metrics";

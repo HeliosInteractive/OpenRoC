@@ -6,7 +6,6 @@
     using System;
     using System.IO;
     using System.Xml;
-    using System.Text;
     using System.Drawing;
     using System.Xml.Linq;
     using System.Reflection;
