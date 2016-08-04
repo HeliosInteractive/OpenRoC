@@ -6,8 +6,27 @@ Open-source Restart on Crash alternative with Sensu support.
 
 ###Top menu bar
 
+####Add
+Adds a new process to monitor. Clicking this button will open up a [Process Window](#process-window).
+
+####Delete
+Removes selected processes in the [Process list](#process-list) section. You may multi-select different Processes or use the CTRL key to select them individually.
+
+####Settings
+Opens up OpenRoC's [Settings Window](#settings-window).
+
+####Logs
+Opens up OpenRoC's Logs Window. Logs are also stored and rotated (every 10MB) into a file named `OpenRoC.log` next to where you have `OpenRoC.exe` located.
+
+####About
+Opens up OpenRoC's About Window. You may find third-party licenses and credits here.
 
 ###Process list
+
+####Process column
+
+
+####Status column
 
 
 ###Performance graph
@@ -20,7 +39,6 @@ Open-source Restart on Crash alternative with Sensu support.
 
 
 ###Taskbar menu
-
 
 
 ##Process Window
@@ -39,7 +57,6 @@ Open-source Restart on Crash alternative with Sensu support.
 
 
 ### MISC settings
-
 
 
 ##Settings Window
