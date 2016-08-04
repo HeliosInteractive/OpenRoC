@@ -354,7 +354,7 @@
             if (ProcessListView.SelectedItems.Count == 0)
             {
                 MessageBox.Show(
-                    "Please select a Processes to show.",
+                    "Please select Processes to show.",
                     "No Processes selected",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
