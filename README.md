@@ -54,7 +54,7 @@ You can access this menu by right-clicking anywhere in the [Process column](#pro
 You can access this menu by right-clicking on OpenRoC's icon in your task-bar while it's running.
 
 ####Show/Hide
-Toggle's UI visibility of OpenRoC.
+Toggles UI visibility of OpenRoC.
 
 ####Exit
 Quits OpenRoC.
@@ -64,23 +64,35 @@ Quits OpenRoC.
 
 ###Process path
 
+ - **Executable Path:** path to the Process `.exe`. Only `.exe` is allowed (e.g `.bat` files are not allowed).
+ - **Working Directory:** working directory of the Process. This is usually the same directory where the Process `.exe` is located.
 
 ###Crash settings
 
+ - **Crashed if not running:** Assume a Process is crashed if it's not running. If you set the initial state to *running* and OpenRoC sees Process is *stopped*, it will go into the *running* state.
+ - **Crashed if unresponsive:** Some Processes may have unresponsive windows, in that case assume it is crashed and restart it.
+ - **Unresponsiveness time period:** The number of seconds passed until OpenRoC assumes an unresponsive process is crashed.
+ - **Grace period:** The number of seconds to wait before attempting a relaunch of a crashed Process.
 
-###Pre-crash event
+###Pre-start event
+You can specify a script to be executed before OpenRoC attempts to start the Process again. OpenRoC will wait for the script to execute before starting the Process.
 
+###Post-stop event
+You can specify a script to be executed after OpenRoC stops the Process. OpenRoC will wait for the script to execute before starting the Process. You can also opt-in for an aggressive method of stopping processes (*recommended*).
 
-###Post-crash event
-
-
-### MISC settings
-
+### MISC. settings
+Most options in this part are self-explanatory. Most-notably you can set the initial state of the Process after you hit *Save* and return to the [Main Window](#main-window).
 
 ##Settings Window
 ![Settings Window screenshot](OpenRoC/Docs/settings.png?raw=true)
 
 ###Start settings
 
+####Start minimized
+Enables OpenRoC to start minimized in task-bar next time it launches.
+
+####Single instance mode
+Forces only one instance of OpenRoC being able to launch on this machine.
 
 ###Sensu settings
+Enables [Sensu client socket](https://sensuapp.org/docs/0.25/reference/clients.html#client-socket-input) support via UDP.
