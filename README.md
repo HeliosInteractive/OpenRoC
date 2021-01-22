@@ -1,6 +1,8 @@
 # OpenRoC
 Open-source Restart on Crash alternative with Sensu support.
 
+**THIS PROJECT IS NO LONGER ACTIVELY MAINTAINED AND THE REPOSITORY IS ARCHIVED. IF YOU COMPLIE AND TESTS PASS, YOU SHOULD BE GOOD TO GO. USE AT YOUR OWN RISK.**
+
 ## Main Window
 ![Main Window screenshot](OpenRoC/Docs/main.png?raw=true)
 
